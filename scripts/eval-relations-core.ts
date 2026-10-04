@@ -1,4 +1,4 @@
-import { RELATIONS, type Relation, type ReportView } from "@aihot/backend/events/relate";
+import { RELATIONS, type Relation, type ReportView } from "@hotmoto/backend/events/relate";
 
 export interface RelationGoldReport {
   title: string;

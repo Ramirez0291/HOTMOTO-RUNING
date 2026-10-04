@@ -3,9 +3,9 @@
 // Re-runnable:  node --env-file=.env scripts/seed.ts
 import { readFileSync } from "node:fs";
 import path from "node:path";
-import { REPO_ROOT } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { assertSupportedConfig } from "@aihot/backend/sources/config-keys";
+import { REPO_ROOT } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { assertSupportedConfig } from "@hotmoto/backend/sources/config-keys";
 
 interface SeedSource {
   id: string;

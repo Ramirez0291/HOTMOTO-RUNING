@@ -4,14 +4,14 @@ import { readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { createHash } from "node:crypto";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { EDITION_TIMES, SITE, TIME_ZONE } from "@aihot/site";
-import { CONTACT_ALIASES, PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
-import { REPO_ROOT, config } from "@aihot/backend/config";
+import { EDITION_TIMES, SITE, TIME_ZONE } from "@hotmoto/site";
+import { CONTACT_ALIASES, PUBLIC_INTERFACE_VERSION } from "@hotmoto/contracts/http-policy";
+import { PUBLIC_API_CATEGORY_KEYS } from "@hotmoto/contracts/taxonomy";
+import { REPO_ROOT, config } from "@hotmoto/backend/config";
 import { applyPublicHeaders, sendTextWithEtag } from "../http/respond.ts";
-import { loadSitemap } from "@aihot/backend/publication/sitemap";
-import { llmsTxt, loadLlmsAvailability } from "@aihot/backend/publication/llms";
-import { loadContact } from "@aihot/backend/site/contact";
+import { loadSitemap } from "@hotmoto/backend/publication/sitemap";
+import { llmsTxt, loadLlmsAvailability } from "@hotmoto/backend/publication/llms";
+import { loadContact } from "@hotmoto/backend/site/contact";
 
 const PUBLIC = path.join(REPO_ROOT, "site/public");
 /** The site's brand files (site/brand/), and how long its icons are cached. */

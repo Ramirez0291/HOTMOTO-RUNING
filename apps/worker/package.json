@@ -1,5 +1,5 @@
 {
-  "name": "@aihot/worker",
+  "name": "@hotmoto/worker",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,9 +7,9 @@
     "start": "node src/main.ts"
   },
   "dependencies": {
-    "@aihot/backend": "*",
-    "@aihot/contracts": "*",
-    "@aihot/industry": "*",
-    "@aihot/site": "*"
+    "@hotmoto/backend": "*",
+    "@hotmoto/contracts": "*",
+    "@hotmoto/industry": "*",
+    "@hotmoto/site": "*"
   }
 }

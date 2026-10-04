@@ -1,10 +1,10 @@
 import { motion } from "motion/react";
-import { SITE } from "@aihot/site";
+import { SITE } from "@hotmoto/site";
 import { NavLink, Outlet, useLocation, useNavigation, type ShouldRevalidateFunction } from "react-router";
 import type { Route } from "./+types/layout";
-import { RingMark } from "@aihot/site/brand/Logo.tsx";
+import { RingMark } from "@hotmoto/site/brand/Logo.tsx";
 import { NavigationProgress } from "../../components/shell/Chrome";
-import type { AdminMe, AdminNavCounts } from "@aihot/contracts/admin";
+import type { AdminMe, AdminNavCounts } from "@hotmoto/contracts/admin";
 import { Toaster } from "../../features/admin/toast";
 import { adminGet } from "../../lib/admin.server";
 import type { AdminNavEntry } from "../../modules";

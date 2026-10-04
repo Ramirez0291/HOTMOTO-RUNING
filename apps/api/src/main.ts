@@ -1,11 +1,11 @@
-import { assertProductionSecrets, config } from "@aihot/backend/config";
-import { closeDb } from "@aihot/backend/db";
-import { installModules, serverModules } from "@aihot/backend/modules";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
-import { DEPLOYMENT } from "@aihot/site";
-import { feishuLoginConfigured } from "@aihot/backend/admin/auth";
-import { startHeartbeat } from "@aihot/backend/operations/heartbeat";
-import { startWorkerWatchdog } from "@aihot/backend/operations/watch";
+import { assertProductionSecrets, config } from "@hotmoto/backend/config";
+import { closeDb } from "@hotmoto/backend/db";
+import { installModules, serverModules } from "@hotmoto/backend/modules";
+import { SERVER_MODULES } from "@hotmoto/site/modules/server";
+import { DEPLOYMENT } from "@hotmoto/site";
+import { feishuLoginConfigured } from "@hotmoto/backend/admin/auth";
+import { startHeartbeat } from "@hotmoto/backend/operations/heartbeat";
+import { startWorkerWatchdog } from "@hotmoto/backend/operations/watch";
 import { buildApp } from "./app.ts";
 
 installModules(SERVER_MODULES);

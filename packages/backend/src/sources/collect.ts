@@ -188,8 +188,8 @@ export async function collectSource(sourceId: string, opts: { force?: boolean } 
     const known = d || (!firstImport && source.kind !== "x_search")
       ? await storedDetails(candidates.map((c) => c.identityKey!)) : new Map<string, StoredDetail>();
     // First import of a new source: bounded, and archived by source time (never "today", never pushed).
-    const backfillLimit = Number(source.config._aihot?.initialBackfillLimit ?? 30);
-    const backfillMonths = Number(source.config._aihot?.initialBackfillMonths ?? 12);
+    const backfillLimit = Number(source.config._hotmoto?.initialBackfillLimit ?? 30);
+    const backfillMonths = Number(source.config._hotmoto?.initialBackfillMonths ?? 12);
     if (firstImport) {
       const cutoff = Date.now() - backfillMonths * 30 * 86400000;
       candidates = candidates.filter((c) => !c.publishedAt || !Number.isFinite(c.publishedAt.getTime()) || c.publishedAt.getTime() >= cutoff).slice(0, backfillLimit);

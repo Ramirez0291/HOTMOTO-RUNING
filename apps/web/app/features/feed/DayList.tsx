@@ -2,9 +2,9 @@
 // (すべてのニュース, topics, search results).
 import { useMemo } from "react";
 import { Link } from "react-router";
-import type { FeedItemSummary } from "@aihot/contracts/site";
+import type { FeedItemSummary } from "@hotmoto/contracts/site";
 import { IconChevronRight } from "../../components/icons";
-import { siteDate } from "@aihot/contracts/time";
+import { siteDate } from "@hotmoto/contracts/time";
 import { markRead, useReadSet } from "../../lib/local-state";
 import { DayHeader, TimelineSlot } from "./Timeline";
 import { FeedItem } from "./FeedItem";

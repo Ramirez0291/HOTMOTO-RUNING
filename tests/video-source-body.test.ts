@@ -5,9 +5,9 @@ import "./setup.ts";
 import assert from "node:assert/strict";
 import { createRequire } from "node:module";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { extractFromUrl, pageFetchable, readable } from "@aihot/backend/content/extract";
-import { fetchRss } from "@aihot/backend/sources/rss";
+import { config } from "@hotmoto/backend/config";
+import { extractFromUrl, pageFetchable, readable } from "@hotmoto/backend/content/extract";
+import { fetchRss } from "@hotmoto/backend/sources/rss";
 
 const { MockAgent, getGlobalDispatcher, setGlobalDispatcher } = createRequire(new URL("../packages/backend/package.json", import.meta.url))("undici");
 const originalDispatcher = getGlobalDispatcher();

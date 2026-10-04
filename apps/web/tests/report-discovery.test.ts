@@ -9,7 +9,7 @@ import type { AddressInfo } from 'node:net';
 import { after, before, test } from 'node:test';
 import { fileURLToPath } from 'node:url';
 import * as cheerio from 'cheerio';
-import { MCP_TOOL_NAMES } from '@aihot/contracts/mcp';
+import { MCP_TOOL_NAMES } from '@hotmoto/contracts/mcp';
 
 let web: ChildProcess;
 let origin: string;

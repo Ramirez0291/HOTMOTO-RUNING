@@ -6,19 +6,19 @@ import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { AsyncLocalStorage } from "node:async_hooks";
 import { createMcpHandler, McpServer, type McpHttpHandler } from "@modelcontextprotocol/server";
 import { z } from "zod";
-import { POLICY, SITE } from "@aihot/site";
-import { PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { MCP_TOOL_NAMES as T, mcpToolName } from "@aihot/contracts/mcp";
-import { PUBLIC_API_CATEGORY_KEYS } from "@aihot/contracts/taxonomy";
-import { isValidDate } from "@aihot/contracts/time";
-import { config } from "@aihot/backend/config";
-import { logError } from "@aihot/backend/lib/log-error";
-import { dailyAnswer, hotAnswer, latestAnswer, periodAnswer, searchAnswer, searchItems, storyAnswer } from "@aihot/backend/publication/agent";
-import { v1Items } from "@aihot/backend/publication/v1";
-import { SearchBusyError } from "@aihot/backend/publication/pool";
-import { resolveStory, v1HotTopics, v1Story } from "@aihot/backend/publication/stories";
-import { dailyWithNotes, isPeriodKey, v1Period } from "@aihot/backend/publication/reports";
-import { requestNotice, serverModules, type McpNotice } from "@aihot/backend/modules";
+import { POLICY, SITE } from "@hotmoto/site";
+import { PUBLIC_INTERFACE_VERSION } from "@hotmoto/contracts/http-policy";
+import { MCP_TOOL_NAMES as T, mcpToolName } from "@hotmoto/contracts/mcp";
+import { PUBLIC_API_CATEGORY_KEYS } from "@hotmoto/contracts/taxonomy";
+import { isValidDate } from "@hotmoto/contracts/time";
+import { config } from "@hotmoto/backend/config";
+import { logError } from "@hotmoto/backend/lib/log-error";
+import { dailyAnswer, hotAnswer, latestAnswer, periodAnswer, searchAnswer, searchItems, storyAnswer } from "@hotmoto/backend/publication/agent";
+import { v1Items } from "@hotmoto/backend/publication/v1";
+import { SearchBusyError } from "@hotmoto/backend/publication/pool";
+import { resolveStory, v1HotTopics, v1Story } from "@hotmoto/backend/publication/stories";
+import { dailyWithNotes, isPeriodKey, v1Period } from "@hotmoto/backend/publication/reports";
+import { requestNotice, serverModules, type McpNotice } from "@hotmoto/backend/modules";
 
 /** What each tool is for, in the order the instructions name them; the modules' come last. */
 const USES = [

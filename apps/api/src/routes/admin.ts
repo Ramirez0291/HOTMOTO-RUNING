@@ -2,19 +2,19 @@
 // Every route goes through adminHandler (session + CSRF); manual changes are audited in the modules.
 import { readFile } from "node:fs/promises";
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { actorOf } from "@aihot/backend/admin/auth";
-import { navCounts } from "@aihot/backend/admin/navigation";
-import { listAudit } from "@aihot/backend/audit";
-import { importSelectBenchRun, listSelectBenchRuns, selectBenchRun } from "@aihot/backend/admin/selectbench";
-import { modelsOverview, switchModel } from "@aihot/backend/admin/models";
-import { contentChain, overrideFields, rerun, searchContent, setSeoIndexed, setVisibility } from "@aihot/backend/admin/content";
-import { detachFromFact, mergeStories } from "@aihot/backend/events/corrections";
-import { banSource, eraseFeedback, feedbackScreenshot, listFeedback, unbanSource, updateFeedback } from "@aihot/backend/admin/feedback";
-import { requeueFailedArticles, runsOverview } from "@aihot/backend/admin/runs";
-import { resolveDelivery } from "@aihot/backend/notify/deliver";
-import { releaseReceipt } from "@aihot/backend/operations/recover";
-import { replaceContactQr, setTargetEnabled, settingsOverview, updateBudget } from "@aihot/backend/admin/settings";
-import { createSource, fetchNow, listSources, previewSource, previewStoredSource, sourceDetail, updateSource } from "@aihot/backend/admin/sources";
+import { actorOf } from "@hotmoto/backend/admin/auth";
+import { navCounts } from "@hotmoto/backend/admin/navigation";
+import { listAudit } from "@hotmoto/backend/audit";
+import { importSelectBenchRun, listSelectBenchRuns, selectBenchRun } from "@hotmoto/backend/admin/selectbench";
+import { modelsOverview, switchModel } from "@hotmoto/backend/admin/models";
+import { contentChain, overrideFields, rerun, searchContent, setSeoIndexed, setVisibility } from "@hotmoto/backend/admin/content";
+import { detachFromFact, mergeStories } from "@hotmoto/backend/events/corrections";
+import { banSource, eraseFeedback, feedbackScreenshot, listFeedback, unbanSource, updateFeedback } from "@hotmoto/backend/admin/feedback";
+import { requeueFailedArticles, runsOverview } from "@hotmoto/backend/admin/runs";
+import { resolveDelivery } from "@hotmoto/backend/notify/deliver";
+import { releaseReceipt } from "@hotmoto/backend/operations/recover";
+import { replaceContactQr, setTargetEnabled, settingsOverview, updateBudget } from "@hotmoto/backend/admin/settings";
+import { createSource, fetchNow, listSources, previewSource, previewStoredSource, sourceDetail, updateSource } from "@hotmoto/backend/admin/sources";
 import { sendProblem } from "../http/respond.ts";
 import { adminHandler } from "./admin-auth.ts";
 

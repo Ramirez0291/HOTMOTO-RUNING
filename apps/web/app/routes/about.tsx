@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 import { Link, useLoaderData } from "react-router";
-import type { SiteContact, SiteStats } from "@aihot/contracts/site";
-import { ABOUT, POLICY, REPORTS, SITE, withSubject } from "@aihot/site";
+import type { SiteContact, SiteStats } from "@hotmoto/contracts/site";
+import { ABOUT, POLICY, REPORTS, SITE, withSubject } from "@hotmoto/site";
 import { apiGet, edgeTtl } from "../lib/api.server";
 import { organizationLd, pageMeta } from "../lib/seo";
 import { Kicker } from "../components/ui/Kicker";

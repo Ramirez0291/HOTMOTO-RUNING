@@ -5,7 +5,7 @@ import { Agent, ProxyAgent, fetch as undiciFetch, type Dispatcher } from "undici
 import { config } from "../config.ts";
 import { assertPublicUrl, guardedLookup } from "./url.ts";
 import { createEgressProxy, createEgressResolver, OUTBOUND_HTTP_OPTIONS } from "./egress-proxy.ts";
-import { DEPLOYMENT, SITE } from "@aihot/site";
+import { DEPLOYMENT, SITE } from "@hotmoto/site";
 
 /**
  * Where a request leaves the host. "egress" (collection, bodies, images and other public data) goes

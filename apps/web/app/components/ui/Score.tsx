@@ -1,4 +1,4 @@
-import { ITEM_COPY } from "@aihot/site";
+import { ITEM_COPY } from "@hotmoto/site";
 
 /**
  * The AI score as a small pill, tinted by tier instead of drawn as a bar: strong picks (85+) in a wash of

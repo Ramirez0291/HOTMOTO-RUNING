@@ -2,7 +2,7 @@
 // card. The first occurrence must not permanently mask the useful headline later in the page.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { fromMarkdown, needsTitle } from "@aihot/backend/sources/web-list";
+import { fromMarkdown, needsTitle } from "@hotmoto/backend/sources/web-list";
 
 const source = { config: { url: "https://publisher.example/blog", allowUrlPrefixes: ["https://publisher.example/blog/"] } } as never;
 const read = (labels: string[]) => fromMarkdown(labels.map(label => `[${label}](https://publisher.example/blog/new-release)`).join("\n\n"), "https://publisher.example", source);

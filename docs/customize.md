@@ -112,7 +112,7 @@ AGENTS.md と docs/customize.md を読んで、このサイトを「○○業界
   ```
 - About ページの QR コード：管理画面の「設定」でアップロードするか、画像を `site/brand/contact/` に置きます。
 
-AIHOT の名前とロゴは使わないでください。
+hotmoto の名前とロゴは使わないでください。
 
 ## 7. ページの文言：`site/pages/`、`site/public/`、`site/changelog.json`
 

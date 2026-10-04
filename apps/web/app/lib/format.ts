@@ -1,4 +1,4 @@
-import { siteDate, siteTime, siteWeekdayShort } from "@aihot/contracts/time";
+import { siteDate, siteTime, siteWeekdayShort } from "@hotmoto/contracts/time";
 
 /** "9月28日" of a calendar date (YYYY-MM-DD). */
 export function monthDay(date: string): string {

@@ -6,7 +6,7 @@ import { createHash, randomUUID } from "node:crypto";
 import satori from "satori";
 import sharp from "sharp";
 import { config, REPO_ROOT } from "../config.ts";
-import { SITE } from "@aihot/site";
+import { SITE } from "@hotmoto/site";
 
 export const OG_TEMPLATE_VERSION = "og-2026-10-04.1";
 const WIDTH = 1200;

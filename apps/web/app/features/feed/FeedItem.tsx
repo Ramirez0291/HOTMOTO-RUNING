@@ -4,12 +4,12 @@
 import { memo } from "react";
 import { Link } from "react-router";
 import { IntentLink } from "../../components/ui/IntentLink";
-import type { GroupInfo, FeedItemSummary, TimelineFilters } from "@aihot/contracts/site";
-import { CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
-import { ITEM_COPY } from "@aihot/site";
+import type { GroupInfo, FeedItemSummary, TimelineFilters } from "@hotmoto/contracts/site";
+import { CATEGORY_LABELS } from "@hotmoto/contracts/taxonomy";
+import { ITEM_COPY } from "@hotmoto/site";
 import { SameEventBadge, SelectedBadge } from "../../components/ui/Badge";
 import { ScoreLabel } from "../../components/ui/Score";
-import { siteTime } from "@aihot/contracts/time";
+import { siteTime } from "@hotmoto/contracts/time";
 import { MediaThumbs, SourceLine, StarButton } from "./parts";
 import { GroupButton, GroupSources } from "./ReadingGroup";
 import { QuotedLine } from "../item/QuotedPost";

@@ -1,5 +1,5 @@
 {
-  "name": "@aihot/api",
+  "name": "@hotmoto/api",
   "private": true,
   "type": "module",
   "exports": {
@@ -10,10 +10,10 @@
     "start": "node src/main.ts"
   },
   "dependencies": {
-    "@aihot/backend": "*",
-    "@aihot/contracts": "*",
-    "@aihot/industry": "*",
-    "@aihot/site": "*",
+    "@hotmoto/backend": "*",
+    "@hotmoto/contracts": "*",
+    "@hotmoto/industry": "*",
+    "@hotmoto/site": "*",
     "@modelcontextprotocol/server": "2.1.0",
     "fastify": "5.12.5",
     "zod": "4.6.5"

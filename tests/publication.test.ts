@@ -2,27 +2,27 @@
 // every exit, reports stop quoting withdrawn items, the hot board drops a withdrawn item at once, item
 // pages follow one rule, a withdrawal next to an unresolved selection leaves new snapshots at once, and
 // snapshots answer conditional requests.
-import { CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
-import { withSubject } from "@aihot/site";
-import { siteDate } from "@aihot/contracts/time";
-import { ogEtag } from "@aihot/backend/media/og";
-import { posterEtag } from "@aihot/backend/media/poster";
+import { CATEGORY_LABELS } from "@hotmoto/contracts/taxonomy";
+import { withSubject } from "@hotmoto/site";
+import { siteDate } from "@hotmoto/contracts/time";
+import { ogEtag } from "@hotmoto/backend/media/og";
+import { posterEtag } from "@hotmoto/backend/media/poster";
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import * as cheerio from "cheerio";
 import { marked } from "marked";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { overrideFields, setVisibility } from "@aihot/backend/admin/content";
-import { updateSource } from "@aihot/backend/admin/sources";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { publishArticle, republishSource } from "@aihot/backend/publication/publish";
-import { computeHotRanking } from "@aihot/backend/events/hot";
-import { latestHotRanking } from "@aihot/backend/publication/hot";
-import { loadItemShare } from "@aihot/backend/publication/og";
+import { config } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { overrideFields, setVisibility } from "@hotmoto/backend/admin/content";
+import { updateSource } from "@hotmoto/backend/admin/sources";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { stopBoss } from "@hotmoto/backend/jobs/queue";
+import { publishArticle, republishSource } from "@hotmoto/backend/publication/publish";
+import { computeHotRanking } from "@hotmoto/backend/events/hot";
+import { latestHotRanking } from "@hotmoto/backend/publication/hot";
+import { loadItemShare } from "@hotmoto/backend/publication/og";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = tag();
@@ -389,7 +389,7 @@ test("v1 story retains website content and fallback ordering without the website
   assert.equal(v1.latest, site.latest);
   assert.equal(site.latestReport.id, second);
   assert.deepEqual(v1.reports.map(({ links: { original: _, ...links }, ...r }: any) => ({ ...r, links })), site.timeline.slice(0, 50).map((r: any) => ({ id: r.id, title: r.title, summary: r.summary,
-    source: { name: r.source.name, firstParty: r.source.firstParty }, publishedAt: r.publishedAt, links: { aihot: `${config.siteUrl}/items/${r.id}` } })));
+    source: { name: r.source.name, firstParty: r.source.firstParty }, publishedAt: r.publishedAt, links: { hotmoto: `${config.siteUrl}/items/${r.id}` } })));
 });
 
 test('event neighbors disappear when their last readable evidence is withdrawn', async () => {
@@ -496,7 +496,7 @@ test("minimal sync projection preserves snapshot fields, pagination bindings and
   const full = JSON.parse((await get('/api/v1/selected/snapshot?fields=default&limit=1000')).body);
   const minimal = JSON.parse((await get('/api/v1/selected/snapshot?fields=minimal&limit=1000')).body);
   const project = (i: any) => ({ id: i.id, title: i.title, source: i.source, publishedAt: i.publishedAt,
-    discoveredAt: i.discoveredAt, category: i.category, score: i.score, selected: i.selected, links: { aihot: i.links.aihot } });
+    discoveredAt: i.discoveredAt, category: i.category, score: i.score, selected: i.selected, links: { hotmoto: i.links.hotmoto } });
   assert.deepEqual(minimal.items, full.items.map(project));
   assert.ok(minimal.items.some((i: any) => i.id === id));
   for (const fields of ['default', 'minimal']) {

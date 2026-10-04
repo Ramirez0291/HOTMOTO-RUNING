@@ -6,7 +6,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
+import { closeDb, sql } from "@hotmoto/backend/db";
 
 after(closeDb);
 
@@ -35,7 +35,7 @@ const specifiers = (text: string) => [...text.matchAll(/\b(?:from|import)\s*\(?\
 
 /** A specifier as a path under packages/backend/src (`events/group.ts`), or null outside the backend. */
 function backendPath(file: string, spec: string): string | null {
-  if (spec.startsWith("@aihot/backend/")) return `${spec.slice("@aihot/backend/".length)}.ts`;
+  if (spec.startsWith("@hotmoto/backend/")) return `${spec.slice("@hotmoto/backend/".length)}.ts`;
   if (!spec.startsWith(".")) return null;
   const target = path.posix.relative(BACKEND, path.posix.join(path.posix.dirname(file), spec));
   return target.startsWith("..") ? null : target;
@@ -46,7 +46,7 @@ function violations(files: Array<{ file: string; text: string }>, broken: (file:
 }
 
 test("the web reaches the backend only over HTTP", () => {
-  const found = violations([...sources("apps/web"), ...modules().filter(({ file }) => /^modules\/[^/]+\/web(?:\.|\/)/.test(file))], (_file, spec) => spec.startsWith("@aihot/backend") || spec.includes("packages/backend") || spec === "postgres" || spec === "pg-boss");
+  const found = violations([...sources("apps/web"), ...modules().filter(({ file }) => /^modules\/[^/]+\/web(?:\.|\/)/.test(file))], (_file, spec) => spec.startsWith("@hotmoto/backend") || spec.includes("packages/backend") || spec === "postgres" || spec === "pg-boss");
   assert.deepEqual(found, [], "apps/web imports backend code; read it through /api/site or /api/admin instead");
 });
 
@@ -178,7 +178,7 @@ test("modules do not import other modules", () => {
       const target = path.posix.join(path.posix.dirname(file), spec).split("/");
       return target[0] === "modules" && target[1] !== owner;
     }
-    const target = /^@aihot\/([^/]+)/.exec(spec)?.[1];
+    const target = /^@hotmoto\/([^/]+)/.exec(spec)?.[1];
     return !!target && installed.includes(target) && target !== owner;
   });
   assert.deepEqual(found, [], "compose modules in site/modules instead of importing their implementation");

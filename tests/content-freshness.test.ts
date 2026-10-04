@@ -6,17 +6,17 @@ import { tag } from './setup.ts';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { after, before, test } from 'node:test';
-import { config } from '@aihot/backend/config';
-import { sql, closeDb } from '@aihot/backend/db';
-import { upsertMaterial } from '@aihot/backend/content/materials';
-import { extractArticleBody } from '@aihot/backend/content/extract';
-import { buildScoreInput, loadAnalyzeInput } from '@aihot/backend/editorial/analyze';
-import { collectSource } from '@aihot/backend/sources/collect';
-import { groupArticle } from '@aihot/backend/events/group';
-import { publishArticle } from '@aihot/backend/publication/publish';
-import { selectedContent } from '@aihot/backend/notify/selected-content';
-import { dailyEdition } from '@aihot/backend/reports/edition';
-import { stopBoss } from '@aihot/backend/jobs/queue';
+import { config } from '@hotmoto/backend/config';
+import { sql, closeDb } from '@hotmoto/backend/db';
+import { upsertMaterial } from '@hotmoto/backend/content/materials';
+import { extractArticleBody } from '@hotmoto/backend/content/extract';
+import { buildScoreInput, loadAnalyzeInput } from '@hotmoto/backend/editorial/analyze';
+import { collectSource } from '@hotmoto/backend/sources/collect';
+import { groupArticle } from '@hotmoto/backend/events/group';
+import { publishArticle } from '@hotmoto/backend/publication/publish';
+import { selectedContent } from '@hotmoto/backend/notify/selected-content';
+import { dailyEdition } from '@hotmoto/backend/reports/edition';
+import { stopBoss } from '@hotmoto/backend/jobs/queue';
 import { buildApp } from '../apps/api/src/app.ts';
 
 const T=tag(), SOURCE=`freshness-${T}`;
@@ -105,7 +105,7 @@ test('body extraction uses page publication metadata, never its updated time or 
 
 test('the second fetch of an initial catalogue still archives its undated remainder',async()=>{
   const id=`first-${T}`;
-  await sql`INSERT INTO sources(id,name,kind,config,next_fetch_at) SELECT ${id},name,kind,config||'{"_aihot":{"initialBackfillLimit":1}}'::jsonb,'2100-01-01' FROM sources WHERE id=${SOURCE}`;
+  await sql`INSERT INTO sources(id,name,kind,config,next_fetch_at) SELECT ${id},name,kind,config||'{"_hotmoto":{"initialBackfillLimit":1}}'::jsonb,'2100-01-01' FROM sources WHERE id=${SOURCE}`;
   listing=[0,1,2].map(i=>({url:`${base}/initial-${i}`,title:`Reference ${i}`,date:null,summary:body}));
   assert.equal((await collectSource(id)).created,1);
   assert.equal((await collectSource(id)).created,2);

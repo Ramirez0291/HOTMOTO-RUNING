@@ -1,10 +1,10 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/report-latest";
-import type { ReportLatestPage } from "@aihot/contracts/site";
-import { REPORTS, withSubject } from "@aihot/site";
+import type { ReportLatestPage } from "@hotmoto/contracts/site";
+import { REPORTS, withSubject } from "@hotmoto/site";
 import { edgeTtl, loadOr404 } from "../lib/api.server";
 import { pageMeta, reportLd } from "../lib/seo";
-import { siteDate } from "@aihot/contracts/time";
+import { siteDate } from "@hotmoto/contracts/time";
 import { EmptyState } from "../components/ui/Page";
 import { ReportLayout } from "../features/report/ReportLayout";
 import { ReportPaper, reportOutline } from "../features/report/ReportPaper";

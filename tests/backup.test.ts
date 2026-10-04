@@ -7,9 +7,9 @@ import http from "node:http";
 import { mkdir, rm, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { sql, closeDb } from "@aihot/backend/db";
-import { runBackup } from "@aihot/backend/operations/backup";
+import { config } from "@hotmoto/backend/config";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { runBackup } from "@hotmoto/backend/operations/backup";
 
 // The upload transport is stubbed; pg_dump and pg_restore run against this file's isolated DB.
 const keys: string[] = [];

@@ -6,9 +6,9 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import { after, before, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
 
 const T = tag();
 const SOURCE = `test-analyze-stop-${T}`;
@@ -42,9 +42,9 @@ const children = new Set<ReturnType<typeof spawn>>();
 
 function worker(queue: string) {
   const script = `
-    import { getBoss, stopBoss, shutdownSignal, QUEUES } from '@aihot/backend/jobs/queue';
-    import { registerContentJobs } from '@aihot/backend/jobs/content';
-    import { closeDb } from '@aihot/backend/db';
+    import { getBoss, stopBoss, shutdownSignal, QUEUES } from '@hotmoto/backend/jobs/queue';
+    import { registerContentJobs } from '@hotmoto/backend/jobs/content';
+    import { closeDb } from '@hotmoto/backend/db';
     QUEUES.analyze = process.env.TEST_ANALYZE_QUEUE;
     let stopping = false;
     process.on('SIGTERM', async () => {
@@ -59,7 +59,7 @@ function worker(queue: string) {
     await registerContentJobs(await getBoss());
     process.send({ ready: true });
   `;
-  const env = { ...process.env, TEST_ANALYZE_QUEUE: queue, MODEL_CALLS_ENABLED: "true", AIHOT_CREDENTIALS_DIR: "/nonexistent-test-credentials" };
+  const env = { ...process.env, TEST_ANALYZE_QUEUE: queue, MODEL_CALLS_ENABLED: "true", hotmoto_CREDENTIALS_DIR: "/nonexistent-test-credentials" };
   pointModels(provider.url, undefined, env);
   const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: process.cwd(), env, stdio: ["ignore", "pipe", "pipe", "ipc"] });
   children.add(child);

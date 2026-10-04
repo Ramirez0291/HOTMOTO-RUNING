@@ -3,8 +3,8 @@
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { fetchDetail, fromHtml } from "@aihot/backend/sources/web-list";
+import { config } from "@hotmoto/backend/config";
+import { fetchDetail, fromHtml } from "@hotmoto/backend/sources/web-list";
 
 const html = `<html><head><meta name="date" content="2026-09-11T19:58:33Z"></head><body>` +
   `<article><a href="/post">A real article</a><span title="Unix: 1789171113866">Sep 11, 2026</span></article></body></html>`;

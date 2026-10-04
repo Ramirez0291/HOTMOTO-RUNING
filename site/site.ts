@@ -70,7 +70,7 @@ export const SITE = {
   /** 外部向けの連絡先メール（任意）：llms.txt とレスポンスヘッダーに書く。 */
   contactEmail: null as string | null,
   /** フッターの小さな一行（任意）。 */
-  footerNote: "AIHOT オープンソースフレームワークで動いています",
+  footerNote: "hotmoto オープンソースフレームワークで動いています",
   /** 中国本土のサイトの ICP 届出番号（任意）。入れるとフッターに表示し、工業情報化部の届出システムにリンクする。 */
   icp: null as string | null,
   /** ソースコードの GitHub リポジトリ（任意）。入れるとサイドバー下部と「マイページ」下部に「GitHub でオープンソース」と表示する。 */
@@ -264,7 +264,7 @@ export const ACCESS = {
 
 /** このデプロイ自身の取り決め（任意）。 */
 export const DEPLOYMENT = {
-  /** 認証情報のグループファイル（models.env、collectors.env……）を置く既定のディレクトリ（リポジトリのルートからの相対パス）。環境変数 AIHOT_CREDENTIALS_DIR が優先し、どちらもなければ環境変数だけを読む。 */
+  /** 認証情報のグループファイル（models.env、collectors.env……）を置く既定のディレクトリ（リポジトリのルートからの相対パス）。環境変数 hotmoto_CREDENTIALS_DIR が優先し、どちらもなければ環境変数だけを読む。 */
   credentialsDir: null as string | null,
   /** 認証情報グループのファイル名（認証情報ディレクトリの下、任意）。書いていないグループは「グループ名.env」。例：models.env。 */
   credentialFiles: {} as Partial<Record<string, string>>,

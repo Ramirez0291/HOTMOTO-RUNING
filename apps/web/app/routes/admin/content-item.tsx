@@ -1,9 +1,9 @@
-import { ITEM_COPY, SITE } from "@aihot/site";
+import { ITEM_COPY, SITE } from "@hotmoto/site";
 import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
-import { CATEGORY_KEYS, CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
+import { CATEGORY_KEYS, CATEGORY_LABELS } from "@hotmoto/contracts/taxonomy";
 import type { Route } from "./+types/content-item";
-import type { AdminContentChain } from "@aihot/contracts/admin";
+import type { AdminContentChain } from "@hotmoto/contracts/admin";
 import { adminGet } from "../../lib/admin.server";
 import { useAdminAction } from "../../features/admin/action";
 import { bj, money } from "../../features/admin/format";

@@ -3,9 +3,9 @@
 import "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { installModules } from "@aihot/backend/modules";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { installModules } from "@hotmoto/backend/modules";
 import { registerSchedules } from "../apps/worker/src/schedules.ts";
 
 after(async () => { await stopBoss(); await closeDb(); });

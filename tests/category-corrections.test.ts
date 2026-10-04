@@ -4,13 +4,13 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { overrideFields } from "@aihot/backend/admin/content";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { dailyMetrics } from "@aihot/backend/reports/compose";
-import type { EditionEntry } from "@aihot/backend/reports/edition";
-import { QUEUES, getBoss, stopBoss } from "@aihot/backend/jobs/queue";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { overrideFields } from "@hotmoto/backend/admin/content";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { publishArticle } from "@hotmoto/backend/publication/publish";
+import { dailyMetrics } from "@hotmoto/backend/reports/compose";
+import type { EditionEntry } from "@hotmoto/backend/reports/edition";
+import { QUEUES, getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
 
 after(async () => { await stopBoss(); await closeDb(); });
 

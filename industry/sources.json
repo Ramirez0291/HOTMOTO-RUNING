@@ -7,7 +7,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://global.honda/jp/rss/motor.xml",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -28,7 +28,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://global.yamaha-motor.com/jp/rss/update.xml",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -55,7 +55,7 @@
         "titleSelector": ".info-ttl",
         "publishedAtSelector": ".info-date",
         "publishedAtUtcOffset": "+09:00",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -85,7 +85,7 @@
         "allowUrlPrefixes": [
           "https://www.kawasaki-motors.com/ja-jp/latest-news/"
         ],
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -106,7 +106,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.acem.eu/feed",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -128,7 +128,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://young-machine.com/rss",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -147,7 +147,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://news.webike.net/feed/",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -166,7 +166,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://bike-news.jp/feed",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -185,7 +185,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://mc-web.jp/feed/",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -204,7 +204,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.autoby.jp/_rss/rss20.xml",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -223,7 +223,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://bikejin.jp/feed",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -242,7 +242,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.virginharley.com/feed",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -261,7 +261,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.motorcyclenews.com/news/rss/",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -281,7 +281,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.visordown.com/rss",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -301,7 +301,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.rideapart.com/rss/articles/all/",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -324,7 +324,7 @@
         "allowCategories": [
           "Bike News"
         ],
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -345,7 +345,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://electrek.co/guides/electric-motorcycles/feed/",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },
@@ -366,7 +366,7 @@
       "kind": "rss",
       "config": {
         "feedUrl": "https://www.crash.net/rss/motogp",
-        "_aihot": {
+        "_hotmoto": {
           "initialBackfillLimit": 8
         }
       },

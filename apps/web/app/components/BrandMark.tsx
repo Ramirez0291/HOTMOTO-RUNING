@@ -1,4 +1,4 @@
-import type { Brand } from "@aihot/contracts/site";
+import type { Brand } from "@hotmoto/contracts/site";
 import { webModules } from "../site-modules";
 
 /** A company's, vendor's or evaluator's mark on a bordered tile; falls back to a monogram. Marks identify, never endorse. */

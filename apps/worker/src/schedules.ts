@@ -1,25 +1,25 @@
 // Cron-style schedules (in the site's time zone, site/site.ts TIME_ZONE), the engine's and then the site's modules'. Each run is recorded in
 // job_runs; missed slots run once.
 import type { PgBoss } from "pg-boss";
-import { TIME_ZONE } from "@aihot/site";
-import { ensureQueue, recordRun } from "@aihot/backend/jobs/queue";
-import { serverModules, type Scheduled } from "@aihot/backend/modules";
-import { sweepUnprocessed } from "@aihot/backend/jobs/content";
-import { translatePending } from "@aihot/backend/editorial/translate";
-import { adaptIntervals, scheduleDueSources } from "@aihot/backend/sources/collect";
-import { scheduleMpReconcile } from "@aihot/backend/sources/mp";
-import { dajialaConfigured } from "@aihot/backend/providers/dajiala";
-import { refreshSourceIcons } from "@aihot/backend/sources/icons";
-import { computeHotRanking, snapshotHeat } from "@aihot/backend/events/hot";
-import { linkRelatedStories } from "@aihot/backend/events/consolidate";
-import { composeDueReports } from "@aihot/backend/reports/compose";
-import { dailyRetention } from "@aihot/backend/operations/retention";
-import { submitIndexNow } from "@aihot/backend/operations/indexnow";
-import { checkAlerts, sendDigest } from "@aihot/backend/operations/alerts";
-import { recoverStaleWork } from "@aihot/backend/operations/recover";
-import { forwardPendingFeedback } from "@aihot/backend/operations/feedback";
-import { backupConfigured, runBackup } from "@aihot/backend/operations/backup";
-import { sourceHealthWeekly } from "@aihot/backend/operations/reports";
+import { TIME_ZONE } from "@hotmoto/site";
+import { ensureQueue, recordRun } from "@hotmoto/backend/jobs/queue";
+import { serverModules, type Scheduled } from "@hotmoto/backend/modules";
+import { sweepUnprocessed } from "@hotmoto/backend/jobs/content";
+import { translatePending } from "@hotmoto/backend/editorial/translate";
+import { adaptIntervals, scheduleDueSources } from "@hotmoto/backend/sources/collect";
+import { scheduleMpReconcile } from "@hotmoto/backend/sources/mp";
+import { dajialaConfigured } from "@hotmoto/backend/providers/dajiala";
+import { refreshSourceIcons } from "@hotmoto/backend/sources/icons";
+import { computeHotRanking, snapshotHeat } from "@hotmoto/backend/events/hot";
+import { linkRelatedStories } from "@hotmoto/backend/events/consolidate";
+import { composeDueReports } from "@hotmoto/backend/reports/compose";
+import { dailyRetention } from "@hotmoto/backend/operations/retention";
+import { submitIndexNow } from "@hotmoto/backend/operations/indexnow";
+import { checkAlerts, sendDigest } from "@hotmoto/backend/operations/alerts";
+import { recoverStaleWork } from "@hotmoto/backend/operations/recover";
+import { forwardPendingFeedback } from "@hotmoto/backend/operations/feedback";
+import { backupConfigured, runBackup } from "@hotmoto/backend/operations/backup";
+import { sourceHealthWeekly } from "@hotmoto/backend/operations/reports";
 
 const collecting = process.env.COLLECT_ENABLED === "true";
 

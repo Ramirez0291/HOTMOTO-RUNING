@@ -4,8 +4,8 @@
 //   today  — money at risk or only the owner can act: sent at once, repeated at most daily, recovery reported.
 //   digest — other follow-ups: one 09:00 message a day, meant to be handed to the AI.
 // Delivery goes through sendAlert (ops chat, internal-chat fallback; off unless FEISHU_INTERNAL_ENABLED).
-import { siteAt, siteDate } from "@aihot/contracts/time";
-import { ALERTS, EDITION_TIMES } from "@aihot/site";
+import { siteAt, siteDate } from "@hotmoto/contracts/time";
+import { ALERTS, EDITION_TIMES } from "@hotmoto/site";
 import { sql } from "../db.ts";
 import { siteDay, siteStamp, duration, formatAlert, formatRecovery, sendAlert, type Finding, type Level } from "../notify/feishu.ts";
 import { backupConfigured } from "./backup.ts";

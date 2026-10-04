@@ -2,15 +2,15 @@
 // keys and formats once readers have data under them: existing readers' data must stay readable as-is.
 // Storage failures degrade silently.
 import { useEffect, useSyncExternalStore } from "react";
-import { siteDate } from "@aihot/contracts/time";
+import { siteDate } from "@hotmoto/contracts/time";
 
 export const KEYS = {
-  starred: "aihot-starred-items",
-  read: "aihot-read-items",
-  theme: "aihot-theme",
-  changelogSeen: "aihot-changelog-seen-version",
-  feedbackDraft: "aihot-feedback-draft-v1",
-  recentSearches: "aihot-recent-searches",
+  starred: "hotmoto-starred-items",
+  read: "hotmoto-read-items",
+  theme: "hotmoto-theme",
+  changelogSeen: "hotmoto-changelog-seen-version",
+  feedbackDraft: "hotmoto-feedback-draft-v1",
+  recentSearches: "hotmoto-recent-searches",
 } as const;
 
 const STARRED_LIMIT = 500;
@@ -324,7 +324,7 @@ export function clearRecentSearches() {
 }
 
 // the page the reader was on (feedback records where a problem was seen)
-const LAST_PAGE_KEY = "aihot:last-page";
+const LAST_PAGE_KEY = "hotmoto:last-page";
 const NOT_A_PLACE = /^\/(feedback|more)(\/|$)|^\/admin(\/|$)/;
 
 /** Called on every in-site navigation: remembers the latest real page, never feedback, "マイページ" or the admin. */

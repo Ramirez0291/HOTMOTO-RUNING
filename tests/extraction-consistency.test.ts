@@ -5,12 +5,12 @@ import { gate, Reply, stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, before, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { extractArticleBody } from "@aihot/backend/content/extract";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { queueProcessing, registerExtractionJobs } from "@aihot/backend/jobs/content";
+import { config } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { extractArticleBody } from "@hotmoto/backend/content/extract";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { queueProcessing, registerExtractionJobs } from "@hotmoto/backend/jobs/content";
 
 const sourceId = `extract-consistency-${tag()}`;
 const body = "This is the original article, with enough substantive text to extract its paragraphs. ".repeat(12);

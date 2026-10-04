@@ -6,11 +6,11 @@ import { gate, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { resendDelivery, resolveDelivery } from "@aihot/backend/notify/deliver";
-import { deliverContent } from "@aihot/backend/notify/deliver";
-import { pushSelected } from "@aihot/backend/notify/selected";
+import { config } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { resendDelivery, resolveDelivery } from "@hotmoto/backend/notify/deliver";
+import { deliverContent } from "@hotmoto/backend/notify/deliver";
+import { pushSelected } from "@hotmoto/backend/notify/selected";
 
 const T = tag();
 const TARGET = `test-delivery-${T}`;

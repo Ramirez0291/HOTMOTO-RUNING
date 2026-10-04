@@ -5,8 +5,8 @@ import { pointModels, stub, tag } from "./setup.ts";
 import { analysisStep, SELECTING_SCORE } from "./analysis-steps.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { closeDb } from "@aihot/backend/db";
-import { runAnalysis } from "@aihot/backend/editorial/analyze";
+import { closeDb } from "@hotmoto/backend/db";
+import { runAnalysis } from "@hotmoto/backend/editorial/analyze";
 
 const steps: string[] = [];
 const provider = await stub((_hit, request) => {

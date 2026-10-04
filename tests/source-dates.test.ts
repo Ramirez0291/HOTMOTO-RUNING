@@ -3,8 +3,8 @@
 // runs in (Docker runs in UTC; run this file with TZ=UTC and TZ=Asia/Tokyo to see both).
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { readable } from "@aihot/backend/content/extract";
-import { parseLooseDate } from "@aihot/backend/sources/dates";
+import { readable } from "@hotmoto/backend/content/extract";
+import { parseLooseDate } from "@hotmoto/backend/sources/dates";
 
 const iso = (v: string, offset?: string) => parseLooseDate(v, offset)?.toISOString() ?? null;
 

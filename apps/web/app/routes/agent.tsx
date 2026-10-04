@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import type { Route } from "./+types/agent";
-import { PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { SITE } from "@aihot/site";
+import { PUBLIC_INTERFACE_VERSION } from "@hotmoto/contracts/http-policy";
+import { SITE } from "@hotmoto/site";
 import { apiGet, edgeTtl } from "../lib/api.server";
 import { listPath, pageMeta, siteUrl } from "../lib/seo";
 import { IconArrowUpRight, IconChevronRight, IconCode, IconPlug, IconRss } from "../components/icons";

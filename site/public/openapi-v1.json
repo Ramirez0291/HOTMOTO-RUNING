@@ -3450,11 +3450,11 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot",
+              "hotmoto",
               "original"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               },
@@ -3542,10 +3542,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }
@@ -3732,11 +3732,11 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot",
+              "hotmoto",
               "original"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               },
@@ -3845,10 +3845,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               },
@@ -3881,11 +3881,11 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot",
+              "hotmoto",
               "api"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               },
@@ -3963,10 +3963,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }
@@ -4063,10 +4063,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }
@@ -4080,11 +4080,11 @@
       "DailyContentLinks": {
         "type": "object",
         "required": [
-          "aihot",
+          "hotmoto",
           "original"
         ],
         "properties": {
-          "aihot": {
+          "hotmoto": {
             "type": [
               "string",
               "null"
@@ -4129,10 +4129,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }
@@ -4525,10 +4525,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }
@@ -4669,10 +4669,10 @@
           "links": {
             "type": "object",
             "required": [
-              "aihot"
+              "hotmoto"
             ],
             "properties": {
-              "aihot": {
+              "hotmoto": {
                 "type": "string",
                 "format": "uri"
               }

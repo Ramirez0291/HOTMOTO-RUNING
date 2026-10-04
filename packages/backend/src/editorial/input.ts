@@ -1,7 +1,7 @@
 // What the judging steps read about an article: loaded once per analysis and rendered per step.
-import { SITE_LANGUAGE } from "@aihot/contracts/language";
-import { siteDate, siteTime } from "@aihot/contracts/time";
-import { TIME_ZONE } from "@aihot/site";
+import { SITE_LANGUAGE } from "@hotmoto/contracts/language";
+import { siteDate, siteTime } from "@hotmoto/contracts/time";
+import { TIME_ZONE } from "@hotmoto/site";
 import { sql } from "../db.ts";
 import { collapseWhitespace, truncate } from "../lib/text.ts";
 import { produceImage } from "../media/images.ts";

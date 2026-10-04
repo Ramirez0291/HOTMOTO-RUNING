@@ -3,9 +3,9 @@
 import { editionAt, stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { composeDaily, composeDueReports, composeWeekly, composeMonthly } from "@aihot/backend/reports/compose";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { stopBoss } from "@hotmoto/backend/jobs/queue";
+import { composeDaily, composeDueReports, composeWeekly, composeMonthly } from "@hotmoto/backend/reports/compose";
 
 const T = tag();
 const SOURCE = `report-recovery-${T}`;
