@@ -1,0 +1,244 @@
+{
+  "groups": [
+    {
+      "key": "company",
+      "name": "メーカー・企業",
+      "blurb": "メーカーごとに新型車、業績、企業の動きを追う"
+    },
+    {
+      "key": "field",
+      "name": "市場テーマ",
+      "blurb": "電動化、新基準原付、地域市場、モータースポーツ……テーマで深掘り"
+    },
+    {
+      "key": "genre",
+      "name": "コンテンツ形式",
+      "blurb": "新型車、販売データ、規制、用品、試乗記……形式で読む"
+    }
+  ],
+  "topics": [
+    {
+      "slug": "honda",
+      "name": "ホンダ",
+      "group": "company",
+      "entityId": "honda",
+      "aliases": ["Honda", "HRC"],
+      "definition": "ホンダ二輪のすべての動き：新型車とモデルチェンジ、Eクラッチや電動化の展開、世界販売と決算、HRC のレース活動を追跡。"
+    },
+    {
+      "slug": "yamaha",
+      "name": "ヤマハ発動機",
+      "group": "company",
+      "entityId": "yamaha",
+      "aliases": ["Yamaha"],
+      "definition": "ヤマハ発動機の二輪事業：MT・YZF・XSR などの新型車、Y-AMT などの新技術、決算と市場戦略、レース活動を追跡。"
+    },
+    {
+      "slug": "suzuki",
+      "name": "スズキ",
+      "group": "company",
+      "entityId": "suzuki",
+      "aliases": ["Suzuki"],
+      "definition": "スズキ二輪の動き：GSX・V-STROM・ジクサーなどの新型車と価格改定、インドを中心とした海外事業、業績を追跡。"
+    },
+    {
+      "slug": "kawasaki",
+      "name": "カワサキ",
+      "group": "company",
+      "entityId": "kawasaki",
+      "aliases": ["Kawasaki"],
+      "definition": "カワサキモータースの動き：Ninja・Z・メグロなどの新型車、ハイブリッドや水素エンジンの開発、業績とレース活動を追跡。"
+    },
+    {
+      "slug": "harley-davidson",
+      "name": "ハーレーダビッドソン",
+      "group": "company",
+      "entityId": "harley",
+      "aliases": ["Harley-Davidson", "LiveWire"],
+      "definition": "ハーレーダビッドソンと LiveWire の新型車、経営と業績、北米市場の動き、日本での販売施策を追跡。"
+    },
+    {
+      "slug": "bmw-motorrad",
+      "name": "BMW Motorrad",
+      "group": "company",
+      "entityId": "bmw",
+      "definition": "BMW Motorrad の新型車、GS シリーズを中心とした製品展開、世界販売と欧州市場での位置づけを追跡。"
+    },
+    {
+      "slug": "ducati",
+      "name": "ドゥカティ",
+      "group": "company",
+      "entityId": "ducati",
+      "definition": "ドゥカティの新型車、MotoGP・WSBK の活動、販売実績とブランド戦略を追跡。"
+    },
+    {
+      "slug": "triumph",
+      "name": "トライアンフ",
+      "group": "company",
+      "entityId": "triumph",
+      "definition": "トライアンフの新型車、中排気量モデルの展開、提携生産と海外市場の動きを追跡。"
+    },
+    {
+      "slug": "ktm",
+      "name": "KTM",
+      "group": "company",
+      "entityId": "ktm",
+      "aliases": ["Husqvarna", "GASGAS"],
+      "definition": "KTM とハスクバーナ・GASGAS の新型車、経営再建と資本関係の変化、レース活動を追跡。"
+    },
+    {
+      "slug": "royal-enfield",
+      "name": "ロイヤルエンフィールド",
+      "group": "company",
+      "entityId": "royal-enfield",
+      "definition": "ロイヤルエンフィールドの中排気量クラシックモデル、インド市場と輸出の伸び、日本での展開を追跡。"
+    },
+    {
+      "slug": "ev-battery",
+      "name": "電動化・バッテリー交換",
+      "group": "field",
+      "tags": ["電動化", "バッテリー交換"],
+      "definition": "電動バイクと電動スクーターの新型車、交換式バッテリーと充電インフラ、電動化を巡るメーカーの戦略を追跡。"
+    },
+    {
+      "slug": "new-gentsuki",
+      "name": "新基準原付",
+      "group": "field",
+      "tags": ["新基準原付"],
+      "definition": "50cc 原付の終息と、出力を抑えた 125cc の新基準原付への移行：対応車種、制度、販売現場の動き。"
+    },
+    {
+      "slug": "emissions-license",
+      "name": "排ガス規制・免許制度",
+      "group": "field",
+      "tags": ["排ガス規制", "免許制度"],
+      "definition": "排出ガス・騒音規制の強化と、免許制度・交通ルールの見直しが、車種構成と市場に与える影響を追跡。"
+    },
+    {
+      "slug": "japan-market",
+      "name": "日本市場",
+      "group": "field",
+      "tags": ["日本市場"],
+      "definition": "国内の二輪販売・登録台数、排気量別の需要、販売網の変化など、日本市場の定点観測。"
+    },
+    {
+      "slug": "india-asean",
+      "name": "インド・ASEAN 市場",
+      "group": "field",
+      "tags": ["インド市場", "ASEAN市場"],
+      "definition": "世界最大級の二輪市場であるインドと ASEAN の販売動向、現地メーカーと日本メーカーの競争を追跡。"
+    },
+    {
+      "slug": "china-market",
+      "name": "中国市場",
+      "group": "field",
+      "tags": ["中国市場"],
+      "definition": "中国の二輪・電動二輪市場と、CFMOTO などの中国メーカーの海外展開を追跡。"
+    },
+    {
+      "slug": "europe-americas",
+      "name": "欧米市場",
+      "group": "field",
+      "tags": ["欧州市場", "北米市場"],
+      "definition": "欧州と北米の登録台数、規制、主要ブランドの動きを追跡。"
+    },
+    {
+      "slug": "safety-tech",
+      "name": "安全技術・コネクテッド",
+      "group": "field",
+      "tags": ["安全技術", "コネクテッド"],
+      "definition": "ABS やレーダーを使った運転支援、車両通信、ライダーの安全を高める技術の採用と普及を追跡。"
+    },
+    {
+      "slug": "motogp-racing",
+      "name": "MotoGP・ロードレース",
+      "group": "field",
+      "tags": ["MotoGP", "WSBK", "鈴鹿8耐"],
+      "definition": "MotoGP、スーパーバイク世界選手権、鈴鹿 8 耐などロードレースの結果、契約、レギュレーションの動き。"
+    },
+    {
+      "slug": "custom-tires-helmets",
+      "name": "カスタム・タイヤ・ヘルメット",
+      "group": "field",
+      "tags": ["カスタム", "タイヤ", "ヘルメット"],
+      "definition": "カスタムパーツ、タイヤ、ヘルメットの新製品と、用品・アフターパーツ業界の動き。"
+    },
+    {
+      "slug": "new-models",
+      "name": "新型車",
+      "group": "genre",
+      "tags": ["新型車"],
+      "definition": "国内外メーカーの新型発表と発売、市販予定車とコンセプトモデルの第一報。"
+    },
+    {
+      "slug": "model-changes",
+      "name": "モデルチェンジ・価格改定",
+      "group": "genre",
+      "tags": ["モデルチェンジ", "価格改定"],
+      "definition": "既存車種のフル・マイナーチェンジ、カラー変更、価格改定、生産終了の記録。"
+    },
+    {
+      "slug": "sales-data",
+      "name": "販売・登録台数",
+      "group": "genre",
+      "tags": ["販売・登録台数", "市場動向"],
+      "definition": "国内外の販売・登録・出荷台数の統計と、そこから読み取れる市場の変化。"
+    },
+    {
+      "slug": "earnings",
+      "name": "決算・業績",
+      "group": "genre",
+      "tags": ["決算・業績"],
+      "definition": "二輪メーカーと関連企業の決算、業績予想、販売計画の更新。"
+    },
+    {
+      "slug": "regulation-recall",
+      "name": "規制・リコール",
+      "group": "genre",
+      "tags": ["規制・法改正", "リコール"],
+      "definition": "二輪に関わる法改正と行政の動き、リコール・改善対策の届け出の記録。"
+    },
+    {
+      "slug": "industry-moves",
+      "name": "業界動向",
+      "group": "genre",
+      "tags": ["業界動向", "提携・買収", "人事"],
+      "definition": "提携・買収・合弁、工場と生産体制、人事、販売網の変化など、二輪業界の企業の動き。"
+    },
+    {
+      "slug": "gear-parts",
+      "name": "用品・パーツ",
+      "group": "genre",
+      "tags": ["用品・パーツ"],
+      "definition": "ヘルメット、ウェア、カスタムパーツ、タイヤ、電装品などの新製品と業界の動き。"
+    },
+    {
+      "slug": "motorsports",
+      "name": "モータースポーツ",
+      "group": "genre",
+      "tags": ["モータースポーツ"],
+      "definition": "ロードレース、モトクロス、トライアル、ラリーレイドまで、二輪モータースポーツの主要な結果と動き。"
+    },
+    {
+      "slug": "events-touring",
+      "name": "イベント・ツーリング",
+      "group": "genre",
+      "tags": ["イベント", "ツーリング"],
+      "definition": "モーターサイクルショー、ライダーイベント、試乗会、ツーリングと観光の話題。"
+    },
+    {
+      "slug": "reviews",
+      "name": "試乗・解説",
+      "group": "genre",
+      "tags": ["試乗・インプレ", "解説"],
+      "definition": "新型車の試乗記、比較テスト、技術や装備の解説。"
+    },
+    {
+      "slug": "opinions",
+      "name": "論評・インタビュー",
+      "group": "genre",
+      "tags": ["論評・インタビュー"],
+      "definition": "業界関係者のインタビューと、市場や製品についての論評・コラム。"
+    }
+  ]
+}

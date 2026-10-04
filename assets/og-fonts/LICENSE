@@ -1,0 +1,13 @@
+これら 2 つの otf は Noto Sans CJK JP（Noto Sans JP）のサブセット版（SubsetOTF/JP）で、
+サーバー側でのシェア画像（OG）の描画にだけ使う。
+入手元：https://github.com/notofonts/noto-cjk/tree/main/Sans/SubsetOTF/JP
+（NotoSansJP-Regular.otf → noto-sans-jp-400.otf、NotoSansJP-Bold.otf → noto-sans-jp-700.otf）
+
+原フォント：Noto Sans CJK / Noto Sans JP
+著作権：Copyright 2014-2021 Adobe (http://www.adobe.com/), with Reserved Font Name
+        'Source'.（Google Noto プロジェクトが配布）
+ライセンス：SIL Open Font License, Version 1.1 (OFL-1.1)
+        https://scripts.sil.org/OFL  ·  https://github.com/notofonts/noto-cjk
+
+OFL は埋め込み、サブセット化、再配布を認め、著作権とライセンスの表示を残すことを求める（このファイルがそれにあたる）。
+フォントを単体で販売してはならないが、ソフトウェアや製品と一緒に自由に配布できる。OFL の全文は上のリンクを参照。

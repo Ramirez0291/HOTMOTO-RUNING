@@ -1,0 +1,385 @@
+{
+  "$comment": "示範の情報源：初回起動時に取り込む（scripts/seed.ts）。既にあるものは上書きしない。以後は管理画面の「情報源」で新規作成・変更・停止する。項目の説明は docs/customize.md。",
+  "sources": [
+    {
+      "id": "rss-honda-motorcycle",
+      "name": "Honda 二輪ニュース",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://global.honda/jp/rss/motor.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "honda",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "公式",
+        "メーカー"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-yamaha-motor",
+      "name": "ヤマハ発動機 ニュース",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://global.yamaha-motor.com/jp/rss/update.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "yamaha",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "公式",
+        "メーカー"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-suzuki-motorcycle",
+      "name": "スズキ 二輪ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www1.suzuki.co.jp/motor/news/",
+        "parseMode": "html",
+        "itemSelector": "li.news-item",
+        "linkSelector": "a.item-inner",
+        "titleSelector": ".info-ttl",
+        "publishedAtSelector": ".info-date",
+        "publishedAtUtcOffset": "+09:00",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "suzuki",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "公式",
+        "メーカー"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "web-kawasaki-news",
+      "name": "カワサキ ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.kawasaki-motors.com/ja-jp/latest-news",
+        "parseMode": "html",
+        "itemSelector": ".card-deck a[href^='/ja-jp/latest-news/']",
+        "linkSelector": "a",
+        "titleSelector": "h5",
+        "publishedAtSelector": "p.pTwo",
+        "publishedAtUtcOffset": "+09:00",
+        "allowUrlPrefixes": [
+          "https://www.kawasaki-motors.com/ja-jp/latest-news/"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "kawasaki",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "公式",
+        "メーカー"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-acem",
+      "name": "ACEM（欧州二輪車工業会）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.acem.eu/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "acem",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "公式",
+        "業界団体",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-young-machine",
+      "name": "WEBヤングマシン",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://young-machine.com/rss",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-webike-plus",
+      "name": "Webikeプラス",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://news.webike.net/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-bike-news",
+      "name": "バイクのニュース",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://bike-news.jp/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-motorcyclist-web",
+      "name": "モーサイ",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://mc-web.jp/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-autoby",
+      "name": "webオートバイ",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.autoby.jp/_rss/rss20.xml",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-bikejin",
+      "name": "BikeJIN WEB",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://bikejin.jp/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-virgin-harley",
+      "name": "バージンハーレー",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.virginharley.com/feed",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "メディア"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-mcn",
+      "name": "MCN（Motorcycle News）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.motorcyclenews.com/news/rss/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-visordown",
+      "name": "Visordown",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.visordown.com/rss",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-rideapart",
+      "name": "RideApart",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.rideapart.com/rss/articles/all/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-rushlane-bikes",
+      "name": "RushLane（二輪）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.rushlane.com/feed",
+        "allowCategories": [
+          "Bike News"
+        ],
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア",
+        "海外",
+        "インド"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-electrek-motorcycles",
+      "name": "Electrek（電動バイク）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://electrek.co/guides/electric-motorcycles/feed/",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 120,
+      "tags": [
+        "メディア",
+        "海外",
+        "電動"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    },
+    {
+      "id": "rss-crash-motogp",
+      "name": "Crash.net（MotoGP）",
+      "kind": "rss",
+      "config": {
+        "feedUrl": "https://www.crash.net/rss/motogp",
+        "_aihot": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T2",
+      "participation_mode": "editorial",
+      "interval_minutes": 60,
+      "tags": [
+        "メディア",
+        "海外",
+        "レース"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false
+    }
+  ]
+}
