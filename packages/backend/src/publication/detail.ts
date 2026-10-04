@@ -1,11 +1,11 @@
 // Item detail and Markdown export, both behind the same visibility and licence rules.
-import type { OutlineEntry, SiteItemDetail, StoryRef } from "@aihot/contracts/site";
-import { ITEM_COPY, SITE } from "@aihot/site";
+import type { OutlineEntry, SiteItemDetail, StoryRef } from "@hotmoto/contracts/site";
+import { ITEM_COPY, SITE } from "@hotmoto/site";
 import { bodyToMarkdown } from "../content/markdown.ts";
 import { sql } from "../db.ts";
 import { proxyBodyImages } from "../media/imgproxy.ts";
 import { textToHtml } from "../content/sanitize.ts";
-import { isSiteLanguageBody } from "@aihot/contracts/language";
+import { isSiteLanguageBody } from "@hotmoto/contracts/language";
 import { exportTranslation, ITEM_COLUMNS, ITEM_FROM, seatHolders, showsPost, toItemSummary, xView, type ItemRow } from "./items.ts";
 import { evidenceCondition, listedCondition } from "./scope.ts";
 import { itemUrl } from "./links.ts";

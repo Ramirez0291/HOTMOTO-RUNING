@@ -1,16 +1,16 @@
 // Share images (1200×630 PNG) for pages, items, reports, topics and events. Only public content
 // gets a card; anything else is a real 404.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { CATEGORY_LABELS } from "@aihot/contracts/taxonomy";
-import { siteDate } from "@aihot/contracts/time";
-import { loadItemOgCard, loadItemShare } from "@aihot/backend/publication/og";
-import { loadReport, type ReportKind } from "@aihot/backend/publication/reports";
-import { findTopic, TOPIC_GROUPS, TOPICS } from "@aihot/backend/publication/topics";
-import { loadStoryDetail, resolveStory } from "@aihot/backend/publication/stories";
-import { ogEtag, renderOg, type OgCard } from "@aihot/backend/media/og";
-import { posterEtag, renderPoster, type Poster } from "@aihot/backend/media/poster";
-import { CARDS, ITEM_COPY, REPORTS, withSubject } from "@aihot/site";
-import { config } from "@aihot/backend/config";
+import { CATEGORY_LABELS } from "@hotmoto/contracts/taxonomy";
+import { siteDate } from "@hotmoto/contracts/time";
+import { loadItemOgCard, loadItemShare } from "@hotmoto/backend/publication/og";
+import { loadReport, type ReportKind } from "@hotmoto/backend/publication/reports";
+import { findTopic, TOPIC_GROUPS, TOPICS } from "@hotmoto/backend/publication/topics";
+import { loadStoryDetail, resolveStory } from "@hotmoto/backend/publication/stories";
+import { ogEtag, renderOg, type OgCard } from "@hotmoto/backend/media/og";
+import { posterEtag, renderPoster, type Poster } from "@hotmoto/backend/media/poster";
+import { CARDS, ITEM_COPY, REPORTS, withSubject } from "@hotmoto/site";
+import { config } from "@hotmoto/backend/config";
 
 /** The pages' share cards: the site's texts, and the topic count of the topic list. */
 const PAGES: Record<string, OgCard> = {

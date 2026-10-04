@@ -351,36 +351,36 @@
 }
 
 /* Enter/leave keyframes for components/ui/Presence.tsx; --anim-ms overrides a default length. */
-@keyframes aihot-collapse-in { from { grid-template-rows: 0fr; opacity: 0; } to { grid-template-rows: 1fr; opacity: 1; } }
-@keyframes aihot-collapse-out { from { grid-template-rows: 1fr; opacity: 1; } to { grid-template-rows: 0fr; opacity: 0; } }
-@keyframes aihot-fade-in { from { opacity: 0; } }
-@keyframes aihot-fade-out { to { opacity: 0; } }
-@keyframes aihot-drop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
-@keyframes aihot-drop-out { to { opacity: 0; transform: translateY(-4px) scale(0.98); } }
-@keyframes aihot-notice-in { from { opacity: 0; transform: translateY(-6px); } }
-@keyframes aihot-zoom-in { from { transform: scale(0.96); } }
-@keyframes aihot-zoom-out { to { transform: scale(0.98); } }
-@keyframes aihot-sheet-in { from { transform: translateY(100%); } }
-@keyframes aihot-sheet-out { to { transform: translateY(100%); } }
-@keyframes aihot-swap-in { from { opacity: 0; transform: scale(0.7); } }
-@keyframes aihot-bump { from { transform: scale(0.7); } 55% { transform: scale(1.08); } to { transform: scale(1); } }
-@keyframes aihot-pop-in { from { opacity: 0; transform: scale(0.6); } 60% { opacity: 1; transform: scale(1.05); } to { transform: scale(1); } }
-@keyframes aihot-reveal { from { clip-path: inset(-12px 100% -12px -12px); } to { clip-path: inset(-12px -12px -12px -12px); } }
-.anim-collapse-in { animation: aihot-collapse-in var(--anim-ms, 240ms) var(--ease-out-quart) both; }
-.anim-collapse-out { animation: aihot-collapse-out var(--anim-ms, 240ms) var(--ease-out-quart) both; }
-.anim-fade-in { animation: aihot-fade-in var(--anim-ms, 160ms) ease-out both; }
-.anim-fade-out { animation: aihot-fade-out var(--anim-ms, 160ms) ease-in both; }
-.anim-drop-in { animation: aihot-drop-in 140ms var(--ease-out-quart) both; }
-.anim-drop-out { animation: aihot-drop-out 140ms ease-in both; }
-.anim-notice-in { animation: aihot-notice-in 200ms var(--ease-out-quart) both; }
-.anim-zoom-in { animation: aihot-zoom-in 180ms var(--ease-out-quart) both; }
-.anim-zoom-out, .anim-fade-out > .lightbox-img { animation: aihot-zoom-out 160ms ease-in both; }
-.anim-sheet-in { animation: aihot-sheet-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
-.anim-sheet-out, .anim-fade-out > .sheet-panel { animation: aihot-sheet-out 220ms cubic-bezier(0.4, 0, 1, 1) both; }
-.anim-swap-in { animation: aihot-swap-in 120ms var(--ease-out-quart) both; }
-.anim-bump { animation: aihot-bump 320ms var(--ease-out-quart) both; }
-.anim-pop-in { animation: aihot-pop-in 460ms var(--ease-out-quart) both; }
-.anim-reveal { animation: aihot-reveal 900ms var(--ease-out-quart) both; }
+@keyframes hotmoto-collapse-in { from { grid-template-rows: 0fr; opacity: 0; } to { grid-template-rows: 1fr; opacity: 1; } }
+@keyframes hotmoto-collapse-out { from { grid-template-rows: 1fr; opacity: 1; } to { grid-template-rows: 0fr; opacity: 0; } }
+@keyframes hotmoto-fade-in { from { opacity: 0; } }
+@keyframes hotmoto-fade-out { to { opacity: 0; } }
+@keyframes hotmoto-drop-in { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+@keyframes hotmoto-drop-out { to { opacity: 0; transform: translateY(-4px) scale(0.98); } }
+@keyframes hotmoto-notice-in { from { opacity: 0; transform: translateY(-6px); } }
+@keyframes hotmoto-zoom-in { from { transform: scale(0.96); } }
+@keyframes hotmoto-zoom-out { to { transform: scale(0.98); } }
+@keyframes hotmoto-sheet-in { from { transform: translateY(100%); } }
+@keyframes hotmoto-sheet-out { to { transform: translateY(100%); } }
+@keyframes hotmoto-swap-in { from { opacity: 0; transform: scale(0.7); } }
+@keyframes hotmoto-bump { from { transform: scale(0.7); } 55% { transform: scale(1.08); } to { transform: scale(1); } }
+@keyframes hotmoto-pop-in { from { opacity: 0; transform: scale(0.6); } 60% { opacity: 1; transform: scale(1.05); } to { transform: scale(1); } }
+@keyframes hotmoto-reveal { from { clip-path: inset(-12px 100% -12px -12px); } to { clip-path: inset(-12px -12px -12px -12px); } }
+.anim-collapse-in { animation: hotmoto-collapse-in var(--anim-ms, 240ms) var(--ease-out-quart) both; }
+.anim-collapse-out { animation: hotmoto-collapse-out var(--anim-ms, 240ms) var(--ease-out-quart) both; }
+.anim-fade-in { animation: hotmoto-fade-in var(--anim-ms, 160ms) ease-out both; }
+.anim-fade-out { animation: hotmoto-fade-out var(--anim-ms, 160ms) ease-in both; }
+.anim-drop-in { animation: hotmoto-drop-in 140ms var(--ease-out-quart) both; }
+.anim-drop-out { animation: hotmoto-drop-out 140ms ease-in both; }
+.anim-notice-in { animation: hotmoto-notice-in 200ms var(--ease-out-quart) both; }
+.anim-zoom-in { animation: hotmoto-zoom-in 180ms var(--ease-out-quart) both; }
+.anim-zoom-out, .anim-fade-out > .lightbox-img { animation: hotmoto-zoom-out 160ms ease-in both; }
+.anim-sheet-in { animation: hotmoto-sheet-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.anim-sheet-out, .anim-fade-out > .sheet-panel { animation: hotmoto-sheet-out 220ms cubic-bezier(0.4, 0, 1, 1) both; }
+.anim-swap-in { animation: hotmoto-swap-in 120ms var(--ease-out-quart) both; }
+.anim-bump { animation: hotmoto-bump 320ms var(--ease-out-quart) both; }
+.anim-pop-in { animation: hotmoto-pop-in 460ms var(--ease-out-quart) both; }
+.anim-reveal { animation: hotmoto-reveal 900ms var(--ease-out-quart) both; }
 
 /* The theme switch cross-fades the whole document. */
 ::view-transition-old(root),
@@ -397,25 +397,25 @@
 }
 @media (max-width: 960px) {
   :root[data-vt="push"]::view-transition-old(root) {
-    animation: aihot-page-out-left 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation: hotmoto-page-out-left 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
   }
   :root[data-vt="push"]::view-transition-new(root) {
-    animation: aihot-page-in-right 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation: hotmoto-page-in-right 400ms cubic-bezier(0.32, 0.72, 0, 1) both;
     box-shadow: -10px 0 28px rgba(0, 0, 0, 0.12);
   }
   :root[data-vt="back"]::view-transition-old(root) {
     z-index: 1;
-    animation: aihot-page-out-right 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation: hotmoto-page-out-right 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
     box-shadow: -10px 0 28px rgba(0, 0, 0, 0.12);
   }
   :root[data-vt="back"]::view-transition-new(root) {
-    animation: aihot-page-in-left 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
+    animation: hotmoto-page-in-left 360ms cubic-bezier(0.32, 0.72, 0, 1) both;
   }
 }
-@keyframes aihot-page-in-right { from { transform: translateX(100%); } }
-@keyframes aihot-page-out-left { to { transform: translateX(-28%); } }
-@keyframes aihot-page-out-right { to { transform: translateX(100%); } }
-@keyframes aihot-page-in-left { from { transform: translateX(-28%); } }
+@keyframes hotmoto-page-in-right { from { transform: translateX(100%); } }
+@keyframes hotmoto-page-out-left { to { transform: translateX(-28%); } }
+@keyframes hotmoto-page-out-right { to { transform: translateX(100%); } }
+@keyframes hotmoto-page-in-left { from { transform: translateX(-28%); } }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -9,9 +9,9 @@
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
-import { DEPLOYMENT } from "@aihot/site";
-import { REPO_ROOT } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
+import { DEPLOYMENT } from "@hotmoto/site";
+import { REPO_ROOT } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
 import {
   SELECTION_PROMPT_VERSION,
   buildScoreInput,
@@ -21,9 +21,9 @@ import {
   tierThreshold,
   type AnalysisRun,
   type AnalyzeInputArticle,
-} from "@aihot/backend/editorial/analyze";
-import { modelFor } from "@aihot/backend/editorial/models";
-import { importSelectBenchRun } from "@aihot/backend/admin/selectbench";
+} from "@hotmoto/backend/editorial/analyze";
+import { modelFor } from "@hotmoto/backend/editorial/models";
+import { importSelectBenchRun } from "@hotmoto/backend/admin/selectbench";
 
 // Without options: the site's gold set (site.ts DEPLOYMENT.selectionGold), else the whole of .data/gold.jsonl
 // (up to 200 cases), swept over a wide range of thresholds.

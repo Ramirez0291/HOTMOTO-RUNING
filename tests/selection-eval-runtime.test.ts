@@ -10,9 +10,9 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
-import { closeDb, sql } from "@aihot/backend/db";
-import { REPO_ROOT } from "@aihot/backend/config";
-import { tierThreshold } from "@aihot/backend/editorial/analyze";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { REPO_ROOT } from "@hotmoto/backend/config";
+import { tierThreshold } from "@hotmoto/backend/editorial/analyze";
 
 const exec = promisify(execFile);
 

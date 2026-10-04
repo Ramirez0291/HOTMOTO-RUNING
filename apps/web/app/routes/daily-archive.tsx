@@ -1,9 +1,9 @@
 import { Link, useLoaderData } from "react-router";
-import type { ReportIndexEntry, ReportIndexResponse } from "@aihot/contracts/site";
-import { SITE, withSubject } from "@aihot/site";
+import type { ReportIndexEntry, ReportIndexResponse } from "@hotmoto/contracts/site";
+import { SITE, withSubject } from "@hotmoto/site";
 import { apiGet, edgeTtl } from "../lib/api.server";
 import { archiveLd, pageMeta } from "../lib/seo";
-import { siteDate } from "@aihot/contracts/time";
+import { siteDate } from "@hotmoto/contracts/time";
 import { weekdayShort } from "../lib/format";
 import { ReportLayout } from "../features/report/ReportLayout";
 import { archiveGroups, ENTRIES_UNIT } from "../features/report/format";

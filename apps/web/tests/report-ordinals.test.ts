@@ -1,4 +1,4 @@
-// Run after `npm run build -w @aihot/web`. Real production server/router, synthetic HTTP API only.
+// Run after `npm run build -w @hotmoto/web`. Real production server/router, synthetic HTTP API only.
 // Failure cases: the masthead numbering the newest of 405 issues 400 (the navigation index's length); an
 // issue older than the index losing its number; the calendar marking that issue as not published; the
 // daily archive counting 400 issues beside a masthead that numbers 405.
@@ -9,8 +9,8 @@ import { createServer } from "node:http";
 import type { AddressInfo } from "node:net";
 import { after, before, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import type { ReportDetail, ReportKind, ReportNavigationEntry } from "@aihot/contracts/site";
-import { isoWeekLabel } from "@aihot/contracts/time";
+import type { ReportDetail, ReportKind, ReportNavigationEntry } from "@hotmoto/contracts/site";
+import { isoWeekLabel } from "@hotmoto/contracts/time";
 import { issueNumber, periodGrid } from "../app/features/report/format.ts";
 
 const kinds: ReportKind[] = ["daily", "weekly", "monthly"];

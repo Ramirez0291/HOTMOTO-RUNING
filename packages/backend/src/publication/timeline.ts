@@ -1,7 +1,7 @@
 // Selected news timeline: one card per fact, or per standalone article. Only duplicate reports
 // fold together. Each fact stays at its first appearance; other news in its story never moves it.
-import type { GroupInfo, TimelineCard, TimelineFilters, TimelineResponse } from "@aihot/contracts/site";
-import { siteDate, siteMidnight } from "@aihot/contracts/time";
+import type { GroupInfo, TimelineCard, TimelineFilters, TimelineResponse } from "@hotmoto/contracts/site";
+import { siteDate, siteMidnight } from "@hotmoto/contracts/time";
 import { sql } from "../db.ts";
 import { cachedByKey } from "../lib/cache.ts";
 import { pickRepresentative, REPRESENTATIVE_COLUMNS, type RepresentativeRow } from "./representative.ts";

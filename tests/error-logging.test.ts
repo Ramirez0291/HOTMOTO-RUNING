@@ -18,7 +18,7 @@ function run(source: string): string {
 test("API error logs keep database codes and frames without row values or query parameters", () => {
   const output = run(`
     import { buildApp } from ${JSON.stringify(API_APP_URL)};
-    import { sql, closeDb } from '@aihot/backend/db';
+    import { sql, closeDb } from '@hotmoto/backend/db';
     const app = await buildApp();
     const marker = ${JSON.stringify(MARKER)};
     for (const kind of ['unique', 'input']) {
@@ -46,7 +46,7 @@ test("OAuth rejects a failed exchange without logging the upstream response text
   const output = run(`
     import assert from 'node:assert/strict';
     import { buildApp } from ${JSON.stringify(API_APP_URL)};
-    import { loginRedirect, STATE_COOKIE } from '@aihot/backend/admin/auth';
+    import { loginRedirect, STATE_COOKIE } from '@hotmoto/backend/admin/auth';
     process.env.FEISHU_LOGIN_APP_ID = 'synthetic-app';
     process.env.FEISHU_LOGIN_APP_SECRET = 'synthetic-secret';
     const app = await buildApp();
@@ -66,7 +66,7 @@ test("OAuth rejects a failed exchange without logging the upstream response text
 test("the queue's PostgreSQL driver also keeps values out of worker error logs", () => {
   const output = run(`
     import { PgBoss } from 'pg-boss';
-    import { logError } from '@aihot/backend/lib/log-error';
+    import { logError } from '@hotmoto/backend/lib/log-error';
     const boss = new PgBoss({connectionString:process.env.DATABASE_URL});
     await boss.start();
     try {
@@ -84,7 +84,7 @@ test("malformed OAuth token and profile responses do not leak JSON-parser excerp
   const output = run(`
     import assert from 'node:assert/strict';
     import { buildApp } from ${JSON.stringify(API_APP_URL)};
-    import { loginRedirect, STATE_COOKIE } from '@aihot/backend/admin/auth';
+    import { loginRedirect, STATE_COOKIE } from '@hotmoto/backend/admin/auth';
     process.env.FEISHU_LOGIN_APP_ID = 'synthetic-app';
     process.env.FEISHU_LOGIN_APP_SECRET = 'synthetic-secret';
     const app = await buildApp();

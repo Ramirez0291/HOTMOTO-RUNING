@@ -1,4 +1,4 @@
-import type { AdminNavCounts } from "@aihot/contracts/admin";
+import type { AdminNavCounts } from "@hotmoto/contracts/admin";
 import { sql } from "../db.ts";
 import { serverModules } from "../modules.ts";
 

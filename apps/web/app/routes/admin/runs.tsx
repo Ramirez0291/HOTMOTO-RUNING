@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { SITE } from "@aihot/site";
+import { SITE } from "@hotmoto/site";
 import { Link, useFetcher } from "react-router";
 import { useEffect } from "react";
 import type { Route } from "./+types/runs";
-import type { AdminDeliveryIssue, AdminReceiptIssue, AdminRuns } from "@aihot/contracts/admin";
+import type { AdminDeliveryIssue, AdminReceiptIssue, AdminRuns } from "@hotmoto/contracts/admin";
 import { adminGet } from "../../lib/admin.server";
 import { useAdminAction } from "../../features/admin/action";
 import { ago, bj, duration, num } from "../../features/admin/format";

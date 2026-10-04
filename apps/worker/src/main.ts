@@ -1,18 +1,18 @@
 // Worker process: queues and schedules for collection, processing, events, reports and ops, and the site's
 // modules (site/modules/server.ts).
-import { assertProductionSecrets } from "@aihot/backend/config";
-import { closeDb } from "@aihot/backend/db";
-import { getBoss, stopBoss, workModuleQueues } from "@aihot/backend/jobs/queue";
-import { installModules } from "@aihot/backend/modules";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
-import { registerContentJobs } from "@aihot/backend/jobs/content";
-import { registerSourceJobs } from "@aihot/backend/jobs/sources";
-import { registerEventJobs } from "@aihot/backend/jobs/events";
-import { registerNotifyJobs } from "@aihot/backend/jobs/notify";
-import { registerPublicationJobs } from "@aihot/backend/jobs/publication";
+import { assertProductionSecrets } from "@hotmoto/backend/config";
+import { closeDb } from "@hotmoto/backend/db";
+import { getBoss, stopBoss, workModuleQueues } from "@hotmoto/backend/jobs/queue";
+import { installModules } from "@hotmoto/backend/modules";
+import { SERVER_MODULES } from "@hotmoto/site/modules/server";
+import { registerContentJobs } from "@hotmoto/backend/jobs/content";
+import { registerSourceJobs } from "@hotmoto/backend/jobs/sources";
+import { registerEventJobs } from "@hotmoto/backend/jobs/events";
+import { registerNotifyJobs } from "@hotmoto/backend/jobs/notify";
+import { registerPublicationJobs } from "@hotmoto/backend/jobs/publication";
 import { registerSchedules } from "./schedules.ts";
-import { ensureContentTargets } from "@aihot/backend/notify/deliver";
-import { startHeartbeat } from "@aihot/backend/operations/heartbeat";
+import { ensureContentTargets } from "@hotmoto/backend/notify/deliver";
+import { startHeartbeat } from "@hotmoto/backend/operations/heartbeat";
 
 installModules(SERVER_MODULES);
 assertProductionSecrets([["auth", "IMG_PROXY_SIGN_SECRET"]]);

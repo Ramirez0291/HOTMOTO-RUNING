@@ -1,8 +1,8 @@
 // Outward HTTP behaviour, defined once: CORS, the public interface version, redirects and which process
 // owns a path, the engine's and then those of the site's modules. The API server and the web server both
 // read this module.
-import { ABOUT, POLICY, SITE } from "@aihot/site";
-import { MODULES } from "@aihot/site/modules";
+import { ABOUT, POLICY, SITE } from "@hotmoto/site";
+import { MODULES } from "@hotmoto/site/modules";
 
 /** CORS for /api/v1/* and /openapi-v1.json. */
 export const PUBLIC_API_CORS: Record<string, string> = {

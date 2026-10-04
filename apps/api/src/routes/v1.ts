@@ -1,15 +1,15 @@
 // Public API v1 (long-term). Field shapes follow the OpenAPI document at /openapi-v1.json (the paths stay
 // /api/v1); each operation's query parameters and Cache-Control are listed in V1_OPERATIONS.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { PUBLIC_API_CATEGORY_KEYS, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
-import { config } from "@aihot/backend/config";
-import { InvalidCursorError } from "@aihot/backend/lib/cursor";
-import { SearchBusyError } from "@aihot/backend/publication/pool";
-import { selectedChanges, selectedSnapshot, SnapshotRequiredError, v1Items } from "@aihot/backend/publication/v1";
-import { resolveStory, v1HotTopics, v1Story } from "@aihot/backend/publication/stories";
-import { isPeriodKey, v1Dailies, v1Daily, v1Period, v1Periods } from "@aihot/backend/publication/reports";
-import { isValidDate } from "@aihot/contracts/time";
-import { requestNotice } from "@aihot/backend/modules";
+import { PUBLIC_API_CATEGORY_KEYS, type PublicApiCategoryKey } from "@hotmoto/contracts/taxonomy";
+import { config } from "@hotmoto/backend/config";
+import { InvalidCursorError } from "@hotmoto/backend/lib/cursor";
+import { SearchBusyError } from "@hotmoto/backend/publication/pool";
+import { selectedChanges, selectedSnapshot, SnapshotRequiredError, v1Items } from "@hotmoto/backend/publication/v1";
+import { resolveStory, v1HotTopics, v1Story } from "@hotmoto/backend/publication/stories";
+import { isPeriodKey, v1Dailies, v1Daily, v1Period, v1Periods } from "@hotmoto/backend/publication/reports";
+import { isValidDate } from "@hotmoto/contracts/time";
+import { requestNotice } from "@hotmoto/backend/modules";
 import { applyPublicHeaders, QueryError, sendJsonWithNotice, sendJsonWithEtag, sendProblem, strictQuery } from "../http/respond.ts";
 
 type Handler = (req: FastifyRequest, reply: FastifyReply) => Promise<unknown>;

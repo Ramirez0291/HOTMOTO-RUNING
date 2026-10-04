@@ -1,10 +1,10 @@
 import { data, useLoaderData } from "react-router";
 import type { Route } from "./+types/report-detail";
-import type { ReportDetail, ReportNavigationResponse, ReportKind } from "@aihot/contracts/site";
-import { SITE, withSubject } from "@aihot/site";
+import type { ReportDetail, ReportNavigationResponse, ReportKind } from "@hotmoto/contracts/site";
+import { SITE, withSubject } from "@hotmoto/site";
 import { apiGet, edgeTtl, loadOr404 } from "../lib/api.server";
 import { pageMeta, reportLd, titled } from "../lib/seo";
-import { siteDate } from "@aihot/contracts/time";
+import { siteDate } from "@hotmoto/contracts/time";
 import { ReportLayout } from "../features/report/ReportLayout";
 import { ReportPaper, reportOutline } from "../features/report/ReportPaper";
 import { KIND_LABEL, feedLink, kindFromPath } from "../features/report/format";

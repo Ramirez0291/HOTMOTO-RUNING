@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router";
-import { SITE, withSubject } from "@aihot/site";
+import { SITE, withSubject } from "@hotmoto/site";
 import type { Route } from "./+types/topics";
-import type { TopicSummary, TopicsResponse } from "@aihot/contracts/site";
+import type { TopicSummary, TopicsResponse } from "@hotmoto/contracts/site";
 import { apiGet, edgeTtl } from "../lib/api.server";
 import { breadcrumbLd, pageMeta, siteUrl } from "../lib/seo";
 import { relativeTime } from "../lib/format";

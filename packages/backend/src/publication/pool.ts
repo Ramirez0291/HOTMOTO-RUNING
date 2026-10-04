@@ -1,6 +1,6 @@
 // Public pool (/all) with numeric pages, and search in its two orderings.
-import type { PoolResponse, TimelineFilters } from "@aihot/contracts/site";
-import { siteDate, siteMidnight } from "@aihot/contracts/time";
+import type { PoolResponse, TimelineFilters } from "@hotmoto/contracts/site";
+import { siteDate, siteMidnight } from "@hotmoto/contracts/time";
 import { one, sql, withCustomPlans, type Db } from "../db.ts";
 import { cachedByKey } from "../lib/cache.ts";
 import {

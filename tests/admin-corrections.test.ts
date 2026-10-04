@@ -1,15 +1,15 @@
 import { createHmac } from "node:crypto";
-import { config } from "@aihot/backend/config";
+import { config } from "@hotmoto/backend/config";
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { createSource, updateSource } from "@aihot/backend/admin/sources";
-import { overrideFields, rerun, setSeoIndexed, setVisibility } from "@aihot/backend/admin/content";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { publishArticle } from "@aihot/backend/publication/publish";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { sha256 } from "@aihot/backend/lib/ids";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { createSource, updateSource } from "@hotmoto/backend/admin/sources";
+import { overrideFields, rerun, setSeoIndexed, setVisibility } from "@hotmoto/backend/admin/content";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { publishArticle } from "@hotmoto/backend/publication/publish";
+import { getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { sha256 } from "@hotmoto/backend/lib/ids";
 import { buildApp } from "../apps/api/src/app.ts";
 
 const T = tag();
@@ -147,7 +147,7 @@ test("bad admin input is a client error and never starts processing", async () =
   config.adminUnionIds = [claims.unionId];
   const binding = createHmac("sha256", process.env.SESSION_SECRET!).update(JSON.stringify(["admin-session-v1", "feishu", claims])).digest("hex");
   await sql`INSERT INTO admin_sessions (id_hash, user_id, csrf_token, expires_at, auth_method, auth_binding, auth_claims) VALUES (${sha256(token)}, ${user!.id}, 'review-csrf', now() + interval '1 hour', 'feishu', ${binding}, ${sql.json(claims)})`;
-  const headers = { cookie: `aihot_admin=${token}`, "x-csrf-token": "review-csrf", "idempotency-key": `invalid-${T}` };
+  const headers = { cookie: `hotmoto_admin=${token}`, "x-csrf-token": "review-csrf", "idempotency-key": `invalid-${T}` };
   const source = await app.inject({ method: "POST", url: "/api/admin/sources", headers, payload: { id: "bad" } });
   assert.equal(source.statusCode, 400);
   const id = await article();

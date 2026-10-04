@@ -1,6 +1,6 @@
 import { useId, useMemo, useState, type ReactNode } from "react";
-import type { HeatPoint } from "@aihot/contracts/site";
-import { TIME_ZONE } from "@aihot/site";
+import type { HeatPoint } from "@hotmoto/contracts/site";
+import { TIME_ZONE } from "@hotmoto/site";
 import { monthDayTime } from "../../lib/format";
 import { useEntrance } from "../../lib/hydration";
 import { PillTabs } from "../../components/ui/Tabs";

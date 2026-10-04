@@ -1,6 +1,6 @@
 import { useEffect, useState, type ComponentType } from "react";
-import type { ChangelogRelease, ChangelogResponse } from "@aihot/contracts/site";
-import { SITE } from "@aihot/site";
+import type { ChangelogRelease, ChangelogResponse } from "@hotmoto/contracts/site";
+import { SITE } from "@hotmoto/site";
 import { Link, useLoaderData } from "react-router";
 import { apiGet, edgeTtl } from "../lib/api.server";
 import { pageMeta } from "../lib/seo";

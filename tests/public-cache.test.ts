@@ -3,10 +3,10 @@
 import { tag } from './setup.ts';
 import assert from 'node:assert/strict';
 import { after, before, test } from 'node:test';
-import { sql, closeDb } from '@aihot/backend/db';
-import { stopBoss } from '@aihot/backend/jobs/queue';
-import { publishArticle } from '@aihot/backend/publication/publish';
-import { upsertMaterial } from '@aihot/backend/content/materials';
+import { sql, closeDb } from '@hotmoto/backend/db';
+import { stopBoss } from '@hotmoto/backend/jobs/queue';
+import { publishArticle } from '@hotmoto/backend/publication/publish';
+import { upsertMaterial } from '@hotmoto/backend/content/materials';
 import { buildApp } from '../apps/api/src/app.ts';
 
 const app = await buildApp();

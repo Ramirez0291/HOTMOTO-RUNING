@@ -4,10 +4,10 @@
 // node scripts/mcp-check.ts [url] [--full]
 import { Client } from "@modelcontextprotocol/client";
 import { StreamableHTTPClientTransport } from "@modelcontextprotocol/client";
-import { PUBLIC_INTERFACE_VERSION } from "@aihot/contracts/http-policy";
-import { MCP_TOOL_NAMES as T, MCP_TOOLS, mcpToolName } from "@aihot/contracts/mcp";
-import { SITE } from "@aihot/site";
-import { SERVER_MODULES } from "@aihot/site/modules/server";
+import { PUBLIC_INTERFACE_VERSION } from "@hotmoto/contracts/http-policy";
+import { MCP_TOOL_NAMES as T, MCP_TOOLS, mcpToolName } from "@hotmoto/contracts/mcp";
+import { SITE } from "@hotmoto/site";
+import { SERVER_MODULES } from "@hotmoto/site/modules/server";
 
 const args = process.argv.slice(2);
 const full = args.includes("--full");

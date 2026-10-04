@@ -1,5 +1,5 @@
 # One image for every role: setup (migrations and seed), api, worker and web.
-# Build arg NPM_REGISTRY switches the npm registry (e.g. https://registry.npmmirror.com in mainland China).
+# Build arg NPM_REGISTRY switches the npm registry (e.g. https://registry.npmmirror.com).
 FROM node:24-trixie-slim AS base
 WORKDIR /app
 # pg_dump for the optional database backups (Debian's client matches the PostgreSQL 17 server in compose).
@@ -19,7 +19,7 @@ COPY industry/package.json industry/
 COPY site/package.json site/
 RUN npm ci --no-audit --no-fund ${NPM_REGISTRY:+--registry=$NPM_REGISTRY}
 COPY . .
-RUN npm run build -w @aihot/web && npm prune --omit=dev --no-audit --no-fund
+RUN npm run build -w @hotmoto/web && npm prune --omit=dev --no-audit --no-fund
 
 FROM base
 ENV NODE_ENV=production

@@ -1,9 +1,9 @@
 // Public read layer, item level. Every exit (site API, v1, RSS, MCP, sitemap) reads
 // items through these columns and views; which rows are public is decided by scope.ts.
-import { isSiteLanguageBody, SITE_LANGUAGE } from "@aihot/contracts/language";
-import { CATEGORY_KEYS, toPublicApiCategory, type CategoryKey, type ChannelKey, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
-import type { FeedItemSummary, ItemSummary, MediaView, XPostView } from "@aihot/contracts/site";
-import { POLICY } from "@aihot/site";
+import { isSiteLanguageBody, SITE_LANGUAGE } from "@hotmoto/contracts/language";
+import { CATEGORY_KEYS, toPublicApiCategory, type CategoryKey, type ChannelKey, type PublicApiCategoryKey } from "@hotmoto/contracts/taxonomy";
+import type { FeedItemSummary, ItemSummary, MediaView, XPostView } from "@hotmoto/contracts/site";
+import { POLICY } from "@hotmoto/site";
 import { sql, type Db } from "../db.ts";
 import { proxiedImage, proxiedImageSet } from "../media/imgproxy.ts";
 import { displayTags, publicSourceName } from "./rules.ts";

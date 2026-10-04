@@ -1,12 +1,12 @@
 import { stub, tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { FUTURE_TOLERANCE_MS, STALE_ON_DISCOVERY_MS, upsertMaterial } from "@aihot/backend/content/materials";
-import { QUEUES, stopBoss } from "@aihot/backend/jobs/queue";
-import { collectSource } from "@aihot/backend/sources/collect";
-import type { SourceRow } from "@aihot/backend/sources/types";
+import { config } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { FUTURE_TOLERANCE_MS, STALE_ON_DISCOVERY_MS, upsertMaterial } from "@hotmoto/backend/content/materials";
+import { QUEUES, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { collectSource } from "@hotmoto/backend/sources/collect";
+import type { SourceRow } from "@hotmoto/backend/sources/types";
 
 const T = tag();
 const listings = new Map<string, unknown[]>();

@@ -4,9 +4,9 @@ import assert from "node:assert/strict";
 import { createServer } from "node:http";
 import { after, test } from "node:test";
 import { MockAgent, getGlobalDispatcher, setGlobalDispatcher } from "undici";
-import { DEPLOYMENT } from "@aihot/site";
-import { config } from "@aihot/backend/config";
-import { guardedFetch } from "@aihot/backend/lib/http-fetch";
+import { DEPLOYMENT } from "@hotmoto/site";
+import { config } from "@hotmoto/backend/config";
+import { guardedFetch } from "@hotmoto/backend/lib/http-fetch";
 
 const deployment = DEPLOYMENT as unknown as { directFetchHosts?: string[] };
 const previousHosts = deployment.directFetchHosts;

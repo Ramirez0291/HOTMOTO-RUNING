@@ -3,11 +3,11 @@
 import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import { after, before, test } from "node:test";
-import { closeDb, sql } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { getBoss, stopBoss } from "@aihot/backend/jobs/queue";
-import { checkAlerts, collectFindings, sendDigest } from "@aihot/backend/operations/alerts";
-import { runsOverview } from "@aihot/backend/admin/runs";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { getBoss, stopBoss } from "@hotmoto/backend/jobs/queue";
+import { checkAlerts, collectFindings, sendDigest } from "@hotmoto/backend/operations/alerts";
+import { runsOverview } from "@hotmoto/backend/admin/runs";
 
 process.env.COLLECT_ENABLED = "false";
 process.env.MODEL_CALLS_ENABLED = "false";

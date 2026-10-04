@@ -1,7 +1,7 @@
 // RSS routes. Unknown query parameters are accepted and never change content.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { feedCacheControl, isFeedCategory, itemFeed, reportFeed, type ItemFeedKind } from "@aihot/backend/publication/feeds";
-import { requestNotice, serverModules } from "@aihot/backend/modules";
+import { feedCacheControl, isFeedCategory, itemFeed, reportFeed, type ItemFeedKind } from "@hotmoto/backend/publication/feeds";
+import { requestNotice, serverModules } from "@hotmoto/backend/modules";
 import { applyPublicHeaders, sendTextWithEtag } from "../http/respond.ts";
 
 async function sendFeed(req: FastifyRequest, reply: FastifyReply, xml: string, cacheControl: string) {

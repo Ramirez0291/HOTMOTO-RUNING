@@ -2,7 +2,7 @@
 // own model), an environment override, and an admin switch kept in settings (every switch is audited).
 // Read at call time and cached for a minute, so a switch applies to the next call without a restart; a
 // changed model only affects work done from then on (history is not re-judged).
-import { DEFAULTS } from "@aihot/site/models";
+import { DEFAULTS } from "@hotmoto/site/models";
 import { sql } from "../db.ts";
 import { serverModules } from "../modules.ts";
 import { MODELS } from "../providers/llm.ts";

@@ -7,11 +7,11 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { setTimeout as delay } from "node:timers/promises";
 import { after, before, test } from "node:test";
-import { sql, closeDb } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { markStalePendingReceipts } from "@aihot/backend/providers/receipts";
-import { autoReleaseUnknownReceipts } from "@aihot/backend/operations/recover";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { stopBoss } from "@hotmoto/backend/jobs/queue";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { markStalePendingReceipts } from "@hotmoto/backend/providers/receipts";
+import { autoReleaseUnknownReceipts } from "@hotmoto/backend/operations/recover";
 
 const T = tag();
 const SOURCE = `test-analyze-kill-${T}`;
@@ -39,9 +39,9 @@ const children = new Set<ReturnType<typeof spawn>>();
 // analyze-shutdown.test.ts separately covers pg-boss delivery and graceful queue shutdown.
 function worker(articleId: string) {
   const script = `
-    import { processArticle } from '@aihot/backend/jobs/content';
-    import { stopBoss } from '@aihot/backend/jobs/queue';
-    import { closeDb } from '@aihot/backend/db';
+    import { processArticle } from '@hotmoto/backend/jobs/content';
+    import { stopBoss } from '@hotmoto/backend/jobs/queue';
+    import { closeDb } from '@hotmoto/backend/db';
     try {
       process.send({ result: await processArticle(process.env.TEST_ARTICLE_ID) });
     } catch (error) {
@@ -54,7 +54,7 @@ function worker(articleId: string) {
   `;
   const env: NodeJS.ProcessEnv = {
     ...process.env, TEST_ARTICLE_ID: articleId, MODEL_CALLS_ENABLED: "true", COLLECT_ENABLED: "false",
-    AIHOT_CREDENTIALS_DIR: "/nonexistent-test-credentials", FEISHU_INTERNAL_ENABLED: "false",
+    hotmoto_CREDENTIALS_DIR: "/nonexistent-test-credentials", FEISHU_INTERNAL_ENABLED: "false",
   };
   pointModels(provider.url, ["qwen3.7-flash", "glm-5.3-flash", "deepseek-flash", "mimo-v2.6-flash"], env);
   const child = spawn(process.execPath, ["--input-type=module", "-e", script], { cwd: process.cwd(), env, stdio: ["ignore", "ignore", "pipe", "ipc"] });

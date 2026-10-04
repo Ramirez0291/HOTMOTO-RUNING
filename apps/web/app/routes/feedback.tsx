@@ -1,12 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router";
-import { POLICY, SITE } from "@aihot/site";
+import { POLICY, SITE } from "@hotmoto/site";
 import { Presence } from "../components/ui/Presence";
 import { edgeTtl } from "../lib/api.server";
 import { pageMeta } from "../lib/seo";
 import { KEYS, lastPage, readJson, writeRaw } from "../lib/local-state";
 import { IconCheck, IconClose, IconImage } from "../components/icons";
-import { RingMark } from "@aihot/site/brand/Logo.tsx";
+import { RingMark } from "@hotmoto/site/brand/Logo.tsx";
 import { AsideCard, ReadingLayout } from "../components/ui/Page";
 import { PhoneBar } from "../components/shell/PhoneBar";
 import type { Screen } from "../components/shell/screens";

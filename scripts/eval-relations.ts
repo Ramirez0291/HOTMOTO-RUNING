@@ -5,12 +5,12 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { parseArgs } from "node:util";
-import { REPO_ROOT } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { modelFor } from "@aihot/backend/editorial/models";
-import { PAIR_SYSTEM, PairSchema, RELATE_PROMPT_VERSION, pairUser } from "@aihot/backend/events/relate";
-import { MODELS, ModelOutputError, chatJson } from "@aihot/backend/providers/llm";
-import { completeReceipt } from "@aihot/backend/providers/receipts";
+import { REPO_ROOT } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { modelFor } from "@hotmoto/backend/editorial/models";
+import { PAIR_SYSTEM, PairSchema, RELATE_PROMPT_VERSION, pairUser } from "@hotmoto/backend/events/relate";
+import { MODELS, ModelOutputError, chatJson } from "@hotmoto/backend/providers/llm";
+import { completeReceipt } from "@hotmoto/backend/providers/receipts";
 import {
   parseRelationGoldJsonl,
   relationMetrics,

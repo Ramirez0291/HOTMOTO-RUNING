@@ -9,7 +9,7 @@
 import * as cheerio from "cheerio";
 import type { AnyNode, Element } from "domhandler";
 import { z } from "zod";
-import { inSiteLanguage, isSiteLanguageBody, SITE_LANGUAGE } from "@aihot/contracts/language";
+import { inSiteLanguage, isSiteLanguageBody, SITE_LANGUAGE } from "@hotmoto/contracts/language";
 import { sql } from "../db.ts";
 import { sanitizeBody, textToHtml } from "../content/sanitize.ts";
 import { chatJson } from "../providers/llm.ts";

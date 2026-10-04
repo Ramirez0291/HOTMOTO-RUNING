@@ -1,6 +1,6 @@
 // Admin display helpers: wall-clock times in the site time zone, relative ages, compact numbers.
-import { siteDate, siteTime } from "@aihot/contracts/time";
-import { SITE } from "@aihot/site";
+import { siteDate, siteTime } from "@hotmoto/contracts/time";
+import { SITE } from "@hotmoto/site";
 
 export function bj(iso: string | Date | null | undefined, withYear = false): string {
   if (!iso || Number.isNaN(new Date(iso).getTime())) return "—";

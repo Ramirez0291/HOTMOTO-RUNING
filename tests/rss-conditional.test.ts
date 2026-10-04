@@ -2,11 +2,11 @@ import { tag } from './setup.ts';
 import assert from 'node:assert/strict';
 import http from 'node:http';
 import { after, test } from 'node:test';
-import { config } from '@aihot/backend/config';
-import { sql, closeDb } from '@aihot/backend/db';
-import { stopBoss } from '@aihot/backend/jobs/queue';
-import { collectSource } from '@aihot/backend/sources/collect';
-import { previewSource } from '@aihot/backend/admin/sources';
+import { config } from '@hotmoto/backend/config';
+import { sql, closeDb } from '@hotmoto/backend/db';
+import { stopBoss } from '@hotmoto/backend/jobs/queue';
+import { collectSource } from '@hotmoto/backend/sources/collect';
+import { previewSource } from '@hotmoto/backend/admin/sources';
 
 const T = tag();
 let version = 1;

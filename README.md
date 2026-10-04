@@ -6,7 +6,6 @@
 
 ウェブサイトのほか、RSS、公開 API、Agent 向け Markdown、MCP でも同じ内容を提供します。
 
-> このサイトは [AIHOT](https://github.com/KKKKhazix/AIHOT) のオープンソースフレームワーク（MIT ライセンス）をもとに、二輪業界向けに作り直したものです。AIHOT の名前とロゴは使っていません。
 
 ## 何を「HOT POINTS」とするか
 
@@ -26,7 +25,7 @@
 
 ## 動かす
 
-[Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（DeepSeek、千問、智譜など）が必要です。
+[Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（Claude, Geminiなど）が必要です。
 
 ```bash
 node scripts/init-env.ts --llm-key <モデルの API キー>
@@ -75,4 +74,6 @@ Node.js での直接起動、ドメインと HTTPS の設定は [デプロイ](d
 
 ## ライセンス
 
-コードは [MIT ライセンス](LICENSE) です（元のフレームワーク AIHOT の著作権表示を含みます）。AIHOT の名前とロゴはライセンスの対象外です。フォントにはそれぞれのライセンスがあります。[NOTICE](NOTICE) を参照してください。
+[GPL-3.0](LICENSE)
+
+> このサイトは [hotmoto](https://github.com/rami0291/hotmoto) のオープンソースフレームワーク（MIT ライセンス）をもとに、二輪業界向けに作り直したものです。

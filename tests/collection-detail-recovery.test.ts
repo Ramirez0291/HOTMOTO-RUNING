@@ -5,10 +5,10 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { closeDb, sql } from "@aihot/backend/db";
-import { stopBoss } from "@aihot/backend/jobs/queue";
-import { collectSource } from "@aihot/backend/sources/collect";
+import { config } from "@hotmoto/backend/config";
+import { closeDb, sql } from "@hotmoto/backend/db";
+import { stopBoss } from "@hotmoto/backend/jobs/queue";
+import { collectSource } from "@hotmoto/backend/sources/collect";
 
 const T = tag();
 const date = new Date(Date.now() - 60_000).toISOString();

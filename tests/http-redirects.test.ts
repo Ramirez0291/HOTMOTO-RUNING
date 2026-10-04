@@ -4,10 +4,10 @@ import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
 import { MockAgent, getGlobalDispatcher, setGlobalDispatcher } from "undici";
-import { config } from "@aihot/backend/config";
-import { guardedFetch } from "@aihot/backend/lib/http-fetch";
-import { fetchJsonList } from "@aihot/backend/sources/json-list";
-import type { SourceRow } from "@aihot/backend/sources/types";
+import { config } from "@hotmoto/backend/config";
+import { guardedFetch } from "@hotmoto/backend/lib/http-fetch";
+import { fetchJsonList } from "@hotmoto/backend/sources/json-list";
+import type { SourceRow } from "@hotmoto/backend/sources/types";
 
 interface Hit { method: string; url: string; headers: http.IncomingHttpHeaders; body: string }
 type Handler = (hit: Hit, res: http.ServerResponse) => void | Promise<void>;

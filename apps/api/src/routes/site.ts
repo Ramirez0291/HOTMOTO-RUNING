@@ -1,23 +1,23 @@
 // First-party site API (/api/site/*). Not public, not versioned, never called /api/v2.
 // Reads through the same public read layer as v1; no cookies are read or set.
 import type { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { isCategoryKey, isChannelKey, type CategoryKey, type ChannelKey } from "@aihot/contracts/taxonomy";
-import type { ReportIndexResponse, ReportLatestPage, ReportNavigationResponse, SiteContact } from "@aihot/contracts/site";
-import { InvalidCursorError } from "@aihot/backend/lib/cursor";
-import { exportMarkdown, loadItemDetail } from "@aihot/backend/publication/detail";
-import { loadPool, SearchBusyError } from "@aihot/backend/publication/pool";
-import { loadTimeline } from "@aihot/backend/publication/timeline";
-import { loadStoryFollowups } from "@aihot/backend/publication/followups";
-import { loadGroupReports } from "@aihot/backend/publication/groups";
-import { loadHotStrip } from "@aihot/backend/publication/hot";
-import { loadChangelog, siteMeta } from "@aihot/backend/site/meta";
-import { loadContact, loadMakerAvatar } from "@aihot/backend/site/contact";
-import { loadSiteStats } from "@aihot/backend/site/stats";
-import { itemAvailability } from "@aihot/backend/publication/availability";
-import { listTopicSummaries, loadTopicPage } from "@aihot/backend/publication/topics";
+import { isCategoryKey, isChannelKey, type CategoryKey, type ChannelKey } from "@hotmoto/contracts/taxonomy";
+import type { ReportIndexResponse, ReportLatestPage, ReportNavigationResponse, SiteContact } from "@hotmoto/contracts/site";
+import { InvalidCursorError } from "@hotmoto/backend/lib/cursor";
+import { exportMarkdown, loadItemDetail } from "@hotmoto/backend/publication/detail";
+import { loadPool, SearchBusyError } from "@hotmoto/backend/publication/pool";
+import { loadTimeline } from "@hotmoto/backend/publication/timeline";
+import { loadStoryFollowups } from "@hotmoto/backend/publication/followups";
+import { loadGroupReports } from "@hotmoto/backend/publication/groups";
+import { loadHotStrip } from "@hotmoto/backend/publication/hot";
+import { loadChangelog, siteMeta } from "@hotmoto/backend/site/meta";
+import { loadContact, loadMakerAvatar } from "@hotmoto/backend/site/contact";
+import { loadSiteStats } from "@hotmoto/backend/site/stats";
+import { itemAvailability } from "@hotmoto/backend/publication/availability";
+import { listTopicSummaries, loadTopicPage } from "@hotmoto/backend/publication/topics";
 import { registerFeedback } from "./feedback.ts";
-import { loadHot, loadStoryDetail, resolveStory } from "@aihot/backend/publication/stories";
-import { listReports, loadReport, reportNavigation, loadReportNavigation, loadReportMonth, type ReportKind } from "@aihot/backend/publication/reports";
+import { loadHot, loadStoryDetail, resolveStory } from "@hotmoto/backend/publication/stories";
+import { listReports, loadReport, reportNavigation, loadReportNavigation, loadReportMonth, type ReportKind } from "@hotmoto/backend/publication/reports";
 import { looseQuery, sendJsonWithEtag, sendProblem } from "../http/respond.ts";
 
 type Handler = (req: FastifyRequest, reply: FastifyReply) => Promise<unknown>;

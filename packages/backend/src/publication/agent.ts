@@ -2,11 +2,11 @@
 // ability. Agents only fetch these addresses and relay what comes back, so which data answers a
 // question, how it reads and what to tell the user are decided here, on the server. Programs keep
 // reading the v1 JSON, whose fields do not change.
-import { ACCESS, EDITION_WHEN, ITEM_COPY, POLICY, SITE, TIME_ZONE, withSubject } from "@aihot/site";
-import { CATEGORIES } from "@aihot/industry/taxonomy";
-import { MCP_TOOL_NAMES as T } from "@aihot/contracts/mcp";
-import { CATEGORY_LABELS, isCategoryKey, PUBLIC_API_CATEGORY_KEYS, toPublicApiCategory, type PublicApiCategoryKey } from "@aihot/contracts/taxonomy";
-import { siteDate, siteTime, siteWeekday } from "@aihot/contracts/time";
+import { ACCESS, EDITION_WHEN, ITEM_COPY, POLICY, SITE, TIME_ZONE, withSubject } from "@hotmoto/site";
+import { CATEGORIES } from "@hotmoto/industry/taxonomy";
+import { MCP_TOOL_NAMES as T } from "@hotmoto/contracts/mcp";
+import { CATEGORY_LABELS, isCategoryKey, PUBLIC_API_CATEGORY_KEYS, toPublicApiCategory, type PublicApiCategoryKey } from "@hotmoto/contracts/taxonomy";
+import { siteDate, siteTime, siteWeekday } from "@hotmoto/contracts/time";
 import { serverModules } from "../modules.ts";
 import { siteUrl } from "./links.ts";
 import type { V1ItemPayload } from "./publish.ts";
@@ -43,7 +43,7 @@ const category = (key: string | null) => (key && isCategoryKey(key) ? CATEGORY_L
 
 function itemLines(items: V1ItemPayload[]): string[] {
   return items.flatMap((it, i) => [
-    `${i + 1}. [${linkText(it.title)}](${it.links.aihot})`,
+    `${i + 1}. [${linkText(it.title)}](${it.links.hotmoto})`,
     `   ${[publicSourceName(it.source.name), it.publishedAt ? `${stamp(it.publishedAt)} 発表` : `${stamp(it.discoveredAt)} ${SITE.name} 収録`, category(it.category)].filter(Boolean).join(" · ")}`,
     ...(it.summary ? [`   要約：${it.summary}`] : []),
     ...(it.reason ? [`   ${ITEM_COPY.reasonLabel}：${it.reason}`] : []),
@@ -110,7 +110,7 @@ export function hotAnswer(res: HotTopics, limit: number, via: Via): string {
     const sources = [...new Set(t.sourceNames.map(publicSourceName))];
     const names = sources.length > 6 ? `${sources.slice(0, 6).join("、")} など` : sources.join("、");
     return [
-      `第 ${t.rank} 位：[${linkText(t.title)}](${t.links.aihot})`,
+      `第 ${t.rank} 位：[${linkText(t.title)}](${t.links.hotmoto})`,
       `   情報源：${names}（${t.sourceCount} 件）· 最新の進展 ${stamp(t.latestAt)}`,
       via === "http" ? `   経緯：${agentUrl(`/stories/${publicId}`)}` : `   経緯：${T.story}、public_id=${publicId}`,
       "",
@@ -133,14 +133,14 @@ export function storyAnswer(s: Story, limit: number, via: Via): string {
     "",
     ...(s.digest ? [`出来事のまとめ：${s.digest}`, ""] : []),
     "報道の時系列（新しい順）：",
-    ...reports.map((r, i) => `${i + 1}. ${stamp(r.publishedAt)} · ${publicSourceName(r.source.name)}${r.source.firstParty ? "（一次）" : ""} · [${linkText(r.title)}](${r.links.aihot})`),
+    ...reports.map((r, i) => `${i + 1}. ${stamp(r.publishedAt)} · ${publicSourceName(r.source.name)}${r.source.firstParty ? "（一次）" : ""} · [${linkText(r.title)}](${r.links.hotmoto})`),
     ...(neighbours.length ? ["", "関連する出来事：", ...neighbours.map((n) => `- ${n.title}：${via === "http" ? agentUrl(`/stories/${n.publicId}`) : `public_id=${n.publicId}`}`)] : []),
   ];
   return answer([
     `# ${SITE.name} 出来事：${s.title}`,
     "",
     `${s.status === "active" ? "更新中" : "過去の出来事"} · 報道 ${s.reportCount} 本 · 情報源 ${s.sourceCount} 件 · 初報 ${stamp(s.firstReportAt)}（${TIME_ZONE.label}）`,
-    `出来事のページ：${s.links.aihot}`,
+    `出来事のページ：${s.links.hotmoto}`,
   ], data, [
     "まず最新の進展を伝え、次に時系列で経緯を説明する。まとめが指摘している食い違いや未確認の点はそのまま伝える。",
     "「一次」と付いたものは当事者の企業や本人の発表で、引用するときはこれを優先する。",
@@ -149,13 +149,13 @@ export function storyAnswer(s: Story, limit: number, via: Via): string {
   ]);
 }
 
-type Links = { aihot: string | null; original: string };
+type Links = { hotmoto: string | null; original: string };
 /** The v1 daily report (its sections are read from stored JSON, so v1Daily leaves them untyped). */
 export interface DailyReport {
   date: string;
   windowStart: string;
   windowEnd: string;
-  links: { aihot: string };
+  links: { hotmoto: string };
   lead: { title: string; leadParagraph: string } | null;
   sections: { label: string; items: { title: string; summary: string; source: { name: string }; links: Links }[] }[];
   flashes: { title: string; publishedAt: string; source: { name: string }; links: Links }[];
@@ -178,19 +178,19 @@ export function dailyAnswer(r: DailyReport, via: Via, notes: Map<string, DailyNo
   for (const s of r.sections) {
     data.push(`【${s.label}】`);
     s.items.forEach((it, i) => {
-      const link = it.links.aihot ?? it.links.original;
+      const link = it.links.hotmoto ?? it.links.original;
       const note = notes.get(link);
       data.push(`${i + 1}. [${linkText(it.title)}](${link}) · ${publicSourceName(it.source.name)}${note?.otherSources ? ` · ほかに ${note.otherSources} 件の情報源が報道` : ""}`, ...(it.summary ? [`   ${it.summary}`] : []), ...noteLines(note));
     });
     data.push("");
   }
   if (r.flashes.length) {
-    data.push("【速報】", ...r.flashes.map((f) => `- ${stamp(f.publishedAt)} · [${linkText(f.title)}](${f.links.aihot ?? f.links.original}) · ${publicSourceName(f.source.name)}`), "");
+    data.push("【速報】", ...r.flashes.map((f) => `- ${stamp(f.publishedAt)} · [${linkText(f.title)}](${f.links.hotmoto ?? f.links.original}) · ${publicSourceName(f.source.name)}`), "");
   }
   return answer([
     `# ${SITE.name} 日報 · ${r.date}（${siteWeekday(r.date)}）`,
     "",
-    `${TIME_ZONE.label} ${stamp(r.windowStart)} から ${stamp(r.windowEnd)} までのニュースを収録、${EDITION_WHEN.daily} 発行。日報のページ：${r.links.aihot}`,
+    `${TIME_ZONE.label} ${stamp(r.windowStart)} から ${stamp(r.windowEnd)} までのニュースを収録、${EDITION_WHEN.daily} 発行。日報のページ：${r.links.hotmoto}`,
     ...(data.length ? [] : ["この号にはまだ表示できる項目がありません。"]),
   ], data.length ? data : null, [
     "まずトップを伝え、次に欄ごとに重点を選ぶ。ユーザーが全文を求めたら全部挙げる。1 件は 1 つの出来事で、「関連」は同じ出来事のほかの進展か、同じ発表のほかの内容。",
@@ -208,7 +208,7 @@ export interface PeriodReport {
   month?: string;
   periodStart: string | null;
   periodEnd: string | null;
-  links: { aihot: string };
+  links: { hotmoto: string };
   headline: string | null;
   overview: string | null;
   sections: { label: string; summary: string | null; items: { title: string; summary: string; source: { name: string }; links: Links; publishedAt: string | null }[] }[];
@@ -225,7 +225,7 @@ export function periodAnswer(r: PeriodReport, kind: "weekly" | "monthly", via: V
   for (const s of r.sections) {
     data.push(`【${s.label}】`, ...(s.summary ? [`導入：${s.summary}`] : []));
     s.items.forEach((it, i) => {
-      const link = it.links.aihot ?? it.links.original;
+      const link = it.links.hotmoto ?? it.links.original;
       const when = it.publishedAt ? `（${siteDate(it.publishedAt).slice(5)}）` : "";
       data.push(`${i + 1}. [${linkText(it.title)}](${link}) · ${publicSourceName(it.source.name)}${when}`, ...(it.summary ? [`   ${it.summary}`] : []));
     });
@@ -238,7 +238,7 @@ export function periodAnswer(r: PeriodReport, kind: "weekly" | "monthly", via: V
   return answer([
     `# ${SITE.name} ${name} · ${key}`,
     "",
-    `${days}の日報から選んだ重点、${EDITION_WHEN[kind]}（${TIME_ZONE.label}）発行。${name}のページ：${r.links.aihot}`,
+    `${days}の日報から選んだ重点、${EDITION_WHEN[kind]}（${TIME_ZONE.label}）発行。${name}のページ：${r.links.hotmoto}`,
     ...(data.length ? [] : ["この号にはまだ表示できる項目がありません。"]),
   ], data.length ? data : null, [
     "まずトップと総括を伝え、次に欄ごとに重点を選ぶ。ユーザーが全文を求めたら全部挙げる。",

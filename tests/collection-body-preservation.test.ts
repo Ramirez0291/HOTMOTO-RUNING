@@ -4,11 +4,11 @@ import { tag } from "./setup.ts";
 import assert from "node:assert/strict";
 import http from "node:http";
 import { after, test } from "node:test";
-import { config } from "@aihot/backend/config";
-import { sql, closeDb } from "@aihot/backend/db";
-import { upsertMaterial } from "@aihot/backend/content/materials";
-import { collectSource } from "@aihot/backend/sources/collect";
-import { stopBoss } from "@aihot/backend/jobs/queue";
+import { config } from "@hotmoto/backend/config";
+import { sql, closeDb } from "@hotmoto/backend/db";
+import { upsertMaterial } from "@hotmoto/backend/content/materials";
+import { collectSource } from "@hotmoto/backend/sources/collect";
+import { stopBoss } from "@hotmoto/backend/jobs/queue";
 
 const T = tag();
 const original = "The publisher already supplied this confirmed body, which must remain unchanged. ".repeat(6).trim();

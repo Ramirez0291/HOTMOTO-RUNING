@@ -3,8 +3,8 @@
 // and per site day (site.ts DEPLOYMENT.imageUpstreamBudget; IMGPROXY_UPSTREAM_MB_PER_MINUTE and
 // IMGPROXY_UPSTREAM_GB_PER_DAY win). Past it, uncached images get 503 until the window resets (cached ones
 // are still served); a spent day goes into the alerts' digest.
-import { siteDate } from "@aihot/contracts/time";
-import { DEPLOYMENT } from "@aihot/site";
+import { siteDate } from "@hotmoto/contracts/time";
+import { DEPLOYMENT } from "@hotmoto/site";
 import { sql } from "../db.ts";
 import type { Finding } from "../notify/feishu.ts";
 

@@ -1,5 +1,5 @@
 // Published dates as list pages, articles and JSON lists print them, read the same on every host.
-import { TIME_ZONE } from "@aihot/site";
+import { TIME_ZONE } from "@hotmoto/site";
 import type { SourceRow } from "./types.ts";
 
 /** The offset a source's article pages print their dates in: its detail rules' own, else its listing's. */

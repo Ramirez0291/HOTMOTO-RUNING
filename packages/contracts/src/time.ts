@@ -1,6 +1,6 @@
 // Calendar helpers in the site's time zone (site/site.ts TIME_ZONE: a fixed offset, no DST), shared by
 // web and backend.
-import { SITE, TIME_ZONE } from "@aihot/site";
+import { SITE, TIME_ZONE } from "@hotmoto/site";
 
 const OFFSET = TIME_ZONE.offset;
 const OFFSET_MS = (OFFSET.startsWith("-") ? -1 : 1) * (Number(OFFSET.slice(1, 3)) * 60 + Number(OFFSET.slice(4, 6))) * 60_000;

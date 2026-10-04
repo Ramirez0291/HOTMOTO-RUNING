@@ -1,7 +1,7 @@
 // The site's reading language (site/site.ts SITE.language): which texts are already written in it, so
 // the writing steps keep them as they are and the translator leaves them alone. Japanese and Chinese
 // both write in Han characters: kana marks Japanese, and the simplified forms below mark Chinese.
-import { SITE } from "@aihot/site";
+import { SITE } from "@hotmoto/site";
 
 export const SITE_LANGUAGE = SITE.language;
 

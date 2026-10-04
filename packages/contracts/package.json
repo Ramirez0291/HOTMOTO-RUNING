@@ -1,12 +1,12 @@
 {
-  "name": "@aihot/contracts",
+  "name": "@hotmoto/contracts",
   "private": true,
   "type": "module",
   "exports": {
     "./*": "./src/*.ts"
   },
   "dependencies": {
-    "@aihot/industry": "*",
-    "@aihot/site": "*"
+    "@hotmoto/industry": "*",
+    "@hotmoto/site": "*"
   }
 }
