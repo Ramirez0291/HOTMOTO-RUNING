@@ -14,6 +14,7 @@ import { sql } from "../db.ts";
 import { logError } from "../lib/log-error.ts";
 import { chatJson } from "../providers/llm.ts";
 import { completeReceipt } from "../providers/receipts.ts";
+import { AwaitingAgentError } from "../providers/agent.ts";
 import { shutdownSignal } from "../jobs/queue.ts";
 import { emit } from "../modules.ts";
 import { arrangeDaily, candidates, dailyEdition, periodEntries, sectionOf, SECTION_ORDER, type Candidate, type EditionEntry } from "./edition.ts";
@@ -205,7 +206,8 @@ async function composePeriod(kind: "weekly" | "monthly", key: string, startDate:
     written = res.data;
     receiptId = res.receiptId;
   } catch (error) {
-    if (shutdownSignal.signal.aborted) throw error;
+    // Waiting on the agent's overview: the issue is written by a later run, with it.
+    if (shutdownSignal.signal.aborted || error instanceof AwaitingAgentError) throw error;
     console.error(JSON.stringify({ level: "warn", msg: "period writer failed; the issue goes out with its plain overview", report: `${kind}:${key}`, error: logError(error) }));
   }
   const usable = (text: string | undefined, max: number) => {
@@ -282,9 +284,10 @@ const nextMonth = (label: string) => {
  * filled too. A kind with no issue yet only gets its latest due one. An issue that fails does not hold
  * up the others; at most `limit` issues are written per run, the next run continues.
  */
-export async function composeDueReports(now = new Date(), limit = 8): Promise<{ generated: string[]; failed: string[] }> {
+export async function composeDueReports(now = new Date(), limit = 8): Promise<{ generated: string[]; failed: string[]; waiting: string[] }> {
   const generated: string[] = [];
   const failed: string[] = [];
+  const waiting: string[] = [];
   const kinds: Array<{ kind: ReportKind; due: string; next: (k: string) => string; compose: (k: string) => Promise<unknown> }> = [
     { kind: "daily", due: dueDaily(now), next: (k) => addDays(k, 1), compose: composeDaily },
     { kind: "weekly", due: dueWeekly(now), next: nextWeek, compose: composeWeekly },
@@ -300,11 +303,15 @@ export async function composeDueReports(now = new Date(), limit = 8): Promise<{ 
         await k.compose(key);
         generated.push(`${k.kind}:${key}`);
       } catch (error) {
+        if (error instanceof AwaitingAgentError) {
+          waiting.push(`${k.kind}:${key}`);
+          continue;
+        }
         failed.push(`${k.kind}:${key}`);
         console.error(JSON.stringify({ level: "error", msg: "report failed", report: `${k.kind}:${key}`, error: logError(error) }));
       }
     }
   }
   if (failed.length) throw new Error(`reports: ${failed.join(", ")} failed${generated.length ? `; ${generated.join(", ")} written` : ""}`);
-  return { generated, failed };
+  return { generated, failed, waiting };
 }

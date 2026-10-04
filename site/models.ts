@@ -57,6 +57,14 @@ export const PRESETS: Record<string, ModelPreset> = {
 };
 
 /**
+ * モデルの工程をどの方式で処理するか。agent：API を使わず、Agent が定期的に作業を取りに来て答える（docs/agent.md）。
+ * api：下の DEFAULTS のモデルか default。環境変数 PROCESSING_MODE（agent / api）と管理画面の「モデル」ページで切り替えられ、
+ * 工程ごとに選んだモデル（管理画面、環境変数）はこれより優先する。intervalMinutes は Agent が作業を取りに来る間隔（分）で、
+ * 作業のインターフェースが Agent に伝える。管理画面で変えられる。
+ */
+export const PROCESSING: { mode: "agent" | "api"; intervalMinutes: number } = { mode: "agent", intervalMinutes: 60 };
+
+/**
  * 各工程で既定に使うモデル（工程は管理画面の「モデル」ページを参照）。値は上の名前か default。書いていない工程は default を使う。
  * 例：{ score: "glm-5.3-flash-selection", groupReview: "mimo-v2.6-flash" }
  */

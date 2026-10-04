@@ -330,9 +330,21 @@ export interface AdminModelUsage {
   estimate: { amount: number; currency: string } | null;
 }
 
+/** How the model steps are processed: by an agent polling for work, or by the models' APIs. */
+export interface AdminProcessing {
+  mode: "agent" | "api";
+  source: "admin" | "env" | "site";
+  /** How often the agent comes for work (minutes), as the work interface tells it. */
+  intervalMinutes: number;
+  /** AGENT_TOKEN is set: the work interface is open. */
+  agentReady: boolean;
+  queue: { waiting: number; claimed: number; oldestAt: Timestamp | null; answeredDay: number };
+}
+
 export interface AdminModels {
   days: number;
-  capabilities: Array<{ key: string; label: string; env: string; defaultModel: string; vision: boolean; current: { model: string; source: "admin" | "env" | "default" }; usage: AdminModelUsage[] }>;
+  processing: AdminProcessing;
+  capabilities: Array<{ key: string; label: string; env: string; defaultModel: string; vision: boolean; current: { model: string; source: "admin" | "env" | "mode" | "default" }; usage: AdminModelUsage[] }>;
   choices: Array<{ key: string; service: string; vision: boolean }>;
   history: Array<{ at: Timestamp; actor: string; subject: string; reason: string | null; before: { model: string; source: string } | null; after: { model: string; source: string } | null }>;
   benches: Array<{ id: string; label: string; sample_size: number; prompt_version: string | null; models: string[]; created_at: Timestamp }>;

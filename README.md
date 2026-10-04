@@ -25,15 +25,18 @@
 
 ## 動かす
 
-[Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（Claude, Geminiなど）が必要です。
-[Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（Claude, Geminiなど）が必要です。
+[Docker](https://docs.docker.com/get-docker/) が必要です。モデルの工程は、既定では **Agent** が処理します（API キー不要）。OpenAI 互換のモデル API キー（Claude、Gemini など）で処理することもできます。
 
 ```bash
-node scripts/init-env.ts --llm-key <モデルの API キー>
+node scripts/init-env.ts                       # Agent で処理する（AGENT_TOKEN を自動で作る）
+node scripts/init-env.ts --llm-key <API キー>   # API でも処理できるようにする
 docker compose up -d --build
 ```
 
-<http://localhost:3000> を開きます。管理画面は `/admin` で、管理者パスワードは `.env` の `ADMIN_PASSWORD` にあります。1〜2 分で内容が入り始め、初回に取り込む資料はおよそ 30 分で処理が終わります。
+<http://localhost:3000> を開きます。管理画面は `/admin` で、管理者パスワードは `.env` の `ADMIN_PASSWORD` にあります。収集は 1〜2 分で始まります。
+
+- **Agent で処理する**：Claude Code などの Agent を定期的に実行し、作業のインターフェース（`/api/agent/tasks`）からタスクを取って答えさせます。プロンプトと cron の例は [Agent による処理](docs/agent.md) にあります。新しい記事は Agent の次の実行（既定は 1 時間ごと）で判断されます。
+- **API で処理する**：管理画面の「モデル」ページの「処理方式」で API を選ぶか、`.env` に `PROCESSING_MODE=api` を書きます。初回に取り込む資料はおよそ 30 分で処理が終わります。
 
 Node.js での直接起動、ドメインと HTTPS の設定は [デプロイ](docs/deploy.md) を参照してください。
 
@@ -53,7 +56,7 @@ Node.js での直接起動、ドメインと HTTPS の設定は [デプロイ](d
 | `industry/sources.json` | 初回起動時に取り込む情報源 |
 | `industry/prompts/` | 厳選の基準と書き方。**二輪業界の知見はここに書く** |
 | `industry/selection.ts` | 入選のしきい値 |
-| `site/models.ts` | 各工程で既定に使うモデル（変えなければ `.env` のモデル） |
+| `site/models.ts` | 処理方式（Agent か API か）と、各工程で既定に使うモデル（変えなければ `.env` のモデル） |
 | `site/brand/`、`site/pages/`、`site/public/` | アイコンとロゴ、規約とプライバシー、`robots.txt` などそのまま公開するファイル |
 
 ## 言語とタイムゾーン
@@ -68,6 +71,7 @@ Node.js での直接起動、ドメインと HTTPS の設定は [デプロイ](d
 | [情報源](docs/sources.md) | 6 種類の情報源の設定、格付けと全文、外部からの送信インターフェース |
 | [厳選と校正](docs/selection.md) | 資料が厳選になり日報・週報・月報に編まれるまで、自分のサンプルでの校正 |
 | [出来事のまとめと関係の評価](docs/grouping.md) | 出来事の関係の判断、ペアの正解データでの評価 |
+| [Agent による処理](docs/agent.md) | API を使わずに Agent がモデルの工程を処理するしくみ、作業のインターフェース、定期実行の例 |
 | [デプロイ](docs/deploy.md) | Docker、ドメインと HTTPS、更新、バックアップ、費用 |
 | [アーキテクチャ](docs/architecture.md) | 3 つのプロセス、変わらない規則、ディレクトリ、公開の出口 |
 

@@ -6,6 +6,8 @@
 // 4. A request whose outcome is unknown (timeout after sending, crash mid-flight) is not re-sent by the
 //    caller. ops.recover releases it once after 30 minutes (operations/recover.ts), so a lost answer
 //    costs at most one repeat; after that it waits for the admin.
+// 5. A deferred request (deferredRequest) is answered later by an agent polling for work instead of by
+//    a call: its receipt stays "pending" until the answer is saved, and never turns unknown.
 import { sql, type Db } from "../db.ts";
 import { sha256, stableJson } from "../lib/ids.ts";
 import { shutdownSignal } from "../lib/shutdown.ts";
@@ -78,6 +80,9 @@ export interface ReceiptResult {
 
 const PENDING_STALE_MS = 10 * 60 * 1000;
 
+/** The service of deferred requests: answered by an agent (providers/agent.ts), not by a provider's API. */
+export const AGENT_SERVICE = "agent";
+
 export function logicalKeyFor(req: ReceiptRequest): string {
   const identity = sha256(stableJson(req.identity));
   return [req.service, req.purpose, req.model ?? "-", identity, req.attemptTag ?? "0"].join(":");
@@ -87,6 +92,7 @@ interface ReceiptRow {
   id: number;
   status: string;
   response: unknown;
+  error: string | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -123,7 +129,7 @@ export async function paidRequest(req: ReceiptRequest, call: () => Promise<CallO
     // Serialise budget checks per service so concurrent workers cannot overshoot.
     await tx`SELECT pg_advisory_xact_lock(hashtext(${"budget:" + req.service}))`;
     const [existing] = await tx<ReceiptRow[]>`
-      SELECT id, status, response, created_at, updated_at FROM receipts WHERE logical_key = ${logicalKey} FOR UPDATE`;
+      SELECT id, status, response, error, created_at, updated_at FROM receipts WHERE logical_key = ${logicalKey} FOR UPDATE`;
     if (existing?.status === "received" || existing?.status === "completed") return { kind: "reuse" as const, row: existing };
     // Finish business writes from saved answers during shutdown, but never reserve or send the
     // next paid page/batch. An answer already in flight still saves below, without this check.
@@ -199,6 +205,79 @@ export async function paidRequest(req: ReceiptRequest, call: () => Promise<CallO
   return { receiptId, response: outcome.response, reused: false };
 }
 
+/**
+ * A request answered later instead of by a call. The first attempt reserves the receipt ("pending", one
+ * attempt counted against the service's budget) and `post` records the work in the same transaction,
+ * with why the previous answer was rejected, if one was. Until the answer is saved (receiveDeferred),
+ * every attempt of the same request learns it is still waiting; then the answer is reused like any
+ * received response. An unusable answer is rejected (rejectReceivedResponse) and the next attempt posts
+ * the work again.
+ */
+export async function deferredRequest(
+  req: ReceiptRequest,
+  post: (tx: Db, receiptId: number, previousError: string | null) => Promise<void>,
+): Promise<ReceiptResult | { waiting: number }> {
+  const logicalKey = logicalKeyFor(req);
+  return sql.begin(async (tx) => {
+    await tx`SELECT pg_advisory_xact_lock(hashtext(${"budget:" + req.service}))`;
+    const [existing] = await tx<ReceiptRow[]>`
+      SELECT id, status, response, error, created_at, updated_at FROM receipts WHERE logical_key = ${logicalKey} FOR UPDATE`;
+    // The answer arrives as "received": only one business writes already used counts as reused.
+    if (existing?.status === "received" || existing?.status === "completed") return { receiptId: existing.id, response: existing.response, reused: existing.status === "completed" };
+    if (existing?.status === "pending") return { waiting: existing.id };
+    shutdownSignal.signal.throwIfAborted();
+    await checkBudget(tx, req.service);
+    let id: number;
+    let attempts: number;
+    if (existing) {
+      const [r] = await tx<{ attempts: number }[]>`
+        UPDATE receipts SET status = 'pending', attempts = attempts + 1, error = NULL, updated_at = now() WHERE id = ${existing.id} RETURNING attempts`;
+      id = existing.id;
+      attempts = r!.attempts;
+    } else {
+      const [row] = await tx<{ id: number }[]>`
+        INSERT INTO receipts (logical_key, service, model, purpose, subject, status, request, attempts)
+        VALUES (${logicalKey}, ${req.service}, ${req.model ?? null}, ${req.purpose}, ${req.subject ?? null}, 'pending',
+                ${tx.json((req.requestSummary ?? {}) as never)}, 1)
+        RETURNING id`;
+      id = row!.id;
+      attempts = 1;
+    }
+    await startAttempt(tx, id, attempts, req);
+    await post(tx, id, existing?.error ?? null);
+    return { waiting: id };
+  });
+}
+
+/**
+ * Saves the answer to a waiting deferred request as its received response; the attempt's latency is the
+ * wait. Null when the receipt is not waiting (already answered, withdrawn, or not deferred).
+ */
+export async function receiveDeferred(db: Db, receiptId: number, response: unknown): Promise<{ purpose: string; subject: string | null } | null> {
+  const [row] = await db<{ purpose: string; subject: string | null }[]>`
+    UPDATE receipts SET status = 'received', response = ${db.json(response as never)}, received_at = now(), updated_at = now()
+    WHERE id = ${receiptId} AND status = 'pending' AND service = ${AGENT_SERVICE} RETURNING purpose, subject`;
+  if (!row) return null;
+  await db`
+    UPDATE receipt_attempts SET status = 'received', finished_at = now(),
+      latency_ms = least(extract(epoch FROM now() - started_at) * 1000, 2147483647)::int
+    WHERE receipt_id = ${receiptId} AND status = 'pending'`;
+  return row;
+}
+
+/** Deferred requests nobody answered: failed, so a later attempt posts the work again or another model answers. */
+export async function withdrawDeferred(db: Db, receiptIds: number[], reason: string): Promise<number> {
+  if (!receiptIds.length) return 0;
+  const withdrawn = await db<{ id: number }[]>`
+    UPDATE receipts SET status = 'failed', error = ${reason}, updated_at = now()
+    WHERE id IN ${db(receiptIds)} AND status = 'pending' AND service = ${AGENT_SERVICE} RETURNING id`;
+  if (withdrawn.length) {
+    await db`UPDATE receipt_attempts SET status = 'failed', error = ${reason}, finished_at = now()
+             WHERE receipt_id IN ${db(withdrawn.map((r) => r.id))} AND status = 'pending'`;
+  }
+  return withdrawn.length;
+}
+
 async function startAttempt(tx: Db, receiptId: number, attempt: number, req: ReceiptRequest): Promise<number> {
   const [row] = await tx<{ id: number }[]>`
     INSERT INTO receipt_attempts (receipt_id, attempt, service, model, status) VALUES (${receiptId}, ${attempt}, ${req.service}, ${req.model ?? null}, 'pending')
@@ -213,7 +292,8 @@ async function markUnknown(tx: Db, receiptId: number, reason: string) {
 
 /**
  * Placeholders left behind by a process that stopped mid-request (crash, kill) become "unknown", so
- * they are released like any other unknown outcome even when nothing retries them.
+ * they are released like any other unknown outcome even when nothing retries them. A deferred request
+ * waits on an agent, not on a process: it is not stale (providers/agent.ts withdraws it when too old).
  */
 export async function markStalePendingReceipts(): Promise<number> {
   const reason = "placeholder went stale without a recorded result";
@@ -221,7 +301,7 @@ export async function markStalePendingReceipts(): Promise<number> {
     // Recheck status and age when the row lock is acquired: a response may commit while we wait.
     const stale = await tx<{ id: number }[]>`
       UPDATE receipts SET status = 'unknown', error = ${reason}, updated_at = now()
-      WHERE status = 'pending' AND updated_at < ${new Date(Date.now() - PENDING_STALE_MS)} RETURNING id`;
+      WHERE status = 'pending' AND service <> ${AGENT_SERVICE} AND updated_at < ${new Date(Date.now() - PENDING_STALE_MS)} RETURNING id`;
     if (stale.length) {
       await tx`UPDATE receipt_attempts SET status = 'unknown', error = ${reason}, finished_at = now()
                WHERE receipt_id IN ${tx(stale.map((r) => r.id))} AND status = 'pending'`;

@@ -13,6 +13,7 @@ import { inSiteLanguage, isSiteLanguageBody, SITE_LANGUAGE } from "@hotmoto/cont
 import { sql } from "../db.ts";
 import { sanitizeBody, textToHtml } from "../content/sanitize.ts";
 import { chatJson } from "../providers/llm.ts";
+import { AwaitingAgentError } from "../providers/agent.ts";
 import { collapseWhitespace } from "../lib/text.ts";
 import { sha256 } from "../lib/ids.ts";
 import { modelFor } from "./models.ts";
@@ -270,8 +271,8 @@ export async function translateQuotes(opts: { days?: number; limit?: number; bud
         });
         zh = res.data.t.length === 1 ? res.data.t[0]!.trim() : null;
       } catch (error) {
-        // Switched-off calls or an exhausted budget stop the run; one unusable answer skips its post (its
-        // receipt is reused next time, so a retry costs nothing).
+        // Switched-off calls or an exhausted budget stop the run; one unusable answer, or one the agent
+        // has yet to give, skips its post (its receipt is reused next time, so a retry costs nothing).
         if (/disabled|not configured|budget/i.test((error as Error).message)) throw error;
         continue;
       }
@@ -333,6 +334,8 @@ export async function translatePending(opts: { limit?: number; budgetMs?: number
       // A deploy stops between paid fragments, never aborts a sent request. Received answers stay
       // in receipts and are reused next run; do not mark an interrupted article terminal/partial.
       if (error instanceof TranslationInterruptedError) break;
+      // A fragment waits on the agent's answer: the next run goes on from it, without an attempt counted.
+      if (error instanceof AwaitingAgentError) continue;
       const message = (error as Error).message;
       // Switched-off model calls or an exhausted budget: stop this run without counting an attempt.
       if (/disabled|not configured|budget/i.test(message)) break;

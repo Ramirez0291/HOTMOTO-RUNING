@@ -1,8 +1,10 @@
 // Model per capability: the code default (the site's choice in site/models.ts, else `default`, the deployment's
 // own model), an environment override, and an admin switch kept in settings (every switch is audited).
-// Read at call time and cached for a minute, so a switch applies to the next call without a restart; a
-// changed model only affects work done from then on (history is not re-judged).
-import { DEFAULTS } from "@hotmoto/site/models";
+// Above the code default sits the processing mode (site/models.ts PROCESSING, PROCESSING_MODE, the admin):
+// "agent" hands every step without a model of its own to an agent (providers/agent.ts), "api" leaves it
+// on the code default. Read at call time and cached for a minute, so a switch applies to the next call
+// without a restart; a changed model only affects work done from then on (history is not re-judged).
+import { DEFAULTS, PROCESSING } from "@hotmoto/site/models";
 import { sql } from "../db.ts";
 import { serverModules } from "../modules.ts";
 import { MODELS } from "../providers/llm.ts";
@@ -39,37 +41,79 @@ export function capabilities(): Record<string, Capability> {
   return all;
 }
 
-let cache: { at: number; overrides: Record<string, string> } | null = null;
+export type ProcessingMode = "agent" | "api";
 
-async function overrides(): Promise<Record<string, string>> {
-  if (cache && Date.now() - cache.at < 60_000) return cache.overrides;
-  const rows = await sql<{ key: string; value: { model?: string } }[]>`SELECT key, value FROM settings WHERE key LIKE 'models.%'`;
+/** The admin's processing switch (settings `processing`); what it leaves out comes from the environment or the site. */
+export interface ProcessingSetting {
+  mode?: ProcessingMode;
+  intervalMinutes?: number;
+}
+
+export interface Processing {
+  mode: ProcessingMode;
+  source: "admin" | "env" | "site";
+  /** How often the agent comes for work, as the work interface tells it (minutes). */
+  intervalMinutes: number;
+}
+
+let cache: { at: number; overrides: Record<string, string>; processing: ProcessingSetting } | null = null;
+
+async function stored(): Promise<NonNullable<typeof cache>> {
+  if (cache && Date.now() - cache.at < 60_000) return cache;
+  const rows = await sql<{ key: string; value: { model?: string } & ProcessingSetting }[]>`
+    SELECT key, value FROM settings WHERE key LIKE 'models.%' OR key = 'processing'`;
   const map: Record<string, string> = {};
-  for (const r of rows) if (r.value?.model && MODELS[r.value.model]) map[r.key.slice("models.".length)] = r.value.model;
-  cache = { at: Date.now(), overrides: map };
-  return map;
+  let setting: ProcessingSetting = {};
+  for (const r of rows) {
+    if (r.key === "processing") setting = r.value ?? {};
+    else if (r.value?.model && MODELS[r.value.model]) map[r.key.slice("models.".length)] = r.value.model;
+  }
+  cache = { at: Date.now(), overrides: map, processing: setting };
+  return cache;
 }
 
 export function invalidateModelCache() {
   cache = null;
 }
 
-/** The model a capability uses now: admin switch, else environment, else the code default. */
+const isMode = (value: unknown): value is ProcessingMode => value === "agent" || value === "api";
+
+/** The processing mode and the agent's interval now: admin switch, else PROCESSING_MODE, else the site's. */
+export async function processing(): Promise<Processing> {
+  const setting = (await stored()).processing;
+  const env = process.env.PROCESSING_MODE;
+  const mode = isMode(setting.mode) ? setting.mode : isMode(env) ? env : PROCESSING.mode;
+  const source = isMode(setting.mode) ? "admin" : isMode(env) ? "env" : "site";
+  return { mode, source, intervalMinutes: setting.intervalMinutes ?? PROCESSING.intervalMinutes };
+}
+
+/** A step left to the mode: the agent in agent mode (it reads no images), else the code default. */
+function modeModel(c: Capability, mode: ProcessingMode): string {
+  return mode === "agent" && !c.vision ? "agent" : c.default;
+}
+
+/** The model a capability uses now: admin switch, else environment, else the processing mode's. */
 export async function modelFor(capability: CapabilityKey | (string & {})): Promise<string> {
   const c = capabilities()[capability];
   if (!c) throw new Error(`unknown model step: ${capability}`);
-  const chosen = (await overrides())[capability] ?? process.env[c.env] ?? c.default;
+  const chosen = (await stored()).overrides[capability] ?? process.env[c.env] ?? modeModel(c, (await processing()).mode);
   return MODELS[chosen] ? chosen : c.default;
 }
 
+export type ModelSource = "admin" | "env" | "mode" | "default";
+
 /** Where the current choice comes from, for the admin page. */
-export async function modelSources(): Promise<Record<string, { model: string; source: "admin" | "env" | "default" }>> {
-  const o = await overrides();
-  const out: Record<string, { model: string; source: "admin" | "env" | "default" }> = {};
+export async function modelSources(): Promise<Record<string, { model: string; source: ModelSource }>> {
+  const o = (await stored()).overrides;
+  const { mode } = await processing();
+  const out: Record<string, { model: string; source: ModelSource }> = {};
   for (const [key, c] of Object.entries(capabilities())) {
     if (o[key]) out[key] = { model: o[key]!, source: "admin" };
     else if (process.env[c.env] && MODELS[process.env[c.env]!]) out[key] = { model: process.env[c.env]!, source: "env" };
-    else out[key] = { model: c.default, source: "default" };
+    else {
+      const model = modeModel(c, mode);
+      out[key] = { model, source: model === "agent" ? "mode" : "default" };
+    }
   }
   return out;
 }

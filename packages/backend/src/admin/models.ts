@@ -1,11 +1,12 @@
-// Admin "モデルと評価": the model each capability uses and where that choice comes from,
-// the prompt versions in use, quality / latency / cost of the last days per model, the switch history
-// and the SelectBench runs that compare models on the same batch. A switch is audited and applies to
-// new work only.
+// Admin "モデルと評価": the processing mode (an agent or the models' APIs) and the agent's queue, the
+// model each capability uses and where that choice comes from, the prompt versions in use, quality /
+// latency / cost of the last days per model, the switch history and the SelectBench runs that compare
+// models on the same batch. A switch is audited and applies to new work only.
 import type { AdminModels, BeforeJson } from "@hotmoto/contracts/admin";
 import { sql } from "../db.ts";
-import { capabilities, invalidateModelCache, modelSources } from "../editorial/models.ts";
+import { capabilities, invalidateModelCache, modelSources, processing, type ProcessingSetting } from "../editorial/models.ts";
 import { MODELS } from "../providers/llm.ts";
+import { agentQueue, agentToken } from "../providers/agent.ts";
 import { audit } from "../audit.ts";
 
 interface UsageRow {
@@ -31,7 +32,7 @@ interface UsageRow {
 
 export async function modelsOverview(days = 7): Promise<BeforeJson<AdminModels>> {
   const since = new Date(Date.now() - days * 86400_000);
-  const [sources, usage, prices, history, benches] = await Promise.all([
+  const [sources, usage, prices, history, benches, mode, queue] = await Promise.all([
     modelSources(),
     sql<UsageRow[]>`
       SELECT r.purpose, a.model, r.request->>'promptVersion' AS prompt_version, count(*)::int AS calls,
@@ -56,6 +57,8 @@ export async function modelsOverview(days = 7): Promise<BeforeJson<AdminModels>>
       SELECT id, label, sample_size, prompt_version, models,
              (SELECT coalesce(jsonb_object_agg(key, value - 'sweep'), '{}'::jsonb) FROM jsonb_each(r.summary)) AS summary,
              created_at FROM selectbench_runs r ORDER BY created_at DESC LIMIT 8`,
+    processing(),
+    agentQueue(),
   ]);
   const serviceOf = (model: string) => Object.values(MODELS).find((m) => m.model === model || m.key === model)?.service ?? null;
   // Cached prompt tokens at the cache price, the rest at the input price; calls that carry their own cost
@@ -96,7 +99,35 @@ export async function modelsOverview(days = 7): Promise<BeforeJson<AdminModels>>
       })),
   }));
   const choices = Object.values(MODELS).map((m) => ({ key: m.key, service: m.service, vision: !!m.vision }));
-  return { days, capabilities: steps, choices, history, benches };
+  return { days, processing: { ...mode, agentReady: agentToken() !== null, queue }, capabilities: steps, choices, history, benches };
+}
+
+/** The agent's interval can be set from 5 minutes to a day. */
+const INTERVAL = { min: 5, max: 24 * 60 };
+
+/**
+ * Switches the processing mode and/or the agent's interval (audited). The mode moves every step that
+ * has no model of its own (admin or environment) at once; a step's own model stays.
+ */
+export async function switchProcessing(input: ProcessingSetting, reason: string, actor: string) {
+  if (!reason.trim()) throw Object.assign(new Error("a reason is required"), { statusCode: 400 });
+  if (input.mode !== undefined && input.mode !== "agent" && input.mode !== "api") throw Object.assign(new Error("mode is agent or api"), { statusCode: 400 });
+  if (input.intervalMinutes !== undefined && !(Number.isInteger(input.intervalMinutes) && input.intervalMinutes >= INTERVAL.min && input.intervalMinutes <= INTERVAL.max)) {
+    throw Object.assign(new Error(`intervalMinutes is a whole number from ${INTERVAL.min} to ${INTERVAL.max}`), { statusCode: 400 });
+  }
+  const before = await processing();
+  const value: ProcessingSetting = {
+    ...(before.source === "admin" ? { mode: before.mode } : {}),
+    intervalMinutes: before.intervalMinutes,
+    ...(input.mode !== undefined ? { mode: input.mode } : {}),
+    ...(input.intervalMinutes !== undefined ? { intervalMinutes: input.intervalMinutes } : {}),
+  };
+  await sql`INSERT INTO settings (key, value, updated_by) VALUES ('processing', ${sql.json(value as never)}, ${actor})
+            ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value, updated_by = EXCLUDED.updated_by, updated_at = now()`;
+  invalidateModelCache();
+  const after = await processing();
+  await audit(actor, "processing.switch", "processing", reason, before, after);
+  return { before, after };
 }
 
 /** Switches a capability to another registered model (or back to the environment/default when null). */

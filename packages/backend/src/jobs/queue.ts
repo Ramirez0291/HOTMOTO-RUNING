@@ -7,6 +7,8 @@ import { config } from "../config.ts";
 import { sql, type Db } from "../db.ts";
 import { shutdownSignal } from "../lib/shutdown.ts";
 import { logError } from "../lib/log-error.ts";
+import { jobContext, type JobRef } from "../lib/job-context.ts";
+import { AwaitingAgentError } from "../providers/agent.ts";
 import { serverModules, type ModuleQueue } from "../modules.ts";
 export { shutdownSignal } from "../lib/shutdown.ts";
 
@@ -133,18 +135,41 @@ export async function retryReleasedReceiptJobs(): Promise<number> {
   });
 }
 
+/**
+ * Runs one job's handler in its job context (lib/job-context.ts). A step that waits on an agent's answer
+ * completes the job without a retry: the answer sends it again (resendJob).
+ */
+async function runJob(job: { name: string; id: string }, run: () => Promise<unknown>): Promise<unknown> {
+  try {
+    return await jobContext.run({ queue: job.name, id: job.id }, run);
+  } catch (error) {
+    if (error instanceof AwaitingAgentError) return { awaitingAgent: error.receiptId };
+    throw error;
+  }
+}
+
 /** The worker's handler for one queue (jobs/*.ts), called with each job's data. */
 export async function work<Q extends QueueName>(boss: PgBoss, name: Q, options: WorkOptions, handler: (data: JobData[Q]) => Promise<unknown>): Promise<void> {
   await ensureQueue(name);
-  await boss.work<JobData[Q]>(name, options, async ([job]) => (job ? handler(job.data) : undefined));
+  await boss.work<JobData[Q]>(name, options, async ([job]) => (job ? runJob(job, () => handler(job.data)) : undefined));
 }
 
 /** The worker's handlers for the site's modules' queues. */
 export async function workModuleQueues(boss: PgBoss): Promise<void> {
   for (const queue of serverModules().flatMap((m) => m.queues ?? [])) {
     await ensureQueue(queue.name, queue.options);
-    await boss.work(queue.name, queue.worker, async ([job]) => (job ? queue.run(job.data as never) : undefined));
+    await boss.work(queue.name, queue.worker, async ([job]) => (job ? runJob(job, () => queue.run(job.data as never)) : undefined));
   }
+}
+
+/** Sends a job that stopped to wait on an agent again, as it was: queue, data, singleton key and priority. */
+export async function resendJob(ref: JobRef, tx: Db): Promise<string | null> {
+  const [job] = await tx<{ data: object; singleton_key: string | null; priority: number }[]>`
+    SELECT data, singleton_key, priority FROM pgboss.job WHERE name = ${ref.queue} AND id = ${ref.id}`;
+  if (!job) return null;
+  await ensureQueue(ref.queue);
+  const b = await getBoss();
+  return b.send(ref.queue, job.data, { priority: job.priority, ...(job.singleton_key ? { singletonKey: job.singleton_key } : {}), db: queueDb(tx) });
 }
 
 // Scheduled task bookkeeping: every run leaves a row, so operators see the latest result.

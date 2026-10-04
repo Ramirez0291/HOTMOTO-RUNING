@@ -11,7 +11,9 @@ import { analyzeArticle, AnalysisInterruptedError } from "../editorial/analyze.t
 import { isHistorical } from "../content/materials.ts";
 import { publishArticle } from "../publication/publish.ts";
 import { BudgetExceededError, ProviderRejectedError, ReceiptBusyError, ReceiptUnknownError } from "../providers/receipts.ts";
+import { AwaitingAgentError } from "../providers/agent.ts";
 import { ModelOutputError } from "../providers/llm.ts";
+import { processing } from "../editorial/models.ts";
 import { enqueue, QUEUES, shutdownSignal, work } from "./queue.ts";
 
 /** Minutes to wait after the n-th failed attempt; one more failure after the last ends in "failed". */
@@ -160,6 +162,14 @@ async function afterFailure(articleId: string, revision: number, error: unknown)
   // failure and must neither consume processing_attempts nor turn an incomplete chain terminal.
   if (error instanceof AnalysisInterruptedError || shutdownSignal.signal.aborted) throw error;
   const message = String(error instanceof Error ? error.message : error).slice(0, 500);
+  if (error instanceof AwaitingAgentError) {
+    // Not a failure: the agent's answer sends this article's job again at once (jobs/agent.ts). The
+    // retry time brings it back for a task withdrawn unanswered (providers/agent.ts), to post it again.
+    const retryAt = new Date(Date.now() + (await processing()).intervalMinutes * 60_000);
+    await sql`UPDATE articles SET processing_state = 'new', processing_error = ${message}, processing_retry_at = ${retryAt}, processing_queued_at = NULL
+              WHERE id = ${articleId} AND revision = ${revision}`;
+    return { state: "awaiting-agent", retryAt };
+  }
   if (error instanceof ReceiptBusyError || error instanceof BudgetExceededError) {
     // Not the article's fault: the same request is in flight, or the budget window is full.
     const seconds = error instanceof BudgetExceededError ? error.retryAfterSeconds : 60;

@@ -6,7 +6,7 @@ import { actorOf } from "@hotmoto/backend/admin/auth";
 import { navCounts } from "@hotmoto/backend/admin/navigation";
 import { listAudit } from "@hotmoto/backend/audit";
 import { importSelectBenchRun, listSelectBenchRuns, selectBenchRun } from "@hotmoto/backend/admin/selectbench";
-import { modelsOverview, switchModel } from "@hotmoto/backend/admin/models";
+import { modelsOverview, switchModel, switchProcessing } from "@hotmoto/backend/admin/models";
 import { contentChain, overrideFields, rerun, searchContent, setSeoIndexed, setVisibility } from "@hotmoto/backend/admin/content";
 import { detachFromFact, mergeStories } from "@hotmoto/backend/events/corrections";
 import { banSource, eraseFeedback, feedbackScreenshot, listFeedback, unbanSource, updateFeedback } from "@hotmoto/backend/admin/feedback";
@@ -111,6 +111,10 @@ export function registerAdmin(app: FastifyInstance) {
   app.post("/api/admin/models/:capability", adminHandler(async (req, _reply, admin) => {
     const b = body<{ model: string | null; reason: string }>(req);
     return switchModel(param(req, "capability"), b.model ?? null, String(b.reason ?? ""), actorOf(admin));
+  }));
+  app.put("/api/admin/processing", adminHandler(async (req, _reply, admin) => {
+    const b = body<{ mode?: "agent" | "api"; intervalMinutes?: number; reason: string }>(req);
+    return switchProcessing({ mode: b.mode, intervalMinutes: b.intervalMinutes }, String(b.reason ?? ""), actorOf(admin));
   }));
 
   // SelectBench

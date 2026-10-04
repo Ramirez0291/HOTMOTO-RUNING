@@ -10,6 +10,8 @@ import { sweepUngrouped } from "../jobs/events.ts";
 import { retryReleasedReceiptJobs } from "../jobs/queue.ts";
 import { markStaleDeliveries } from "../notify/deliver.ts";
 import { markStalePendingReceipts, releaseUnknownReceipt } from "../providers/receipts.ts";
+import { withdrawStaleAgentTasks } from "../providers/agent.ts";
+import { processing } from "../editorial/models.ts";
 
 const AUTO_RELEASE_AFTER_MS = 30 * 60_000;
 export const AUTO_RELEASE_NOTE = "自動解放：結果不明が 30 分を超えたため。課金の有無は未確認";
@@ -56,5 +58,8 @@ export async function autoReleaseUnknownReceipts(now = Date.now()) {
 
 /** ops.recover, every 10 minutes. */
 export async function recoverStaleWork() {
-  return { receipts: await markStalePendingReceipts(), released: await autoReleaseUnknownReceipts(), jobs: await retryReleasedReceiptJobs(), grouping: await sweepUngrouped(), deliveries: await markStaleDeliveries() };
+  return {
+    receipts: await markStalePendingReceipts(), released: await autoReleaseUnknownReceipts(), jobs: await retryReleasedReceiptJobs(), grouping: await sweepUngrouped(),
+    deliveries: await markStaleDeliveries(), agentTasks: await withdrawStaleAgentTasks((await processing()).intervalMinutes),
+  };
 }

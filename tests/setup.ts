@@ -22,6 +22,8 @@ process.env.LOG_LEVEL ??= "error";
 // Paid providers are local stubs in these tests: calls and collection may run (the valves default off).
 process.env.MODEL_CALLS_ENABLED ??= "true";
 process.env.COLLECT_ENABLED ??= "true";
+// The tests drive the models' APIs (stubs); tests/agent-work.test.ts switches to the agent itself.
+process.env.PROCESSING_MODE ??= "api";
 // The tests were written against named model presets, one per step (each provider is pointed at a
 // local stub by the test that needs it). A step the site leaves on the `default` model gets its
 // preset here; tests/default-model.test.ts covers the default.

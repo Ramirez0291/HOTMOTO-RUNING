@@ -16,6 +16,7 @@ import { TIME_ZONE } from "@hotmoto/site";
 import { sql } from "../db.ts";
 import { chatJson, MODELS, ModelOutputError, type ContentPart } from "../providers/llm.ts";
 import { completeReceipt, ProviderRejectedError, ReceiptUnknownError } from "../providers/receipts.ts";
+import { AwaitingAgentError } from "../providers/agent.ts";
 import { collapseWhitespace } from "../lib/text.ts";
 import { modelFor } from "./models.ts";
 import { buildMaterial, firstImagePart, loadAnalyzeInput, type AnalyzeInputArticle } from "./input.ts";
@@ -279,6 +280,8 @@ async function runScores(
   const values: number[] = [];
   const receiptIds: number[] = [];
   let reused = true;
+  // On the agent, every score is posted before the step waits, so they come back in one round.
+  let awaiting: AwaitingAgentError | null = null;
   // One after the other: the second call reuses the provider's cached prompt.
   for (let i = 0; i < SCORE_CALLS; i++) {
     checkAnalysisRunning();
@@ -298,9 +301,14 @@ async function runScores(
       if (receiptId !== null) onReceipt?.(receiptId);
       // The model's content filter declines the material (Zhipu 1301): not scored, so not selected.
       if (isContentFilter(error)) return { model, threshold, values, receiptIds, reused: false, refused: true };
+      if (error instanceof AwaitingAgentError) {
+        awaiting ??= error;
+        continue;
+      }
       throw error;
     }
   }
+  if (awaiting) throw awaiting;
   return { model, threshold, values, receiptIds, reused };
 }
 

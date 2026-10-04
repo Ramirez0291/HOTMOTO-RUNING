@@ -1,12 +1,13 @@
 // OpenAI-compatible chat calls, always through receipts. One model is enough: `default` is whatever the
 // deployment names in LLM_BASE_URL / LLM_API_KEY / LLM_MODEL, and every capability uses it unless the
 // site, an environment variable or the admin's model page picks one of the site's named presets
-// (site/models.ts).
-import type { z } from "zod";
+// (site/models.ts). `agent` is no API: the request becomes a task an agent answers later (providers/agent.ts).
+import { z } from "zod";
 import { PRESETS } from "@hotmoto/site/models";
 import { config, credential } from "../config.ts";
 import { sha256 } from "../lib/ids.ts";
-import { assertAccepted, paidRequest, ProviderRejectedError, rejectReceivedResponse } from "./receipts.ts";
+import { AwaitingAgentError, postAgentTask } from "./agent.ts";
+import { AGENT_SERVICE, assertAccepted, deferredRequest, paidRequest, ProviderRejectedError, rejectReceivedResponse } from "./receipts.ts";
 
 export interface ModelSpec {
   key: string;
@@ -47,6 +48,8 @@ export const MODELS: Record<string, ModelSpec> = {
     get jsonMode() { return process.env.LLM_JSON_MODE !== "false"; },
     get vision() { return process.env.LLM_VISION === "true"; },
   },
+  // Answered by an agent polling for work instead of an API: no address, no key, text only.
+  agent: { key: "agent", service: AGENT_SERVICE, model: "agent", baseUrlEnv: "", apiKeyEnv: "", jsonMode: true, vision: false },
   // The pack's named presets, each with its own address and key.
   ...Object.fromEntries(Object.entries(PRESETS).map(([key, preset]) => [key, { key, ...preset }])),
 };
@@ -130,6 +133,7 @@ export async function chatJson<S extends z.ZodType>(opts: ChatJsonOptions<S>): P
   const spec = MODELS[opts.model];
   if (!spec) throw new Error(`Unknown model ${opts.model}`);
   if (!config.modelCallsEnabled) throw new Error("Model calls are disabled (MODEL_CALLS_ENABLED=false)");
+  if (spec.service === AGENT_SERVICE) return agentJson(spec, opts);
   const baseUrl = credential("models", spec.baseUrlEnv);
   const apiKey = credential("models", spec.apiKeyEnv);
   if (!baseUrl || !apiKey || !spec.model) throw new Error(`Model ${opts.model} is not configured (${spec.baseUrlEnv}, ${spec.apiKeyEnv}${spec.key === "default" ? ", LLM_MODEL" : ""})`);
@@ -196,17 +200,61 @@ export async function chatJson<S extends z.ZodType>(opts: ChatJsonOptions<S>): P
 
   const response = receipt.response as { choices?: Array<{ message?: { content?: string }; finish_reason?: string }>; usage?: Record<string, unknown> };
   const content = response.choices?.[0]?.message?.content ?? "";
-  let parsed: z.infer<S>;
+  const parsed = await parseOutput(spec, opts, content, receipt.receiptId, response.choices?.[0]?.finish_reason);
+  return { data: parsed, receiptId: receipt.receiptId, reused: receipt.reused, model: spec.key, usage: response.usage ?? null };
+}
+
+/** The answer in the step's schema; an unusable one is recorded, so a later attempt asks for a fresh answer. */
+async function parseOutput<S extends z.ZodType>(spec: ModelSpec, opts: ChatJsonOptions<S>, content: string, receiptId: number, finishReason?: string): Promise<z.infer<S>> {
   try {
-    parsed = opts.schema.parse(opts.parse ? opts.parse(content) : extractJson(content));
+    return opts.schema.parse(opts.parse ? opts.parse(content) : extractJson(content));
   } catch (error) {
-    // Unusable output: record it and let a later attempt pay for a fresh answer. A reasoning model that
-    // reasoned up to the output limit leaves an empty or cut-off answer; say so, and where to give it room.
-    const detail = response.choices?.[0]?.finish_reason === "length"
+    // A reasoning model that reasoned up to the output limit leaves an empty or cut-off answer; say so,
+    // and where to give it room.
+    const detail = finishReason === "length"
       ? `output token limit reached (finish_reason=length): a reasoning model may have spent it reasoning; give it room with ${spec.key === "default" ? "LLM_REASONING_TOKENS" : `reasoningTokens on preset ${spec.key}`}. ${String(error)}`
       : String(error);
-    await rejectReceivedResponse(receipt.receiptId, `unusable output: ${detail.slice(0, 500)}`);
-    throw new ModelOutputError(`Model ${opts.model} returned unusable output for ${opts.subject}: ${detail.slice(0, 300)}`, receipt.receiptId);
+    await rejectReceivedResponse(receiptId, `unusable output: ${detail.slice(0, 500)}`);
+    throw new ModelOutputError(`Model ${opts.model} returned unusable output for ${opts.subject}: ${detail.slice(0, 300)}`, receiptId);
   }
-  return { data: parsed, receiptId: receipt.receiptId, reused: receipt.reused, model: spec.key, usage: response.usage ?? null };
+}
+
+/** The step's output schema for the agent, where it converts (transforms and fallbacks are left open). */
+function jsonSchemaOf(schema: z.ZodType): unknown {
+  try {
+    return z.toJSONSchema(schema, { io: "input", unrepresentable: "any" });
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A step on the agent: the saved answer when there is one, read like a provider's response; otherwise
+ * the request is posted once as a task (providers/agent.ts) and the step waits (AwaitingAgentError).
+ * The agent reads text only.
+ */
+async function agentJson<S extends z.ZodType>(spec: ModelSpec, opts: ChatJsonOptions<S>): Promise<ChatJsonResult<z.infer<S>>> {
+  const temperature = opts.temperature ?? 0.2;
+  const maxTokens = Math.max(opts.maxTokens ?? 1500, 512);
+  const input = typeof opts.user === "string" ? opts.user : opts.user.flatMap((part) => (part.type === "text" ? [part.text] : [])).join("\n\n");
+  const format = opts.json === false ? "text" : "json";
+  const result = await deferredRequest(
+    {
+      service: spec.service,
+      model: spec.model,
+      purpose: opts.purpose,
+      subject: opts.subject,
+      identity: { model: spec.model, promptVersion: opts.promptVersion, system: sha256(opts.system), user: sha256(input), format },
+      requestSummary: { promptVersion: opts.promptVersion, systemHash: sha256(opts.system), userHash: sha256(input), userChars: input.length, temperature, maxTokens },
+      attemptTag: opts.attemptTag,
+    },
+    (tx, receiptId, previousError) => postAgentTask(tx, receiptId, {
+      purpose: opts.purpose, subject: opts.subject, attempt: opts.attemptTag ?? null, system: opts.system, input, format,
+      schema: format === "json" ? jsonSchemaOf(opts.schema) : null, temperature, maxTokens,
+    }, previousError),
+  );
+  if ("waiting" in result) throw new AwaitingAgentError(result.waiting, opts.purpose);
+  const content = String((result.response as { content?: unknown } | null)?.content ?? "");
+  const parsed = await parseOutput(spec, opts, content, result.receiptId);
+  return { data: parsed, receiptId: result.receiptId, reused: result.reused, model: spec.key, usage: null };
 }

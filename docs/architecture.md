@@ -15,7 +15,7 @@ flowchart LR
 
 | プロセス | 場所 | 役割 |
 |---|---|---|
-| api | `apps/api/` | Fastify。サイト自身が使うインターフェース（`/api/site/`）、公開 API（`/api/v1/`）、RSS、MCP、管理画面のインターフェース、画像プロキシ、シェア画像 |
+| api | `apps/api/` | Fastify。サイト自身が使うインターフェース（`/api/site/`）、公開 API（`/api/v1/`）、RSS、MCP、管理画面のインターフェース、Agent の作業のインターフェース（`/api/agent/`）、画像プロキシ、シェア画像 |
 | worker | `apps/worker/` | pg-boss の待ち行列と定期作業：情報源の取得、モデルの呼び出し、まとめ、話題度、日報、アラート、掃除 |
 | web | `apps/web/` | React Router のサーバーサイドレンダリングのウェブ。HTTP で api を読むだけで、データベースには触れない |
 
@@ -28,6 +28,7 @@ flowchart LR
 - **ページはモデルを呼ばない**：読者がページを開いても、データベースにある結果を読むだけです。モデルは worker の作業の中でだけ呼びます。
 - **お金のかかるリクエストには受領記録**：有料のリクエスト（モデル、X、WeChat、Jina）はまず受領記録を作り、結果を受け取ったら保存してから使います。プロセスの再起動や作業の再試行では、支払い済みの結果を再利用し、二重に支払いません（`providers/receipts.ts`）。結果不明の受領記録は 30 分を過ぎると自動で 1 回解放され、それで失敗のまま止まっていた記事は待ち行列に戻り、未完の本文抽出や分析を続けます。再び結果不明になったら、管理者が「実行」ページで確認してから解放します。
 - **予算の遮断**：有料のサービスごとに 1 分・1 時間・1 日の上限があり、超えると止まります（管理画面の「設定 → 有料リクエストの上限」）。
+- **Agent への作業も受領記録を通る**：工程のモデルが `agent` のとき、リクエストはタスク（`agent_tasks`）になり、受領記録は答えが届くまで「pending」のまま待ちます（結果不明にはならない）。答えは API の答えと同じく受領記録に保存し、工程が元のスキーマで検査します。待っていた作業は、タスクを出した待ち行列の作業として答えと同じトランザクションでもう一度送ります（[Agent による処理](agent.md)）。
 - **安全弁**：`COLLECT_ENABLED`、`MODEL_CALLS_ENABLED`、`FEISHU_CONTENT_PUSH_ENABLED`、`FEISHU_INTERNAL_ENABLED`、`INDEXNOW_SUBMIT_ENABLED` は「外に出すかどうか」だけを決め、どのロジックを通るかは決めません。`true` にしたときだけ開きます。開発中は閉じておき、テストでは配信は常に閉じ、収集とモデルの呼び出しはローカルの偽サービスにだけつなぎます。
 - **公開内容は匿名**：管理者と訪問者は同じものを見ます。読者のお気に入りや既読はブラウザに保存します。管理画面は管理者だけです。
 - **古い記事で埋めない**：発見時に公開から 48 時間を過ぎた資料、新しい情報源の既存分、さかのぼった配信は、原文の日時で保管し、「今日」に入れず配信もしません。
@@ -58,7 +59,7 @@ flowchart LR
 | `packages/backend/src/events/` | 出来事のまとめ、話題度、出来事のまとめ文 |
 | `packages/backend/src/publication/` | 公開の読み取り層 |
 | `packages/backend/src/reports/` | 日報、週報、月報 |
-| `packages/backend/src/providers/` | モデル、ベクトル、X、WeChat、Jina の呼び出し、受領記録と予算 |
+| `packages/backend/src/providers/` | モデル、ベクトル、X、WeChat、Jina の呼び出し、受領記録と予算、Agent へのタスク（`agent.ts`） |
 | `packages/backend/src/notify/` | 飛書への配信 |
 | `packages/backend/src/operations/` | アラート、バックアップ、掃除、IndexNow |
 | `packages/backend/src/admin/` | 管理画面のインターフェース |
