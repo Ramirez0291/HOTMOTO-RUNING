@@ -265,6 +265,7 @@ export const ACCESS = {
 /** このデプロイ自身の取り決め（任意）。 */
 export const DEPLOYMENT = {
   /** 認証情報のグループファイル（models.env、collectors.env……）を置く既定のディレクトリ（リポジトリのルートからの相対パス）。環境変数 hotmoto_CREDENTIALS_DIR が優先し、どちらもなければ環境変数だけを読む。 */
+  /** 認証情報のグループファイル（models.env、collectors.env……）を置く既定のディレクトリ（リポジトリのルートからの相対パス）。環境変数 hotmoto_CREDENTIALS_DIR が優先し、どちらもなければ環境変数だけを読む。 */
   credentialsDir: null as string | null,
   /** 認証情報グループのファイル名（認証情報ディレクトリの下、任意）。書いていないグループは「グループ名.env」。例：models.env。 */
   credentialFiles: {} as Partial<Record<string, string>>,

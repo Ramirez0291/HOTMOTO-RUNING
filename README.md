@@ -26,6 +26,7 @@
 ## 動かす
 
 [Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（Claude, Geminiなど）が必要です。
+[Docker](https://docs.docker.com/get-docker/) と、OpenAI 互換のモデル API キー（Claude, Geminiなど）が必要です。
 
 ```bash
 node scripts/init-env.ts --llm-key <モデルの API キー>
