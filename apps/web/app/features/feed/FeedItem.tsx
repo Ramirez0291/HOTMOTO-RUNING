@@ -1,4 +1,4 @@
-// One report in a feed. Desktop (≥ 961px): a white card beside the time rail. Phones: a compact row with
+// One report in a feed. Desktop (≥ 961px): a raised card beside the time rail. Phones: a compact row with
 // the time in the source line, the bookmark at hand, the reason in one line and duplicate reports
 // behind one button that opens a sheet. One markup, two presentations.
 import { memo } from "react";
@@ -11,6 +11,7 @@ import { SameEventBadge, SelectedBadge } from "../../components/ui/Badge";
 import { ScoreLabel } from "../../components/ui/Score";
 import { siteTime } from "@hotmoto/contracts/time";
 import { MediaThumbs, SourceLine, StarButton } from "./parts";
+import { IconSparkles } from "../../components/icons";
 import { GroupButton, GroupSources } from "./ReadingGroup";
 import { QuotedLine } from "../item/QuotedPost";
 import { rememberPreview } from "../item/preview";
@@ -112,9 +113,14 @@ export const FeedItem = memo(function FeedItem({ item, group, filters, read = fa
         </div>
       )}
 
+      {/* The model's one line on why it matters, as a note pressed into the card. */}
       {item.reason && (
-        <div className="mt-1 lg:mt-3 lg:border-t lg:border-line-soft lg:pt-3">
-          <p className="line-clamp-1 text-[13px] leading-[1.65] text-note lg:line-clamp-none lg:leading-[1.75]">{`${ITEM_COPY.reasonLabel}：`}{item.reason}</p>
+        <div className="mt-1 flex items-start gap-1.5 lg:well lg:mt-3 lg:gap-2 lg:rounded-tile lg:px-3 lg:py-2.5">
+          <IconSparkles size={13} strokeWidth={2} className="mt-[4px] shrink-0 text-accent lg:mt-[5px]" />
+          <p className="line-clamp-1 min-w-0 text-[13px] leading-[1.65] text-note lg:line-clamp-none lg:leading-[1.75]">
+            <span className="font-semibold text-accent">{`${ITEM_COPY.reasonLabel}：`}</span>
+            {item.reason}
+          </p>
         </div>
       )}
 

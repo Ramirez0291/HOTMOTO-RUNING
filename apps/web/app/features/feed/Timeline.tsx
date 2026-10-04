@@ -77,7 +77,7 @@ export function DayHeader({ day, today, count, collapsed, onToggle, aside }: { d
             onClick={onToggle}
             aria-expanded={!collapsed}
             aria-label={collapsed ? `${date}を開く` : `${date}を閉じる`}
-            className="grid size-6 place-items-center justify-self-center rounded-full text-ink-4 transition-colors hover:bg-bg-sunk hover:text-ink"
+            className="grid size-6 place-items-center justify-self-center rounded-full bg-surface text-ink-4 shadow-[var(--shadow-thumb)] transition-[color,box-shadow] hover:text-accent active:shadow-[var(--shadow-inset-sm)]"
           >
             <IconChevronDown size={14} className={`transition-transform duration-200 ${collapsed ? "-rotate-90" : ""}`} />
           </button>
@@ -114,8 +114,10 @@ export function TimelineSlot({ at, children, fresh = false, delay = 0, dataKey }
           {siteTime(at)}
         </time>
         <span aria-hidden="true" className="relative hidden lg:block">
-          <span className="absolute -bottom-[41px] left-[10.5px] top-[29px] w-px bg-line-strong group-last/slot:hidden" />
-          <span className="absolute left-[7.5px] top-[25.5px] size-[7px] rounded-full bg-accent shadow-[0_0_0_4px_var(--bg)] transition-transform duration-300 group-hover/slot:scale-[1.15]" />
+          <span className="absolute -bottom-[41px] left-[10px] top-[29px] w-[2px] rounded-full bg-lavender/45 group-last/slot:hidden" />
+          <span className="absolute left-[5px] top-[23px] grid size-3 place-items-center rounded-full bg-bg shadow-[var(--shadow-thumb)] transition-transform duration-300 group-hover/slot:scale-[1.2]">
+            <span className="size-1.5 rounded-full bg-accent" />
+          </span>
         </span>
         {children}
       </div>

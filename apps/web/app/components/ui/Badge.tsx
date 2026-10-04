@@ -8,7 +8,7 @@ const TONES: Record<Tone, string> = {
   amber: "bg-amber-soft text-amber-ink",
   hot: "bg-hot-soft text-hot",
   ok: "bg-ok-soft text-ok",
-  neutral: "bg-bg-sunk text-ink-3 border border-line-soft",
+  neutral: "bg-bg-sunk text-ink-3 shadow-[var(--shadow-inset-sm)]",
 };
 
 /** Small label next to a source or title: 厳選, statuses and counts. */

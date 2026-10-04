@@ -36,7 +36,7 @@ export function PhoneBar({ back, title, large = false, sub, leading, center, act
     <>
       <header
         data-phone-bar=""
-        className={`bleed sticky top-0 z-40 bg-bg/85 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-200 lg:hidden ${scrolled ? "shadow-[0_1px_0_var(--line-soft)]" : ""}`}
+        className={`bleed sticky top-0 z-40 bg-bg/85 backdrop-blur-xl backdrop-saturate-150 transition-shadow duration-200 lg:hidden ${scrolled ? "shadow-[0_8px_16px_-10px_var(--neu-shade)]" : ""}`}
       >
         <div className={`-mx-2.5 grid h-[var(--bar-h)] items-center ${wideCenter ? "grid-cols-[minmax(0,1fr)_auto]" : "grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]"}`}>
           {!wideCenter && <div className="flex min-w-0 items-center">{back ? <BackButton {...back} /> : leading}</div>}
@@ -93,7 +93,7 @@ function BackButton({ to, label }: BackTarget) {
   );
 }
 
-/** A 44px round icon button for the bar; `on` tints it (a filter in use). */
+/** A 44px round icon button for the bar, drawn as a smaller raised disc that sinks when tapped; `on` tints it (a filter in use). */
 export const BarButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTMLButtonElement> & { label: string; on?: boolean; children: ReactNode }>(function BarButton(
   { label, on = false, children, className = "", ...rest },
   ref,
@@ -104,7 +104,7 @@ export const BarButton = forwardRef<HTMLButtonElement, ButtonHTMLAttributes<HTML
       type="button"
       aria-label={label}
       title={label}
-      className={`relative grid size-11 shrink-0 place-items-center rounded-full transition-colors active:bg-bg-sunk ${on ? "text-accent" : "text-ink-2"} ${className}`}
+      className={`relative isolate grid size-11 shrink-0 place-items-center rounded-full transition-colors duration-150 before:absolute before:inset-[5px] before:-z-10 before:rounded-full before:bg-surface before:shadow-[var(--shadow-thumb)] before:transition-shadow active:before:shadow-[var(--shadow-inset-sm)] ${on ? "text-accent" : "text-ink-2"} ${className}`}
       {...rest}
     >
       {children}

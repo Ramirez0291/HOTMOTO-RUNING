@@ -80,7 +80,7 @@ export function FeedBar({ base, category, channel }: { base: "/" | "/all"; categ
           <>
             <BarButton label={filtered ? "絞り込み（選択中）" : "絞り込み"} on={filtered} onClick={() => setSheet(true)}>
               <IconFilter size={21} />
-              {filtered && <span aria-hidden="true" className="absolute right-[9px] top-[9px] size-[7px] rounded-full bg-accent ring-2 ring-bg" />}
+              {filtered && <span aria-hidden="true" className="absolute right-[9px] top-[9px] size-[7px] rounded-full bg-accent ring-2 ring-surface" />}
             </BarButton>
             <SearchButton />
           </>
@@ -123,7 +123,7 @@ export function ActiveFilters({ base, category, channel, tag }: { base: string; 
   const [params] = useSearchParams();
   const label = channel === "firstParty" ? CHANNEL_LABELS.firstParty : category ? CATEGORY_LABELS[category] : null;
   if (!label && !tag) return null;
-  const chip = "inline-flex min-h-11 max-w-full items-center gap-1 rounded-full bg-accent-soft pl-3 pr-2 text-[13px] font-medium text-accent transition-opacity active:opacity-60";
+  const chip = "neu-inset inline-flex min-h-11 max-w-full items-center gap-1 rounded-full pl-3.5 pr-2.5 text-[13px] font-medium text-accent transition-opacity active:opacity-60";
   return (
     <div className="flex flex-wrap gap-2 pb-3 pt-1 lg:hidden">
       {label && (
@@ -164,7 +164,7 @@ function useSlashFocus(ref: React.RefObject<HTMLInputElement | null>) {
   }, [ref]);
 }
 
-/** Desktop search field (GET /all?q=…): at the end of the filter row as the same grey track, at the height of md tabs, with a "/" hint. */
+/** Desktop search field (GET /all?q=…): at the end of the filter row, pressed in like the tabs' track, with a "/" hint. */
 export function SearchField({ defaultValue = "", keep = {} }: { defaultValue?: string; keep?: Record<string, string | null> }) {
   const [value, setValue] = useState(defaultValue);
   const navigation = useNavigation();
@@ -190,7 +190,7 @@ export function SearchField({ defaultValue = "", keep = {} }: { defaultValue?: s
         placeholder="タイトル・要約を検索…"
         maxLength={200}
         autoComplete="off"
-        className="h-[42px] w-full rounded-full bg-bg-sunk pl-10 pr-10 text-[14px] text-ink outline-none ring-1 ring-inset ring-line-soft transition-[background-color,box-shadow] placeholder:text-ink-4 hover:ring-line-strong focus:bg-surface focus:shadow-[0_0_0_3px_var(--accent-soft)] focus:ring-accent dark:bg-bg-muted/60 dark:focus:bg-surface"
+        className="neu-inset h-[44px] w-full rounded-full pl-10 pr-10 text-[14px] text-ink outline-none transition-shadow placeholder:text-ink-4 focus:shadow-[var(--shadow-inset),0_0_0_2px_var(--accent)]"
       />
       {value ? (
         <button
@@ -200,12 +200,12 @@ export function SearchField({ defaultValue = "", keep = {} }: { defaultValue?: s
             setValue("");
             inputRef.current?.focus();
           }}
-          className="absolute right-3 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-full text-ink-4 transition-colors hover:bg-bg-sunk hover:text-ink"
+          className="absolute right-3 top-1/2 grid size-6 -translate-y-1/2 place-items-center rounded-full bg-surface text-ink-4 shadow-[var(--shadow-thumb)] transition-colors hover:text-ink"
         >
           <IconClose size={13} />
         </button>
       ) : (
-        <kbd className="mono pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-mark border border-line-strong bg-surface px-1.5 text-[10.5px] leading-4 text-ink-4 lg:block">/</kbd>
+        <kbd className="mono pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 rounded-mark bg-surface px-1.5 text-[10.5px] leading-4 text-ink-4 shadow-[var(--shadow-thumb)] lg:block">/</kbd>
       )}
     </Form>
   );

@@ -36,9 +36,10 @@ export function TabBar({ changelogVersion }: { changelogVersion: string | null }
   return (
     <nav
       aria-label="下部ナビゲーション"
-      className="fixed inset-x-0 bottom-0 z-40 bg-surface/90 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] shadow-[0_-1px_0_var(--line)] backdrop-blur-xl backdrop-saturate-150 lg:hidden"
+      className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-[max(10px,env(safe-area-inset-left))] pb-[max(8px,env(safe-area-inset-bottom))] lg:hidden"
     >
-      <div className={`mx-auto grid h-[50px] max-w-[640px] ${COLUMNS[items.length]}`}>
+      {/* A raised pill floating over the page's foot; the tab in use sits pressed into it. */}
+      <div className={`pointer-events-auto mx-auto grid h-[58px] max-w-[620px] gap-1 rounded-sheet border border-edge bg-surface/92 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl backdrop-saturate-150 ${COLUMNS[items.length]}`}>
         {items.map((t) => {
           const on = t.key === active;
           const Icon = t.icon;
@@ -60,11 +61,11 @@ export function TabBar({ changelogVersion }: { changelogVersion: string | null }
                   void revalidator.revalidate();
                 }
               }}
-              className={`relative flex flex-col items-center justify-center gap-[2px] text-[10.5px] transition-colors ${on ? "font-semibold text-accent" : "text-ink-3 active:text-ink"}`}
+              className={`relative flex flex-col items-center justify-center gap-[1px] rounded-tile text-[10.5px] transition-[box-shadow,color] duration-200 ${on ? "neu-inset font-semibold text-accent" : "text-ink-3 active:text-ink active:shadow-[var(--shadow-inset-sm)]"}`}
             >
-              <Icon size={23} />
+              <Icon size={21} />
               <span>{t.label}</span>
-              {dot && t.changelog && <span className="absolute left-[calc(50%+9px)] top-[7px] size-1.5 rounded-full bg-hot" aria-label="新しい更新があります" />}
+              {dot && t.changelog && <span className="absolute left-[calc(50%+9px)] top-[5px] size-1.5 rounded-full bg-hot" aria-label="新しい更新があります" />}
             </Link>
           );
         })}

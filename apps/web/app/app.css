@@ -6,8 +6,11 @@
 @source "../../../modules/*/{web.tsx,web/**}";
 
 /* ---------------------------------------------------------------------------
-   Design tokens: warm off-white paper, ink text, one teal accent (cyan in
-   dark), hairline borders, no gradients.
+   Design tokens: soft UI (neumorphism) on a pale lavender ground. Surfaces share
+   the page's hue and are shaped by two lights — a white highlight from the top
+   left and a violet-grey shade to the bottom right — raised for what can be
+   pressed or read as a unit, inset for fields, tracks and what is chosen. One
+   violet accent (a light lavender in dark); text keeps WCAG AA on every ground.
    Components use the semantic names below; values change per theme only.
    --------------------------------------------------------------------------- */
 
@@ -41,6 +44,8 @@
   --color-accent-soft: var(--accent-soft);
   --color-accent-softer: var(--accent-softer);
   --color-accent-contrast: var(--accent-contrast);
+  --color-lavender: var(--lavender);
+  --color-edge: var(--edge);
   --color-note: var(--note);
   --color-hot: var(--hot);
   --color-hot-soft: var(--hot-soft);
@@ -55,15 +60,15 @@
   --color-rank-3: var(--rank-3);
   --color-rank-rest: var(--rank-rest);
 
-  /* Radius scale: mark 5 (inline code, kbd, tiny tags and swatches), control 8 (inputs, small
-     blocks), tile 10 (list rows, hover areas), card 12, panel 14 (wells, pictures), sheet 16 (dialogs,
-     sheets, hero shells); pills are rounded-full. Arbitrary radii are not used. */
-  --radius-mark: 5px;
-  --radius-control: 8px;
-  --radius-tile: 10px;
-  --radius-card: 12px;
-  --radius-panel: 14px;
-  --radius-sheet: 16px;
+  /* Radius scale, generous as soft UI wants it: mark 6 (inline code, kbd, tiny tags and swatches),
+     control 12 (inputs, small blocks), tile 14 (list rows, hover areas), card 20, panel 20 (wells,
+     pictures), sheet 24 (dialogs, sheets, hero shells); pills are rounded-full. Arbitrary radii are not used. */
+  --radius-mark: 6px;
+  --radius-control: 12px;
+  --radius-tile: 14px;
+  --radius-card: 20px;
+  --radius-panel: 20px;
+  --radius-sheet: 24px;
 
   --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
 
@@ -88,54 +93,65 @@
   --gutter-l: max(16px, env(safe-area-inset-left));
   --gutter-r: max(16px, env(safe-area-inset-right));
   color-scheme: light;
-  --bg: #faf9f6;
-  --bg-sunk: #f3f3ef;
-  --bg-muted: #e9ede9;
-  --surface: #ffffff;
-  --surface-2: #fdfdfb;
-  --raised: #ffffff;
-  --sidebar: #fdfdfb;
-  --daybar: #f0f2ee;
-  --field: #eef1ed;
-  --ink: #202a30;
-  --ink-2: #303c42;
-  --ink-3: #59656b;
-  --ink-4: #657176;
-  --line: #dfe4e1;
-  --line-strong: #d1d9d5;
-  --line-soft: #e9ede9;
-  --accent: #176b75;
-  --accent-ink: #145f68;
-  --accent-soft: rgba(23, 107, 117, 0.08);
-  --accent-softer: rgba(23, 107, 117, 0.05);
+  --bg: #ece8f5;
+  --bg-sunk: #e4dff0;
+  --bg-muted: #dcd6eb;
+  --surface: #f1eef9;
+  --surface-2: #efebf7;
+  --raised: #f5f3fc;
+  --sidebar: #ece8f5;
+  --daybar: #e8e4f3;
+  --field: #e4dff0;
+  --ink: #2a2541;
+  --ink-2: #3a3454;
+  --ink-3: #575073;
+  --ink-4: #5f587a;
+  --line: #dcd5ec;
+  --line-strong: #cbc2e2;
+  --line-soft: #e2dcf0;
+  --accent: #6646c6;
+  --accent-ink: #5535b3;
+  --accent-soft: rgba(124, 95, 224, 0.12);
+  --accent-softer: rgba(124, 95, 224, 0.06);
   --accent-contrast: #ffffff;
-  --note: #526f72;
-  --hot: #b3402a;
-  --hot-soft: rgba(179, 64, 42, 0.08);
+  /* The light violet the palette is named for: glows, the rail's dots, gradients; never text. */
+  --lavender: #b8a6f4;
+  --accent-from: #8366e2;
+  --accent-to: #6143c2;
+  --note: #5c5280;
+  --hot: #ae2f45;
+  --hot-soft: rgba(174, 47, 69, 0.09);
   --amber: #b8873a;
-  --amber-ink: #7c5a24;
-  --amber-soft: rgba(184, 135, 58, 0.1);
-  --ok: #2f7d5c;
-  --ok-soft: rgba(47, 125, 92, 0.1);
-  --ok-ink: #2a6e51;
-  --rank-1: #b3402a;
-  --rank-2: #a3642f;
-  --rank-3: #96702e;
-  --rank-rest: #6b7684;
-  --shadow-card: 0 1px 2px rgba(32, 42, 48, 0.025);
-  --shadow-card-hover: 0 3px 12px rgba(32, 42, 48, 0.055);
-  --shadow-soft: 0 4px 12px rgba(28, 39, 51, 0.06);
-  --shadow-thumb: 0 1px 2px rgba(28, 39, 51, 0.1), 0 1px 1px rgba(28, 39, 51, 0.04);
-  --shadow-pop: 0 12px 32px rgba(28, 39, 51, 0.12);
-  --prose-ink: #26323a;
-  --code-bg: #f6f7f4;
-  --code-keyword: #006d77;
+  --amber-ink: #7a5520;
+  --amber-soft: rgba(184, 135, 58, 0.12);
+  --ok: #276a4d;
+  --ok-soft: rgba(39, 106, 77, 0.1);
+  --ok-ink: #24624a;
+  --rank-1: #ae2f45;
+  --rank-2: #9a4b28;
+  --rank-3: #82591b;
+  --rank-rest: #6b6485;
+  /* The two lights. --edge is the thin highlight along a raised surface's rim. */
+  --neu-shade: rgba(146, 130, 196, 0.42);
+  --neu-light: rgba(255, 255, 255, 0.92);
+  --edge: rgba(255, 255, 255, 0.6);
+  --shadow-card: 6px 6px 14px var(--neu-shade), -6px -6px 14px var(--neu-light);
+  --shadow-card-hover: 10px 10px 22px var(--neu-shade), -8px -8px 20px var(--neu-light);
+  --shadow-soft: 4px 4px 10px var(--neu-shade), -4px -4px 10px var(--neu-light);
+  --shadow-thumb: 2px 2px 5px var(--neu-shade), -2px -2px 5px var(--neu-light);
+  --shadow-pop: 14px 14px 36px rgba(110, 92, 170, 0.3), -8px -8px 24px rgba(255, 255, 255, 0.7);
+  --shadow-inset: inset 3px 3px 7px var(--neu-shade), inset -3px -3px 7px var(--neu-light);
+  --shadow-inset-sm: inset 2px 2px 4px var(--neu-shade), inset -2px -2px 4px var(--neu-light);
+  --shadow-glow: 0 6px 16px rgba(102, 70, 198, 0.32);
+  --prose-ink: #2e2946;
+  --code-bg: #e8e4f3;
+  --code-keyword: #6a3fc0;
   --code-string: #2f6f44;
   --code-number: #9a6700;
-  --code-title: #6f42c1;
+  --code-title: #0e6a86;
   --code-variable: #a13d10;
   --code-meta: #b42348;
-  --selection: rgba(23, 107, 117, 0.16);
+  --selection: rgba(124, 95, 224, 0.22);
 }
 
 @media (min-width: 961px) {
@@ -146,54 +162,63 @@
 
 [data-theme="dark"] {
   color-scheme: dark;
-  --bg: #13191c;
-  --bg-sunk: #182024;
-  --bg-muted: #202a2f;
-  --surface: #1a2226;
-  --surface-2: #1d272b;
-  --raised: #202a2f;
-  --sidebar: #161e21;
-  --daybar: #182024;
-  --field: rgba(255, 255, 255, 0.06);
-  --ink: #e7eceb;
-  --ink-2: #d2dada;
-  --ink-3: #a5b0b3;
-  --ink-4: #89979d;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-strong: rgba(255, 255, 255, 0.12);
-  --line-soft: rgba(255, 255, 255, 0.06);
-  --accent: #12ccd8;
-  --accent-ink: #2ce2e8;
-  --accent-soft: rgba(18, 204, 216, 0.12);
-  --accent-softer: rgba(18, 204, 216, 0.06);
-  --accent-contrast: #000000;
-  --note: #8fb8a8;
-  --hot: #d86a52;
-  --hot-soft: rgba(216, 106, 82, 0.12);
-  --amber: #d3b26a;
-  --amber-ink: #d3b26a;
-  --amber-soft: rgba(211, 178, 106, 0.12);
-  --ok: #5fc79a;
-  --ok-soft: rgba(95, 199, 154, 0.12);
-  --ok-ink: #7fd1ad;
-  --rank-1: #d86a52;
-  --rank-2: #d18a5e;
-  --rank-3: #d3b26a;
-  --rank-rest: #7b869a;
-  --shadow-card: none;
-  --shadow-card-hover: none;
-  --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.35);
-  --shadow-thumb: 0 1px 2px rgba(0, 0, 0, 0.45);
-  --shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.45);
-  --prose-ink: #d7dfdf;
-  --code-bg: #10151c;
-  --code-keyword: #78dce8;
+  --bg: #211e2c;
+  --bg-sunk: #1c1926;
+  --bg-muted: #2a2637;
+  --surface: #25212f;
+  --surface-2: #272333;
+  --raised: #2c2838;
+  --sidebar: #211e2c;
+  --daybar: #1f1c29;
+  --field: rgba(255, 255, 255, 0.05);
+  --ink: #ece8f7;
+  --ink-2: #d6d0e8;
+  --ink-3: #aba4c2;
+  --ink-4: #9690ae;
+  --line: rgba(255, 255, 255, 0.07);
+  --line-strong: rgba(255, 255, 255, 0.11);
+  --line-soft: rgba(255, 255, 255, 0.05);
+  --accent: #b9a5ff;
+  --accent-ink: #cbbbff;
+  --accent-soft: rgba(185, 165, 255, 0.14);
+  --accent-softer: rgba(185, 165, 255, 0.07);
+  --accent-contrast: #1a1530;
+  --lavender: #8e78e0;
+  --accent-from: #c9b9ff;
+  --accent-to: #a48cf6;
+  --note: #b2a6d8;
+  --hot: #f0788a;
+  --hot-soft: rgba(240, 120, 138, 0.13);
+  --amber: #ddb86e;
+  --amber-ink: #ddb86e;
+  --amber-soft: rgba(221, 184, 110, 0.13);
+  --ok: #6fd0a4;
+  --ok-soft: rgba(111, 208, 164, 0.13);
+  --ok-ink: #8adbb6;
+  --rank-1: #f0788a;
+  --rank-2: #e79a72;
+  --rank-3: #ddb86e;
+  --rank-rest: #8e88a6;
+  --neu-shade: rgba(8, 6, 16, 0.6);
+  --neu-light: rgba(255, 255, 255, 0.045);
+  --edge: rgba(255, 255, 255, 0.04);
+  --shadow-card: 6px 6px 14px var(--neu-shade), -5px -5px 12px var(--neu-light);
+  --shadow-card-hover: 10px 10px 22px var(--neu-shade), -7px -7px 16px var(--neu-light);
+  --shadow-soft: 4px 4px 10px var(--neu-shade), -4px -4px 9px var(--neu-light);
+  --shadow-thumb: 2px 2px 5px var(--neu-shade), -2px -2px 5px var(--neu-light);
+  --shadow-pop: 16px 16px 40px rgba(0, 0, 0, 0.55), -6px -6px 18px rgba(255, 255, 255, 0.03);
+  --shadow-inset: inset 3px 3px 7px var(--neu-shade), inset -3px -3px 7px var(--neu-light);
+  --shadow-inset-sm: inset 2px 2px 4px var(--neu-shade), inset -2px -2px 4px var(--neu-light);
+  --shadow-glow: 0 6px 18px rgba(164, 140, 246, 0.25);
+  --prose-ink: #ddd8ec;
+  --code-bg: #1c1926;
+  --code-keyword: #c3a8ff;
   --code-string: #a9dc76;
   --code-number: #ffd866;
-  --code-title: #ab9df2;
+  --code-title: #78dce8;
   --code-variable: #fc9867;
   --code-meta: #ff6188;
-  --selection: rgba(18, 204, 216, 0.22);
+  --selection: rgba(185, 165, 255, 0.26);
 }
 
 @layer base {
@@ -250,14 +275,17 @@
     padding: 0 0.625rem;
     border-radius: 9999px;
     font-size: 12px;
-    color: var(--ink-4);
-    background: var(--bg-sunk);
-    border: 1px solid var(--line-soft);
-    transition: color 120ms, background-color 120ms, border-color 120ms;
+    color: var(--ink-3);
+    background: var(--surface);
+    border: 1px solid var(--edge);
+    box-shadow: var(--shadow-thumb);
+    transition: color 120ms, box-shadow 160ms var(--ease-out-quart);
   }
   a.chip:hover {
     color: var(--accent);
-    border-color: var(--line-strong);
+  }
+  a.chip:active {
+    box-shadow: var(--shadow-inset-sm);
   }
   .skeleton {
     background: var(--bg-muted);
@@ -307,28 +335,55 @@
   padding-inline: var(--gutter-l) var(--gutter-r);
 }
 
-/* Cards are utilities so they take variants (lg:card: a card on desktop, a plain row on phones). */
+/* Cards are utilities so they take variants (lg:card: a card on desktop, a plain row on phones). A card
+   is raised out of the page in the page's own hue, lit from the top left, with a thin highlight on its rim. */
 @utility card {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--edge);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-card);
 }
-/* The well: a quiet sunk panel for what navigates or annotates rather than reads (the report's ear,
-   the hot lead's heat panel, notes on about and feedback). Radius is set where it is used. */
+/* The well: pressed into the page, for what navigates or annotates rather than reads (the report's ear,
+   the hot lead's heat panel, a card's AI note, notes on about and feedback). Radius is set where it is used. */
 @utility well {
-  background-color: var(--bg-sunk);
-  box-shadow: inset 0 0 0 1px var(--line-soft);
-  [data-theme="dark"] & {
-    background-color: color-mix(in srgb, var(--bg-muted) 60%, transparent);
-  }
+  background-color: color-mix(in srgb, var(--bg-sunk) 72%, transparent);
+  box-shadow: var(--shadow-inset-sm);
 }
 @utility card-hover {
-  transition: box-shadow 200ms var(--ease-out-quart), border-color 200ms, transform 200ms var(--ease-out-quart);
+  transition: box-shadow 220ms var(--ease-out-quart), transform 220ms var(--ease-out-quart);
   &:hover {
     box-shadow: var(--shadow-card-hover);
-    border-color: var(--line-strong);
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+  }
+}
+/* Soft controls. neu-raised: a small raised surface that sinks in while pressed (secondary buttons, bar
+   buttons, toggles); neu-inset: a field or a track pressed into the page; neu-primary: the violet button,
+   raised on its own glow. */
+@utility neu-raised {
+  background-color: var(--surface);
+  box-shadow: var(--shadow-soft);
+  transition: box-shadow 160ms var(--ease-out-quart), color 150ms, background-color 150ms, transform 150ms var(--ease-out-quart);
+  &:hover {
+    box-shadow: var(--shadow-card);
+  }
+  &:active {
+    box-shadow: var(--shadow-inset-sm);
+  }
+}
+@utility neu-inset {
+  background-color: var(--bg-sunk);
+  box-shadow: var(--shadow-inset);
+}
+@utility neu-primary {
+  color: var(--accent-contrast);
+  background-image: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  box-shadow: var(--shadow-glow), var(--shadow-thumb);
+  transition: box-shadow 160ms var(--ease-out-quart), filter 150ms, transform 150ms var(--ease-out-quart);
+  &:hover {
+    filter: brightness(1.06);
+  }
+  &:active {
+    box-shadow: inset 3px 3px 7px rgba(36, 18, 92, 0.35), inset -2px -2px 6px rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -344,6 +399,14 @@
 
 @keyframes spin-slow {
   to { transform: rotate(360deg); }
+}
+
+/* The home page's pipeline: a light travelling along the line between the stages. */
+@keyframes hotmoto-flow {
+  from { left: -12%; opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  to { left: 100%; opacity: 0; }
 }
 
 .animate-fade-up {
@@ -478,7 +541,7 @@
 .prose li + li { margin-top: 0.35em; }
 .prose li::marker { color: var(--ink-4); }
 .prose blockquote {
-  border-left: 3px solid var(--line-strong);
+  border-left: 3px solid var(--lavender);
   padding: 0.1em 0 0.1em 1em;
   color: var(--ink-3);
 }
@@ -504,18 +567,20 @@
   font-size: 13px;
   line-height: 1.65;
   background: var(--code-bg);
-  border: 1px solid var(--line);
+  border: 0;
+  box-shadow: var(--shadow-inset-sm);
   border-radius: var(--radius-tile);
   padding: 0.9em 1em;
   overflow-x: auto;
 }
 .prose pre code { background: none; border: 0; padding: 0; font-size: inherit; }
 /* Code blocks in article bodies get a head with the language and a copy button (features/item/ArticleBody). */
-.prose .code-block { margin-top: 1.2em; border: 1px solid var(--line); border-radius: var(--radius-tile); overflow: hidden; background: var(--code-bg); }
-.prose .code-block pre { margin: 0; border: 0; border-radius: 0; }
+.prose .code-block { margin-top: 1.2em; border-radius: var(--radius-tile); overflow: hidden; background: var(--code-bg); box-shadow: var(--shadow-inset-sm); }
+.prose .code-block pre { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
 .prose .code-block-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 8px 6px 14px; border-bottom: 1px solid var(--line-soft); font-size: 12px; line-height: 1.4; color: var(--ink-4); letter-spacing: 0; }
-.prose .code-block-copy { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border: 1px solid var(--line); border-radius: var(--radius-mark); background: var(--surface); color: var(--ink-3); font-size: 12px; transition: color 120ms, border-color 120ms; }
-.prose .code-block-copy:hover { color: var(--ink); border-color: var(--line-strong); }
+.prose .code-block-copy { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border: 0; border-radius: 9999px; background: var(--surface); box-shadow: var(--shadow-thumb); color: var(--ink-3); font-size: 12px; transition: color 120ms, box-shadow 160ms; }
+.prose .code-block-copy:hover { color: var(--accent); }
+.prose .code-block-copy:active { box-shadow: var(--shadow-inset-sm); }
 .prose .code-block-copy[data-status="copied"] { color: var(--ok-ink); }
 .prose .hljs-comment, .prose .hljs-quote { color: var(--ink-4); font-style: italic; }
 .prose .hljs-keyword, .prose .hljs-selector-tag, .prose .hljs-doctag, .prose .hljs-name { color: var(--code-keyword); }

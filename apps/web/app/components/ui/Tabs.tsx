@@ -35,7 +35,7 @@ function Thumb({ id }: { id: string }) {
       thumbs.set(id, placeOf(el));
     };
   }, [id, entrance]);
-  return <span ref={ref} className="absolute inset-0 rounded-full bg-surface shadow-[var(--shadow-thumb)] ring-1 ring-line dark:bg-raised" />;
+  return <span ref={ref} className="absolute inset-0 rounded-full bg-surface shadow-[var(--shadow-thumb)] dark:bg-raised" />;
 }
 
 export interface TabItem {
@@ -57,7 +57,7 @@ const SIZES = {
 } as const;
 
 /**
- * The site's one switch control: a grey pill track with a white thumb that glides to the chosen
+ * The site's one switch control: a pill track pressed into the page with a raised thumb that glides to the chosen
  * option. Boards, categories, sources, report kinds, page sections and language all use it, so every
  * switch looks and moves the same. Scrolls sideways when it runs out of room; `fill` spreads the
  * options evenly across the available width.
@@ -83,7 +83,7 @@ export function PillTabs({
         data-pill-track=""
         aria-label={label}
         role={links ? undefined : "tablist"}
-        className={`${fill ? "grid w-full" : "inline-flex w-max"} gap-0.5 rounded-full bg-bg-sunk p-0.5 lg:p-[3px] ring-1 ring-inset ring-line-soft dark:bg-bg-muted/60`}
+        className={`${fill ? "grid w-full" : "inline-flex w-max"} neu-inset gap-0.5 rounded-full p-[3px]`}
         style={fill ? { gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` } : undefined}
       >
         {items.map((t) => {
@@ -93,11 +93,11 @@ export function PillTabs({
               {on && <Thumb id={layoutId} />}
               <span className="relative inline-flex items-center gap-1">
                 {t.label}
-                {t.count !== undefined && t.count !== null && <span className={`num text-[0.86em] font-normal ${on ? "text-ink-3" : "text-ink-4"}`}>{t.count}</span>}
+                {t.count !== undefined && t.count !== null && <span className={`num text-[0.86em] font-normal ${on ? "text-accent/75" : "text-ink-4"}`}>{t.count}</span>}
               </span>
             </>
           );
-          const cls = `relative inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-full font-medium outline-offset-1 transition-colors duration-150 active:scale-[0.98] ${SIZES[size]} ${on ? "text-ink" : "text-ink-3 hover:text-ink"}`;
+          const cls = `relative inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-full font-medium outline-offset-1 transition-colors duration-150 active:scale-[0.98] ${SIZES[size]} ${on ? "font-semibold text-accent" : "text-ink-3 hover:text-ink"}`;
           const TabLink = t.prefetch === "intent" ? IntentLink : Link;
           return t.to ? (
             <TabLink key={t.key} to={t.to} replace={t.replace} preventScrollReset={!t.resetScroll} aria-current={on ? "page" : undefined} className={cls}>

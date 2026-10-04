@@ -198,7 +198,7 @@ export default function AgentPage() {
                 e.preventDefault();
                 select(t.key);
               }}
-              className={`group flex flex-col rounded-card border p-3.5 transition-[border-color,background-color,box-shadow] duration-200 sm:p-4 ${on ? "border-accent/50 bg-accent-softer shadow-[inset_0_0_0_1px_var(--accent)]" : "border-line bg-surface shadow-[var(--shadow-card)] hover:border-line-strong hover:shadow-[var(--shadow-card-hover)]"}`}
+              className={`group flex flex-col rounded-card border p-3.5 transition-[border-color,background-color,box-shadow] duration-200 sm:p-4 ${on ? "neu-inset border-transparent" : "border-edge bg-surface shadow-[var(--shadow-card)] hover:shadow-[var(--shadow-card-hover)]"}`}
             >
               <span className="flex items-center justify-between gap-2">
                 <span className={`grid size-9 place-items-center rounded-control transition-colors ${on ? "bg-accent text-accent-contrast" : "bg-bg-sunk text-ink-3 group-hover:text-ink"}`}>

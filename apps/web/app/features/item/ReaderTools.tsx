@@ -40,7 +40,7 @@ function useReadingDown(): boolean {
 }
 
 function Tool({ icon, label, onClick, href, pressed }: { icon: ReactNode; label: string; onClick?: () => void; href?: string; pressed?: boolean }) {
-  const cls = `flex flex-col items-center justify-center gap-[2px] text-[10.5px] transition-colors active:opacity-50 disabled:opacity-40 ${pressed ? "font-semibold text-accent" : "text-ink-3"}`;
+  const cls = `flex flex-col items-center justify-center gap-[1px] rounded-tile text-[10.5px] transition-[box-shadow,color] duration-200 active:shadow-[var(--shadow-inset-sm)] disabled:opacity-40 ${pressed ? "neu-inset font-semibold text-accent" : "text-ink-3"}`;
   return href ? (
     <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>
       {icon}
@@ -68,22 +68,23 @@ export function ReaderToolbar({ item, originalUrl, originalLabel, onOutline, onS
   return (
     <nav
       aria-label="閲覧ツール"
-      className={`fixed inset-x-0 bottom-0 z-40 bg-surface/90 pb-[env(safe-area-inset-bottom)] pl-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)] shadow-[0_-1px_0_var(--line)] backdrop-blur-xl backdrop-saturate-150 transition-transform duration-300 ease-[var(--ease-out-quart)] lg:hidden ${hidden ? "translate-y-full" : ""}`}
+      className={`pointer-events-none fixed inset-x-0 bottom-0 z-40 px-[max(10px,env(safe-area-inset-left))] pb-[max(8px,env(safe-area-inset-bottom))] transition-transform duration-300 ease-[var(--ease-out-quart)] lg:hidden ${hidden ? "translate-y-[calc(100%+12px)]" : ""}`}
     >
-      <div className={`mx-auto grid h-[50px] max-w-[640px] ${onOutline ? "grid-cols-4" : "grid-cols-3"}`}>
+      {/* The same floating pill as the tab bar. */}
+      <div className={`pointer-events-auto mx-auto grid h-[58px] max-w-[620px] gap-1 rounded-sheet border border-edge bg-surface/92 p-1.5 shadow-[var(--shadow-card)] backdrop-blur-xl backdrop-saturate-150 ${onOutline ? "grid-cols-4" : "grid-cols-3"}`}>
         <Tool
           pressed={star.on}
           onClick={star.toggle}
           label={star.on ? "お気に入り済み" : "お気に入り"}
           icon={
             <span key={star.pulse} className={`flex ${star.pulse ? "anim-bump" : ""}`}>
-              <IconBookmark size={22} filled={star.on} />
+              <IconBookmark size={21} filled={star.on} />
             </span>
           }
         />
-        {onOutline && <Tool onClick={onOutline} label="目次" icon={<IconList size={22} />} />}
-        <Tool onClick={onShare} label="シェア" icon={<IconShare size={22} />} />
-        {originalUrl ? <Tool href={originalUrl} label={originalLabel} icon={<IconExternal size={22} />} /> : <Tool label={originalLabel} icon={<IconExternal size={22} />} />}
+        {onOutline && <Tool onClick={onOutline} label="目次" icon={<IconList size={21} />} />}
+        <Tool onClick={onShare} label="シェア" icon={<IconShare size={21} />} />
+        {originalUrl ? <Tool href={originalUrl} label={originalLabel} icon={<IconExternal size={21} />} /> : <Tool label={originalLabel} icon={<IconExternal size={21} />} />}
       </div>
     </nav>
   );

@@ -1,13 +1,14 @@
 import { ITEM_COPY } from "@hotmoto/site";
+import { IconSparkles } from "../icons";
 
 /**
- * The AI score as a small pill, tinted by tier instead of drawn as a bar: strong picks (85+) in a wash of
- * warm red, solid ones (70+) in the accent, the rest as quiet text. The score itself is unchanged.
+ * The AI score as a small pill pressed into the card, tinted by tier instead of drawn as a bar: strong
+ * picks (85+) in warm red, solid ones (70+) in the accent, the rest as quiet text. The score itself is unchanged.
  */
 const TIERS = [
-  { min: 85, className: "bg-hot/10 text-hot ring-hot/25" },
-  { min: 70, className: "bg-accent-soft text-accent ring-accent/20" },
-  { min: 0, className: "text-ink-4 ring-line-soft" },
+  { min: 85, className: "bg-hot-soft text-hot" },
+  { min: 70, className: "bg-accent-soft text-accent" },
+  { min: 0, className: "text-ink-4" },
 ];
 
 /** The score readers see: none when the site keeps scores from them. */
@@ -25,12 +26,13 @@ export function ScoreLabel({ score, compact = false }: { score: number | null; c
     <span
       title={`AI スコア ${value}/100`}
       aria-label={`AI スコア ${value} 点`}
-      className={`inline-flex h-[20px] shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2 ring-1 ring-inset ${tier.className}`}
+      className={`inline-flex h-[22px] shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2 shadow-[var(--shadow-inset-sm)] ${tier.className}`}
     >
+      <IconSparkles size={12} strokeWidth={2} className="opacity-80" />
       {!compact && (
         <>
-          <span className="text-[11px] font-medium leading-none opacity-80">AI スコア</span>
-          <span className="h-2.5 w-px bg-current opacity-25" aria-hidden="true" />
+          <span className="text-[11px] font-medium leading-none opacity-85">AI スコア</span>
+          <span className="mx-0.5 h-2.5 w-px bg-current opacity-25" aria-hidden="true" />
         </>
       )}
       <span className="mono text-[12.5px] font-bold leading-none tabular-nums">{value}</span>

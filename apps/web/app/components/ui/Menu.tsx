@@ -27,14 +27,14 @@ export function Menu({ trigger, label, children }: { trigger: ReactNode; label: 
         aria-haspopup="menu"
         aria-expanded={open}
         onClick={() => setOpen(!open)}
-        className={`inline-flex size-8 items-center justify-center rounded-control transition-colors ${open ? "bg-bg-sunk text-ink" : "text-ink-3 hover:bg-bg-sunk hover:text-ink"}`}
+        className={`inline-flex size-8 items-center justify-center rounded-control transition-colors ${open ? "neu-inset text-accent" : "text-ink-3 hover:bg-surface hover:text-ink hover:shadow-[var(--shadow-thumb)]"}`}
       >
         {trigger}
       </button>
       <Presence show={open} enter="anim-drop-in" exit="anim-drop-out" duration={140}>
         <div
           role="menu"
-          className="absolute top-10 z-50 min-w-[168px] overflow-hidden rounded-tile border border-line bg-raised py-1 shadow-[var(--shadow-pop)] right-0 origin-top-right"
+          className="absolute top-10 z-50 min-w-[168px] overflow-hidden rounded-tile border border-edge bg-raised p-1 shadow-[var(--shadow-pop)] right-0 origin-top-right"
         >
           {children(() => setOpen(false))}
         </div>
@@ -45,7 +45,7 @@ export function Menu({ trigger, label, children }: { trigger: ReactNode; label: 
 
 /** One entry of a Menu (a button or a link). */
 export function MenuItem({ icon, children, onSelect, href, download }: { icon?: ReactNode; children: ReactNode; onSelect?: () => void; href?: string; download?: boolean }) {
-  const cls = "flex w-full items-center gap-2.5 px-3 py-2 text-left text-[13px] text-ink-2 transition-colors hover:bg-bg-sunk hover:text-ink";
+  const cls = "flex w-full items-center gap-2.5 rounded-control px-3 py-2 text-left text-[13px] text-ink-2 transition-[box-shadow,color] hover:text-accent hover:shadow-[var(--shadow-inset-sm)]";
   const inner = (
     <>
       {icon && <span className="text-ink-4">{icon}</span>}
