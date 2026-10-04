@@ -106,7 +106,7 @@ flowchart LR
 
 ```bash
 npm run typecheck
-DATABASE_URL=postgres://127.0.0.1:5432/nirinhot_test npm test
+DATABASE_URL=postgres://127.0.0.1:5432/hotmoto_test npm test
 npm run build -w @hotmoto/web && node --test apps/web/tests/*.test.ts
 ```
 

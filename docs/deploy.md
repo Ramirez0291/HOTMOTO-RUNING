@@ -5,8 +5,8 @@
 Docker（Compose 付き）が入ったマシンが必要です。クラウドのサーバーなら、イメージのビルドに使うので 2 コア・4 GB メモリ以上をおすすめします。
 
 ```bash
-git clone <あなたのリポジトリ> nirinhot
-cd nirinhot
+git clone <あなたのリポジトリ> hotmoto
+cd hotmoto
 node scripts/init-env.ts --llm-key <モデルの API キー>
 ```
 
@@ -74,7 +74,7 @@ docker compose run --rm setup && docker compose up -d
 
 #### 二輪・日本語版への作り直し（2026 年 10 月 4 日）
 
-hotmoto の示範（AI 業界・中国語）から、二輪市場・日本語のサイト NIRINHOT に作り直しました。公開インターフェースのバージョンは 4.0.0 のままです。新しく立ち上げるサイトなら、特別な作業は要りません。示範の設定ですでに動かしていたデータベースを引き継ぐ場合は、次に注意してください。
+hotmoto の示範（AI 業界・中国語）から、二輪市場・日本語のサイト HOTMOTO に作り直しました。公開インターフェースのバージョンは 4.0.0 のままです。新しく立ち上げるサイトなら、特別な作業は要りません。示範の設定ですでに動かしていたデータベースを引き継ぐ場合は、次に注意してください。
 
 - **時刻の基準が北京時間から日本時間に変わりました**（`site/site.ts` の `TIME_ZONE`）。日報の締め（毎日 08:00）、週報・月報の期間、画面の日付、定期作業がすべて 1 時間早く（日本時間で）動きます。既刊のレポートは書き直しません。
 - **モデルが書く言語が日本語になりました**（`SITE.language`）。サイト内の翻訳は `translations.lang = 'ja'` で保存し、以前に `'zh'` で保存した中国語の翻訳は読まれなくなります（データは消えません。要らなければ削除してかまいません）。日本語の原文は翻訳しません。
@@ -116,7 +116,7 @@ hotmoto の示範（AI 業界・中国語）から、二輪市場・日本語の
 下の手動の書き出しはデータベースだけで、上の添付のディレクトリは含みません：
 
 ```bash
-docker compose exec -T db pg_dump -U hotmoto hotmoto | gzip > nirinhot-$(date +%F).sql.gz
+docker compose exec -T db pg_dump -U hotmoto hotmoto | gzip > hotmoto-$(date +%F).sql.gz
 ```
 
 データはすべて 3 つの Docker ボリュームにあります：`db`（データベース）、`data`（アップロードした画像、画像のキャッシュ、ローカルのバックアップ）、`caddy`（証明書）。`docker compose down` では消えませんが、`docker compose down -v` では消えます。
@@ -142,13 +142,13 @@ Node.js 24.11 以上と PostgreSQL 16 か 17 が必要で、OS は Linux か mac
 ```bash
 npm ci
 node scripts/init-env.ts --llm-key <モデルの API キー>
-createdb nirinhot
+createdb hotmoto
 ```
 
 `.env` に次を加えます：
 
 ```bash
-DATABASE_URL=postgres://ユーザー名@127.0.0.1:5432/nirinhot
+DATABASE_URL=postgres://ユーザー名@127.0.0.1:5432/hotmoto
 API_BASE_URL=http://127.0.0.1:3001
 ```
 

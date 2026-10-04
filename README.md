@@ -1,4 +1,4 @@
-# NIRINHOT
+# HOTMOTO
 
 **二輪市場の HOT POINTS を定点観測するサイト。**
 

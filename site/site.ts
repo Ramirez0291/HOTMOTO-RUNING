@@ -24,14 +24,14 @@ export const EDITION_WHEN = {
 
 export const SITE = {
   /** サイト名：ナビゲーション、ページタイトル、シェア画像、RSS、MCP、管理画面で使う。 */
-  name: "NIRINHOT",
+  name: "HOTMOTO",
   /**
    * 業界名：既定の言い回しに組み込まれる（「二輪日報」「二輪ニュース」など）。
    * 「法律」「HR」などに変えると、画面の表記もそれに合わせて変わる。
    */
   subject: "二輪",
   /** トップページの完全なタイトル（ブラウザのタブ、検索結果）。 */
-  homeTitle: "NIRINHOT — 二輪市場のHOT POINTSを定点観測 · 毎日の厳選と日報",
+  homeTitle: "HOTMOTO — 二輪市場のHOT POINTSを定点観測 · 毎日の厳選と日報",
   /** トピック一覧（/topics）のタイトル。 */
   topicsTitle: "二輪トピック：メーカー、市場テーマ、コンテンツ形式ごとの最新動向",
   /** フィードバックフォームの入力欄の例文。 */
@@ -58,10 +58,10 @@ export const SITE = {
   /** 標準アイコン（favicon.ico、icon.png、icon-192.png、apple-icon.png、logo.svg）以外にサイトのルートに置くアイコン。site/brand/ のファイル名（任意）。manifest.webmanifest や外部サイトが参照するときに使う。 */
   rootIcons: [] as string[],
   /**
-   * MCP ツール名の接頭辞（小文字英字、数字、下線）。ツールは nirinhot_get_latest、nirinhot_search……になる。
+   * MCP ツール名の接頭辞（小文字英字、数字、下線）。ツールは hotmoto_get_latest、hotmoto_search……になる。
    * 誰かが接続した後は変えない。
    */
-  mcpPrefix: "nirinhot",
+  mcpPrefix: "hotmoto",
   /**
    * 公開インターフェース（MCP、OpenAPI、llms.txt）のバージョン。上げるだけで下げない。
    * 既存の項目や意味を変えたときはメジャーを上げ、デプロイの説明に書く。
@@ -70,19 +70,19 @@ export const SITE = {
   /** 外部向けの連絡先メール（任意）：llms.txt とレスポンスヘッダーに書く。 */
   contactEmail: null as string | null,
   /** フッターの小さな一行（任意）。 */
-  footerNote: "hotmoto オープンソースフレームワークで動いています",
+  footerNote: "Rami is here",
   /** 中国本土のサイトの ICP 届出番号（任意）。入れるとフッターに表示し、工業情報化部の届出システムにリンクする。 */
   icp: null as string | null,
   /** ソースコードの GitHub リポジトリ（任意）。入れるとサイドバー下部と「マイページ」下部に「GitHub でオープンソース」と表示する。 */
   github: null as string | null,
   /** 構造化データの運営者（検索エンジン向け）。 */
   organization: {
-    name: "NIRINHOT",
+    name: "Rami/HOTMOTO",
     /** 創設者（任意）。 */
     founder: null as null | { name: string; alternateName?: string; jobTitle?: string; description?: string; url?: string },
   },
   /** 情報源を取得するときに名乗る名前とバージョン（User-Agent に入る）。他のサイトを名乗らない。 */
-  crawlerName: "NIRINHOTBot/1.0",
+  crawlerName: "HOTMOTOBot/1.0",
 } as const;
 
 /** 利用規約とプライバシーポリシーの 2 ページ（本文は pages/ にある）。 */

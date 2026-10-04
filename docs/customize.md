@@ -19,7 +19,7 @@ AGENTS.md と docs/customize.md を読んで、このサイトを「○○業界
 - `homeTitle`、`topicsTitle`、`description`、`tagline`、`keywords`：トップページとトピック一覧のタイトル、一言紹介、シェア画像の下の小さな文字、検索エンジン向けのキーワード。
 - `locale`、`language`：表示言語（`ja-JP`）と、モデルが書く言語・翻訳の言語（`ja` か `zh`）。`language` を変えたら、`industry/prompts/` もその言語で書き直します（[アーキテクチャ](architecture.md) の「言語とタイムゾーン」）。
 - `TIME_ZONE`：日付と時刻の基準（いまは日本時間）。日報の締め、画面の日付、定期作業がすべてこれを読みます。夏時間のない固定オフセットを書きます。
-- `mcpPrefix`：MCP ツール名の接頭辞。`nirinhot` なら `nirinhot_get_latest` になります。誰かが接続した後は変えないでください。
+- `mcpPrefix`：MCP ツール名の接頭辞。`hotmoto` なら `hotmoto_get_latest` になります。誰かが接続した後は変えないでください。
 - `interfaceVersion`：公開インターフェース（MCP、OpenAPI、`llms.txt`）のバージョン。上げるだけで下げません。既存の項目や意味を変えたらメジャーを上げます。
 - `crawlerName`：情報源を取得するときに名乗る名前。他人のサイト名を使わないでください。
 - `icp`：中国本土のサイトの届出番号（日本のサイトでは不要）。
@@ -129,7 +129,7 @@ hotmoto の名前とロゴは使わないでください。
 
 ```bash
 npm run typecheck
-DATABASE_URL=postgres://…/nirinhot_test npm test     # データベース名は _test か _ci で終わる必要があり、アカウントにデータベースを作る権限が要る
+DATABASE_URL=postgres://…/hotmoto_test npm test     # データベース名は _test か _ci で終わる必要があり、アカウントにデータベースを作る権限が要る
 node scripts/smoke.ts --base http://localhost:3000   # サイトが動いてから
 ```
 
