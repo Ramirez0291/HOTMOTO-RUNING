@@ -27,7 +27,7 @@ const KEYS: Record<SourceRow["kind"], string[]> = {
 // Objects with fixed keys (headers and bodyJson are request data, free-form).
 const NESTED: Record<string, string[]> = {
   _hotmoto: ["initialBackfillLimit", "initialBackfillMonths"],
-  ingestNoiseFilter: ["dropMarkers", "dropMarkersTitleOnly", "keepIfMatches"],
+  ingestNoiseFilter: ["requireMarkers", "dropMarkers", "dropMarkersTitleOnly", "keepIfMatches"],
   itemUrlPrefixRewrite: ["from", "to"],
   requireBoolean: ["path", "equals"],
   minNumeric: ["path", "min"],
