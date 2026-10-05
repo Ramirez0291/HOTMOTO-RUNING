@@ -29,7 +29,6 @@ export default function TermsPage() {
         <LegalFooterLinks
           links={[
             { to: "/privacy", label: POLICY.privacy.name },
-            { to: "/agent", label: "Agent 接続ページ" },
             ...webModules().flatMap((m) => m.termsLinks ?? []),
           ]}
           note={`${POLICY.terms.name} ${TERMS.doc.meta["版"] ?? ""} · ${TERMS.doc.meta["施行日"] ?? ""}`}

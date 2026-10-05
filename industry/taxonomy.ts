@@ -100,6 +100,7 @@ export const ENTITIES: Record<string, { name: string; displayTag: string | null;
   bajaj: { name: "バジャージ・オート", displayTag: null, aliases: ["Bajaj Auto", "Bajaj", "バジャージ"] },
   tvs: { name: "TVSモーター", displayTag: null, aliases: ["TVS Motor", "TVS"], otherNames: ["Norton Motorcycles", "ノートン"] },
   cfmoto: { name: "CFMOTO", displayTag: null, aliases: ["CFMOTO", "CFモト", "春風動力"] },
+  qjmotor: { name: "QJMOTOR", displayTag: null, aliases: ["QJMOTOR", "QJモーター", "銭江摩托", "钱江摩托"], otherNames: ["Qianjiang Motorcycle", "浙江銭江摩托"] },
   yadea: { name: "Yadea", displayTag: null, aliases: ["Yadea", "ヤディア", "雅迪"] },
   gogoro: { name: "Gogoro", displayTag: null, aliases: ["Gogoro", "ゴゴロ"] },
   gachaco: { name: "Gachaco", displayTag: null, aliases: ["Gachaco", "ガチャコ"] },
@@ -131,6 +132,7 @@ export const IDENTITY_LEXICON: ReadonlyArray<{ id: string; name: string; pattern
   { id: "bajaj", name: "バジャージ", patterns: [/\bbajaj\b|バジャージ/i] },
   { id: "tvs", name: "TVS", patterns: [/\bTVS\b/] },
   { id: "cfmoto", name: "CFMOTO", patterns: [/cf\s?moto|CFモト|春風/i] },
+  { id: "qjmotor", name: "QJMOTOR", patterns: [/qj\s?moto|QJモーター|銭江|钱江|qianjiang/i] },
   { id: "yadea", name: "Yadea", patterns: [/\byadea\b|ヤディア|雅迪/i] },
   { id: "gogoro", name: "Gogoro", patterns: [/gogoro|ゴゴロ/i] },
   { id: "gachaco", name: "Gachaco", patterns: [/gachaco|ガチャコ/i] },
@@ -157,6 +159,8 @@ export const PUBLISHER_DOMAINS: ReadonlyArray<{ entityId: string; domains: reado
   { entityId: "triumph", domains: ["triumphmotorcycles.com", "triumphmotorcycles.co.jp"] },
   { entityId: "royal-enfield", domains: ["royalenfield.com"] },
   { entityId: "ktm", domains: ["ktm.com"] },
+  { entityId: "cfmoto", domains: ["cfmoto.com"] },
+  { entityId: "qjmotor", domains: ["qjmotor.com"] },
   { entityId: "acem", domains: ["acem.eu"] },
 ];
 

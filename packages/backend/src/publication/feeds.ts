@@ -84,7 +84,7 @@ function channel(meta: { title: string; description: string; homePath: string; s
     <language>${SITE.locale}</language>
     <atom:link href="${escapeXml(siteUrl(meta.selfPath))}" rel="self" type="application/rss+xml" />
     <ttl>${meta.ttl}</ttl>
-    <generator>${escapeXml(`${SITE.name} (${siteUrl("/agent")})`)}</generator>
+    <generator>${escapeXml(`${SITE.name} (${siteUrl("/")})`)}</generator>
 ${items.join("\n")}
   </channel>
 </rss>

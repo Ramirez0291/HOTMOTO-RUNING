@@ -160,8 +160,6 @@ export interface WebModule {
   feedbackDraft?: { read: () => unknown; clear: () => void };
   /** The terms page's footer: links after the engine's (routes/terms.tsx). */
   termsLinks?: Array<{ to: string; label: string }>;
-  /** Its ways into the agent page (AgentPart.tracks) by their short names: the マイページ row names the first three (routes/more.tsx). */
-  agentWays?: string[];
 }
 
 export function defineWebModule(module: WebModule): WebModule {

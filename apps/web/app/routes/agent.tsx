@@ -76,6 +76,8 @@ export function meta({ loaderData }: Route.MetaArgs) {
     description: `${SITE.name} をあなたの Agent に：${TRACKS.map((t) => t.name).join("、")} の${WAYS}の方法。匿名・読み取り専用で API キー不要、1 分でつながります。`,
     path,
     image: "/og/pages/agent.png",
+    // Kept for those who have the address, but linked from nowhere on the site and left out of search.
+    noindex: true,
   });
 }
 

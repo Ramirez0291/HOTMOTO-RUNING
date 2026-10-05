@@ -1,5 +1,5 @@
 {
-  "$comment": "示範の情報源：初回起動時に取り込む（scripts/seed.ts）。既にあるものは上書きしない。以後は管理画面の「情報源」で新規作成・変更・停止する。項目の説明は docs/customize.md。",
+  "$comment": "示範の情報源：初回起動時に取り込む（scripts/seed.ts）。既にあるものは上書きしない。以後は管理画面の「情報源」で新規作成・変更・停止する。項目の説明は docs/customize.md。\"enabled\": false のものは動作をまだ確かめていない候補で、停止した状態で取り込まれる：管理画面の「取得をプレビュー」で記事と日付が取れるのを確かめてから有効にする。",
   "sources": [
     {
       "id": "rss-honda-motorcycle",
@@ -99,6 +99,130 @@
       ],
       "site_fulltext": false,
       "syndicate_fulltext": false
+    },
+    {
+      "id": "web-ktm-news",
+      "name": "KTM ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.ktm.com/ja-jp/ktm-world/news.html",
+        "parseMode": "html",
+        "allowUrlPrefixes": [
+          "https://www.ktm.com/ja-jp/ktm-world/news/"
+        ],
+        "detail": {
+          "maxFetches": 10,
+          "titleSelector": "h1"
+        },
+        "_hotmoto": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "ktm",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "公式",
+        "メーカー",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "web-ducati-news",
+      "name": "ドゥカティ ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.ducati.com/ww/en/news",
+        "parseMode": "html",
+        "allowUrlPrefixes": [
+          "https://www.ducati.com/ww/en/news/"
+        ],
+        "detail": {
+          "maxFetches": 10,
+          "titleSelector": "h1"
+        },
+        "_hotmoto": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "ducati",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "公式",
+        "メーカー",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "web-cfmoto-news",
+      "name": "CFMOTO ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://www.cfmoto.com/global/media-center/news.html",
+        "parseMode": "html",
+        "allowUrlPrefixes": [
+          "https://www.cfmoto.com/global/media-center/news/"
+        ],
+        "detail": {
+          "maxFetches": 10,
+          "titleSelector": "h1"
+        },
+        "_hotmoto": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "cfmoto",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "公式",
+        "メーカー",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
+    },
+    {
+      "id": "web-qjmotor-news",
+      "name": "QJMOTOR ニュース",
+      "kind": "web_list",
+      "config": {
+        "url": "https://global.qjmotor.com/lists/30.html",
+        "parseMode": "html",
+        "allowUrlPrefixes": [
+          "https://global.qjmotor.com/shows/"
+        ],
+        "detail": {
+          "maxFetches": 10,
+          "titleSelector": "h1"
+        },
+        "_hotmoto": {
+          "initialBackfillLimit": 8
+        }
+      },
+      "tier": "T1",
+      "owner_entity_id": "qjmotor",
+      "participation_mode": "editorial",
+      "interval_minutes": 240,
+      "tags": [
+        "公式",
+        "メーカー",
+        "海外"
+      ],
+      "site_fulltext": false,
+      "syndicate_fulltext": false,
+      "enabled": false
     },
     {
       "id": "rss-acem",

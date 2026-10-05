@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { Link, redirect, useLoaderData, useLocation, useNavigation, useSearchParams } from "react-router";
 import type { Route } from "./+types/all";
 import type { PoolResponse } from "@hotmoto/contracts/site";
-import { SITE, withSubject } from "@hotmoto/site";
+import { ITEM_COPY, SITE, withSubject } from "@hotmoto/site";
 import { siteTime } from "@hotmoto/contracts/time";
 import { edgeTtl, loadOr404 } from "../lib/api.server";
-import { filterParams, itemListLd, listPath, pageMeta, readFilters } from "../lib/seo";
-import { ActiveFilters, CategoryTabs, FeedBar, SearchField } from "../features/feed/Filters";
+import { filterParams, itemListLd, listPath, pageMeta, readFilters, readMinScore, scoreParam } from "../lib/seo";
+import { ActiveFilters, CategoryTabs, FeedBar, ScoreTabs, SearchField } from "../features/feed/Filters";
 import { PillTabs } from "../components/ui/Tabs";
 import { DayList, Pagination } from "../features/feed/DayList";
 import { EmptyState } from "../components/ui/Page";
@@ -28,7 +28,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   // Older deep-paging parameters (deep, anchorAt) still open a normal page.
   const page = Math.min(Math.max(Number.parseInt(url.searchParams.get("page") ?? "1", 10) || 1, 1), 50);
   const data = await loadOr404<PoolResponse>(
-    listPath("/api/site/pool", { ...filterParams(readFilters(url.searchParams)), q, tab, page: page > 1 ? page : null }),
+    listPath("/api/site/pool", { ...filterParams(readFilters(url.searchParams)), q, tab, page: page > 1 ? page : null, score: readMinScore(url.searchParams) }),
     // The busy page keeps the search, so it can be tried again as it was.
     { signal: request.signal, busyRedirect: `/all/search-busy${url.search}` },
   );
@@ -73,7 +73,7 @@ export default function AllPage() {
   const f = data.filters;
   const busy = navigation.state === "loading" && navigation.location?.pathname === "/all";
   const { channel, category } = filterParams(f);
-  const keep = { channel, category };
+  const keep = { channel, category, score: scoreParam(f.minScore) };
   const searchTabHref = (tab: "time" | "relevance") => {
     const sp = new URLSearchParams(params);
     sp.delete("page");
@@ -106,13 +106,16 @@ export default function AllPage() {
           }
         />
       ) : (
-        <FeedBar base="/all" category={f.category} channel={f.channel} />
+        <FeedBar base="/all" category={f.category} channel={f.channel} minScore={f.minScore} />
       )}
-      <ActiveFilters base="/all" category={f.category} channel={f.channel} tag={f.tag} />
+      <ActiveFilters base="/all" category={f.category} channel={f.channel} tag={f.tag} minScore={f.minScore} />
 
-      {/* Desktop, as on 厳選: the title, then one filter row with the search field aligned on the right. */}
+      {/* Desktop, as on 厳選: the title with the AI score floor on the right, then one filter row with the search field aligned on the right. */}
       <div className="hidden lg:block">
-        <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title ?? ALL_TITLE}</h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-[24px] font-semibold leading-[1.3] text-ink">{title ?? ALL_TITLE}</h1>
+          <ScoreTabs minScore={f.minScore} layoutId="all-score-desk" />
+        </div>
         <div className="mb-5 mt-4 flex items-center justify-between gap-4">
           <CategoryTabs base="/all" category={f.category} channel={f.channel} layoutId="all-cat-desk" className="min-w-0" />
           <SearchField defaultValue={f.q ?? ""} keep={keep} />
@@ -148,6 +151,7 @@ export default function AllPage() {
               }
             >
               {f.q ? "言い方を変えるか、絞り込みを外してもう一度お試しください。" : "この絞り込みにはまだ内容がありません。"}
+              {f.minScore > 0 && ITEM_COPY.showScore && "AI スコアの下限を下げると見つかることもあります。"}
             </EmptyState>
           </div>
         ) : (
@@ -161,7 +165,7 @@ export default function AllPage() {
 }
 
 const RETRY_AFTER_SECONDS = 5;
-const SEARCH_PARAMS = ["q", "tag", "channel", "category", "page", "tab"];
+const SEARCH_PARAMS = ["q", "tag", "channel", "category", "page", "tab", "score"];
 
 /** The busy page after an overloaded search: the same search can be tried again after a few seconds. */
 export function SearchBusy() {

@@ -81,7 +81,10 @@ export function registerSite(app: FastifyInstance) {
     const page = Math.min(Math.max(Number(q.page) || 1, 1), 50);
     const search = q.q?.trim() ? q.q.trim().slice(0, 200) : null;
     const tab = q.tab === "relevance" ? "relevance" : "time";
-    return sendJsonWithEtag(req, reply, await loadPool({ ...filters, q: search, tab, page }), { etagPrefix: "pool", cacheControl: "public, max-age=60, s-maxage=60" });
+    // The lowest AI score listed; the page sends the reader's choice or the site's floor.
+    const minScore = q.score === undefined ? 0 : Number(q.score);
+    if (!Number.isInteger(minScore) || minScore < 0 || minScore > 100) throw new BadRequest("invalid score");
+    return sendJsonWithEtag(req, reply, await loadPool({ ...filters, q: search, tab, page, minScore }), { etagPrefix: "pool", cacheControl: "public, max-age=60, s-maxage=60" });
   }));
 
   app.get("/api/site/items/:id", siteHandler(async (req, reply) => {

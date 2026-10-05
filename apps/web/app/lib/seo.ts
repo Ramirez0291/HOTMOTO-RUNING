@@ -4,7 +4,7 @@
 import type { MetaDescriptor } from "react-router";
 import type { ReportDetail, TimelineFilters } from "@hotmoto/contracts/site";
 import { isCategoryKey, isChannelKey } from "@hotmoto/contracts/taxonomy";
-import { SITE, subjectAfter, withSubject } from "@hotmoto/site";
+import { ITEM_COPY, SITE, subjectAfter, withSubject } from "@hotmoto/site";
 
 /**
  * The site's address: SITE_URL while rendering on the server (what crawlers and share previews read),
@@ -53,6 +53,18 @@ export function readFilters(params: URLSearchParams): TimelineFilters {
     category: category && isCategoryKey(category) ? category : null,
     tag: params.get("tag")?.trim() || null,
   };
+}
+
+/** The lowest AI score すべてのニュース lists (score=…): the reader's choice, or else the site's floor. */
+export function readMinScore(params: URLSearchParams): number {
+  const raw = params.get("score");
+  const n = raw ? Number(raw) : Number.NaN;
+  return Number.isInteger(n) && n >= 0 && n <= 100 ? n : ITEM_COPY.poolMinScore.default;
+}
+
+/** The score floor as an address parameter: none for the site's own floor. */
+export function scoreParam(minScore: number): string | null {
+  return minScore === ITEM_COPY.poolMinScore.default ? null : String(minScore);
 }
 
 /** Feed filters as list address parameters: the default channel and unset filters are left out. */

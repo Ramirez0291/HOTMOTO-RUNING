@@ -101,20 +101,29 @@ export function publicMatchCondition(terms: string[]) {
   );
 }
 
+/** The pool's AI score floor: none at 0; above it, items scored lower and unscored items are left out. */
+function minScoreCondition(minScore: number) {
+  return minScore > 0 ? sql`AND p.score >= ${minScore}` : sql``;
+}
+
+type PoolFilters = TimelineFilters & { minScore: number };
+
 /** The listed items under the filters, up to the pages the pool offers. */
-async function listedCount(f: TimelineFilters, now: Date): Promise<number> {
+async function listedCount(f: PoolFilters, now: Date): Promise<number> {
   return Number(one(await sql<{ n: number }[]>`
     SELECT count(*) AS n FROM (SELECT 1 FROM publications p WHERE ${listedCondition(now)}
-      ${channelCondition(f.channel)} ${categoryCondition(f.category)} ${tagCondition(f.tag)} LIMIT ${POOL_MAX_PAGES * POOL_PAGE_SIZE}) t`).n);
+      ${channelCondition(f.channel)} ${categoryCondition(f.category)} ${tagCondition(f.tag)} ${minScoreCondition(f.minScore)} LIMIT ${POOL_MAX_PAGES * POOL_PAGE_SIZE}) t`).n);
 }
 
 /** Without a search the total only sets the page count: it is reused for 30 seconds per filter. */
-const poolTotal = cachedByKey((f: TimelineFilters) => JSON.stringify([f.channel, f.category, f.tag]), (f) => listedCount(f, new Date()), { freshMs: 30_000, maxStaleMs: 30_000, maxKeys: 200 });
+const poolTotal = cachedByKey((f: PoolFilters) => JSON.stringify([f.channel, f.category, f.tag, f.minScore]), (f) => listedCount(f, new Date()), { freshMs: 30_000, maxStaleMs: 30_000, maxKeys: 200 });
 
 export interface PoolQuery extends TimelineFilters {
   q?: string | null;
   tab?: "time" | "relevance";
   page?: number;
+  /** The lowest AI score listed; 0 (the default) lists every item. */
+  minScore?: number;
   now?: Date;
 }
 
@@ -125,7 +134,8 @@ export async function loadPool(query: PoolQuery): Promise<PoolResponse> {
   const tab = q && query.tab === "relevance" ? "relevance" : "time";
   const terms = q ? searchTerms(q) : [];
   const entityTag = q ? queryEntityTag(q) : null;
-  const filters = sql`${channelCondition(query.channel)} ${categoryCondition(query.category)} ${tagCondition(query.tag)}`;
+  const minScore = query.minScore ?? 0;
+  const filters = sql`${channelCondition(query.channel)} ${categoryCondition(query.category)} ${tagCondition(query.tag)} ${minScoreCondition(minScore)}`;
   const offset = (page - 1) * POOL_PAGE_SIZE;
   const cap = POOL_MAX_PAGES * POOL_PAGE_SIZE;
 
@@ -143,7 +153,8 @@ export async function loadPool(query: PoolQuery): Promise<PoolResponse> {
         SELECT ${ITEM_COLUMNS} ${ITEM_FROM} WHERE p.article_id IN (SELECT article_id FROM page)
         ORDER BY p.timeline_at DESC, p.article_id DESC`;
       // A fixed clock (tests, replays) never shares cached totals.
-      return { rows, total: query.now ? await listedCount(query, now) : await poolTotal(query) };
+      const counted = { channel: query.channel, category: query.category, tag: query.tag, minScore };
+      return { rows, total: query.now ? await listedCount(counted, now) : await poolTotal(counted) };
     }
     if (tab === "relevance") {
       // Rank narrow rows first: no article bodies or translations enter the sort/count. The public
@@ -212,7 +223,7 @@ export async function loadPool(query: PoolQuery): Promise<PoolResponse> {
 
   const holders = await seatHolders(rows, now);
   return {
-    filters: { channel: query.channel, category: query.category, tag: query.tag, q, tab },
+    filters: { channel: query.channel, category: query.category, tag: query.tag, q, tab, minScore },
     items: rows.map((r) => (holders.has(r.id) ? { ...toFeedItemSummary(r), reason: null, sameEvent: holders.get(r.id)! } : toFeedItemSummary(r))),
     page,
     pageCount: Math.min(POOL_MAX_PAGES, Math.max(1, Math.ceil(total / POOL_PAGE_SIZE))),

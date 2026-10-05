@@ -4,7 +4,7 @@ import type { ReactNode } from "react";
 import { subjectAfter, withSubject } from "@hotmoto/site";
 import { webModules } from "../../site-modules";
 import {
-  IconBolt, IconBookmark, IconDoc, IconFlame, IconGrid, IconHeart, IconHistory, IconList, IconMessage, IconPlug, IconUser,
+  IconBolt, IconBookmark, IconDoc, IconFlame, IconGrid, IconHeart, IconHistory, IconList, IconMessage, IconUser,
 } from "../icons";
 
 export interface NavItem {
@@ -32,7 +32,6 @@ const SECTIONS: Array<{ title: string; items: NavItem[] }> = [
   {
     title: "その他",
     items: [
-      { to: "/agent", label: "Agent 接続", icon: IconPlug },
       { to: "/about", label: "サイトについて", icon: IconHeart },
       { to: "/changelog", label: "更新履歴", icon: IconHistory, changelog: true },
       { to: "/feedback", label: "フィードバック", icon: IconMessage },
