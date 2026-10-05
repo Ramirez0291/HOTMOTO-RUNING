@@ -109,7 +109,8 @@ export interface TimelineResponse {
 }
 
 export interface PoolResponse {
-  filters: TimelineFilters & { q: string | null; tab: "time" | "relevance" };
+  /** minScore: the lowest AI score listed (0 lists every item, unscored ones too). */
+  filters: TimelineFilters & { q: string | null; tab: "time" | "relevance"; minScore: number };
   items: FeedItemSummary[];
   page: number;
   pageCount: number;

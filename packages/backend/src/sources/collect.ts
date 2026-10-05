@@ -34,6 +34,8 @@ export function noiseFiltered(c: Candidate, source: SourceRow): boolean {
   const has = (text: string, words: string[] | undefined) => (words ?? []).some((k) => text.includes(k.toLowerCase()));
   const title = c.title.toLowerCase();
   const hay = `${title}\n${(c.excerpt ?? "").toLowerCase()}`;
+  // A broad source (a government list, a general news feed) keeps only items naming one of these.
+  if (f.requireMarkers?.length && !has(hay, f.requireMarkers)) return true;
   if (has(hay, f.keepIfMatches)) return false;
   return has(title, f.dropMarkersTitleOnly) || has(hay, f.dropMarkers);
 }

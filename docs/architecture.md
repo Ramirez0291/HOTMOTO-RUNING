@@ -98,7 +98,7 @@ flowchart LR
 |---|---|
 | `/` `/all` `/hot` `/topics` `/daily` `/weekly` `/monthly` | 厳選、すべてのニュース、話題の出来事、トピック、日報・週報・月報 |
 | `/feed.xml` `/feed/full.xml` `/feed/all.xml` `/feed/daily.xml` `/feed/weekly.xml` `/feed/monthly.xml` | RSS：厳選、厳選の全文、すべて、日報、週報、月報。カテゴリ別の `/feed/category/<key>.xml` もある |
-| `/api/v1/` | 公開 API。ドキュメントは `/openapi-v1.json`。Agent 向けの Markdown は `/api/v1/agent` から。説明ページは `/agent` |
+| `/api/v1/` | 公開 API。ドキュメントは `/openapi-v1.json`。Agent 向けの Markdown は `/api/v1/agent` から。説明ページ `/agent` はアドレスを知っている人向けで、ナビゲーション・サイトマップ・llms.txt からはリンクせず、検索エンジンにも載せない |
 | `/api/mcp` | MCP サーバー：最新、検索、話題、出来事、日報、週報、月報のツールが 1 つずつ。ツール名の接頭辞は `site/site.ts` の `mcpPrefix` |
 | `/llms.txt` `/sitemap.xml` `/robots.txt` | 大規模言語モデルと検索エンジン向けの説明（`robots.txt` などルートのファイルは `site/public/`） |
 | `/admin` | 管理画面 |

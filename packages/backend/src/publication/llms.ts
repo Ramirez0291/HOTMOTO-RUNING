@@ -63,7 +63,7 @@ export function llmsTxt(opts: {
   if (SITE.llmsIntro) lines.push(SITE.llmsIntro, "");
   lines.push(`## Agent 向けの${WAYS(3 + opts.modules.ways.length)}の接続方法`, "");
   lines.push(
-    `すべて匿名・読み取り専用で API キーは不要、バージョンは ${v} で統一。選び方と設定は [Agent 接続ページ](${u("/agent")}) を参照。`
+    `すべて匿名・読み取り専用で API キーは不要、バージョンは ${v} で統一。`
     + opts.modules.access.join(""),
   );
   lines.push("");

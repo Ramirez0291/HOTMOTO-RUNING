@@ -36,6 +36,8 @@
 
 任意：`summaryIsBody`（フィードの要約が本文そのもの：RSS の `description`、Atom の `summary` を長さにかかわらず本文として扱い、原文のページを取得しない）、`allowCategories` / `denyCategories`（フィードのカテゴリで絞り込む。いまの設定では RushLane を `"Bike News"` だけに絞っています）。
 
+どの種類の情報源でも、`ingestNoiseFilter` で取り込む前に項目を絞れます：`requireMarkers` はタイトルか要約にどれかの語がある項目だけを残し（政府の一覧や総合ニュースのような広い情報源から二輪の項目だけを取るとき）、`dropMarkers`・`dropMarkersTitleOnly` はその語がある項目を捨て、`keepIfMatches` は `dropMarkers` の例外です。語は大文字と小文字を区別しません。絞り込みは保存とモデルの呼び出しより前なので、捨てた項目に費用はかかりません。
+
 ウェブページのないポッドキャストの回（`<link>` がなく、`guid` も URL ではない）は、原文のリンクに音声や動画のファイルを使い、ブラウザで直接再生できます。こうした回はウェブページを取得せず、フィードの文字で処理します。
 
 ### web_list

@@ -235,6 +235,15 @@ test("noise words match whatever their case", () => {
   assert.equal(noiseFiltered(c("iPhone 18 开售", ""), source), true);
 });
 
+test("a broad source keeps only the items that name a required word", () => {
+  const source = { config: { ingestNoiseFilter: { requireMarkers: ["摩托", "电动自行车"], dropMarkers: ["招聘"] } } } as never;
+  const c = (title: string, excerpt: string) => ({ url: "https://example.org/a", title, excerpt }) as never;
+  assert.equal(noiseFiltered(c("某市发布摩托车限行通告", ""), source), false);
+  assert.equal(noiseFiltered(c("关于加强安全管理的通知", "涉及电动自行车充电"), source), false, "the excerpt counts too");
+  assert.equal(noiseFiltered(c("关于城市道路改造的通知", "施工期间绕行"), source), true);
+  assert.equal(noiseFiltered(c("摩托车企业招聘", ""), source), true, "the drop words still apply");
+});
+
 test("a time without a zone is read in the source's offset, in JSON lists and in detail page metadata", async () => {
   const list = async (extra: Record<string, unknown> = {}) => (await fetchJsonList({ id: "test-json", config: { url: `${site}/zoneless.json`, itemsPath: "result", titlePaths: ["title"], urlTemplate: "https://example.org/p/{id}", publishedAtPath: "publishDate", ...extra } } as never))
     .map((c) => c.publishedAt?.toISOString());

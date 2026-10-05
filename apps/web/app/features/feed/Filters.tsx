@@ -1,9 +1,10 @@
 // Feed filters: the channel and category choice (a row of tabs on desktop, a sheet behind the bar's filter
-// button on phones), the phone bar of 厳選 and すべて, and search.
+// button on phones), すべて's AI score floor, the phone bar of 厳選 and すべて, and search.
 import { useEffect, useRef, useState } from "react";
 import { Form, Link, useNavigation, useSearchParams } from "react-router";
 import { CATEGORY_KEYS, CATEGORY_LABELS, CHANNEL_LABELS, type CategoryKey, type ChannelKey } from "@hotmoto/contracts/taxonomy";
-import { SITE } from "@hotmoto/site";
+import { ITEM_COPY, SITE } from "@hotmoto/site";
+import { scoreParam } from "../../lib/seo";
 import { IconCheck, IconClose, IconFilter, IconSearch } from "../../components/icons";
 import { PillTabs } from "../../components/ui/Tabs";
 import { Sheet } from "../../components/ui/Sheet";
@@ -41,6 +42,23 @@ function filterKey(category: CategoryKey | null, channel: ChannelKey): string {
   return channel === "firstParty" ? "firstParty" : (category ?? "all");
 }
 
+/** すべて's AI score floor: every item (0) or the items scored at least so much. */
+function scoreOptions(params: URLSearchParams) {
+  return ITEM_COPY.poolMinScore.options.map((n) => ({ key: String(n), label: n === 0 ? "すべて" : `${n} 以上`, to: hrefWith("/all", params, { score: scoreParam(n) }) }));
+}
+
+/** Desktop: すべて's AI score floor as a small row of tabs (none where the site keeps scores from readers). */
+export function ScoreTabs({ minScore, layoutId, className = "" }: { minScore: number; layoutId: string; className?: string }) {
+  const [params] = useSearchParams();
+  if (!ITEM_COPY.showScore) return null;
+  return (
+    <div className={`flex min-w-0 items-center gap-2 ${className}`}>
+      <span className="shrink-0 text-[12px] text-ink-4">AI スコア</span>
+      <PillTabs size="xs" items={scoreOptions(params)} active={String(minScore)} layoutId={layoutId} label="AI スコアで絞り込み" />
+    </div>
+  );
+}
+
 /** Desktop: the filter as a row of tabs beside the search field. */
 export function CategoryTabs({ base, category, channel = "all", layoutId, className = "" }: { base: string; category: CategoryKey | null; channel?: ChannelKey; layoutId: string; className?: string }) {
   const [params] = useSearchParams();
@@ -48,14 +66,14 @@ export function CategoryTabs({ base, category, channel = "all", layoutId, classN
 }
 
 /**
- * The phone bar of 厳選 and すべて: the brand, the 厳選 | すべて switch (a filter in use carries over), and
- * buttons for the filter sheet and search.
+ * The phone bar of 厳選 and すべて: the brand, the 厳選 | すべて switch (a filter in use carries over; the score
+ * floor is すべて's own), and buttons for the filter sheet and search.
  */
-export function FeedBar({ base, category, channel }: { base: "/" | "/all"; category: CategoryKey | null; channel: ChannelKey }) {
+export function FeedBar({ base, category, channel, minScore }: { base: "/" | "/all"; category: CategoryKey | null; channel: ChannelKey; minScore?: number }) {
   const [params] = useSearchParams();
   const [sheet, setSheet] = useState(false);
-  const scope = (to: string) => hrefWith(to, params, { q: null, tab: null, search: null });
-  const filtered = filterKey(category, channel) !== "all";
+  const scope = (to: string) => hrefWith(to, params, { q: null, tab: null, search: null, ...(to === "/" ? { score: null } : {}) });
+  const filtered = filterKey(category, channel) !== "all" || (minScore !== undefined && ITEM_COPY.showScore && scoreParam(minScore) !== null);
   return (
     <>
       <PhoneBar
@@ -86,43 +104,62 @@ export function FeedBar({ base, category, channel }: { base: "/" | "/all"; categ
           </>
         }
       />
-      <FilterSheet open={sheet} onClose={() => setSheet(false)} base={base} active={filterKey(category, channel)} />
+      <FilterSheet open={sheet} onClose={() => setSheet(false)} base={base} active={filterKey(category, channel)} minScore={minScore} />
     </>
   );
 }
 
-/** Phones: the filter as a sheet of options, the one in use ticked; choosing one applies it. */
-function FilterSheet({ open, onClose, base, active }: { open: boolean; onClose: () => void; base: string; active: string }) {
+/**
+ * Phones: the filter as a sheet of options, the one in use ticked; choosing one applies it. On すべて the AI
+ * score floor follows as a second list.
+ */
+function FilterSheet({ open, onClose, base, active, minScore }: { open: boolean; onClose: () => void; base: string; active: string; minScore?: number }) {
   const [params] = useSearchParams();
   return (
     <Sheet open={open} onClose={onClose} title="絞り込み">
-      <ul className="mx-4 divide-y divide-line-soft">
-        {filterOptions(base, params, "指定なし").map((o) => {
-          const on = o.key === active;
-          return (
-            <li key={o.key}>
-              <Link
-                to={o.to}
-                onClick={onClose}
-                aria-current={on ? "true" : undefined}
-                className={`-mx-2 flex h-12 items-center justify-between rounded-tile px-2 text-[16px] transition-colors active:bg-bg-sunk ${on ? "font-semibold text-accent" : "text-ink"}`}
-              >
-                {o.label}
-                {on && <IconCheck size={19} strokeWidth={2.2} />}
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
+      <SheetOptions options={filterOptions(base, params, "指定なし")} active={active} onClose={onClose} />
+      {minScore !== undefined && ITEM_COPY.showScore && (
+        <>
+          <h3 className="mx-4 pb-1 pt-5 text-[13px] font-semibold text-ink-3">AI スコア</h3>
+          <SheetOptions options={scoreOptions(params)} active={String(minScore)} onClose={onClose} />
+        </>
+      )}
     </Sheet>
   );
 }
 
-/** Phones: the filter and tag in use as chips under the bar; each one clears itself when tapped. */
-export function ActiveFilters({ base, category, channel, tag }: { base: string; category: CategoryKey | null; channel: ChannelKey; tag: string | null }) {
+function SheetOptions({ options, active, onClose }: { options: Array<{ key: string; label: string; to: string }>; active: string; onClose: () => void }) {
+  return (
+    <ul className="mx-4 divide-y divide-line-soft">
+      {options.map((o) => {
+        const on = o.key === active;
+        return (
+          <li key={o.key}>
+            <Link
+              to={o.to}
+              onClick={onClose}
+              aria-current={on ? "true" : undefined}
+              className={`-mx-2 flex h-12 items-center justify-between rounded-tile px-2 text-[16px] transition-colors active:bg-bg-sunk ${on ? "font-semibold text-accent" : "text-ink"}`}
+            >
+              {o.label}
+              {on && <IconCheck size={19} strokeWidth={2.2} />}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+/**
+ * Phones: the filter, the tag and a score floor other than the site's as chips under the bar; each one clears
+ * itself when tapped (the floor goes back to the site's).
+ */
+export function ActiveFilters({ base, category, channel, tag, minScore }: { base: string; category: CategoryKey | null; channel: ChannelKey; tag: string | null; minScore?: number }) {
   const [params] = useSearchParams();
   const label = channel === "firstParty" ? CHANNEL_LABELS.firstParty : category ? CATEGORY_LABELS[category] : null;
-  if (!label && !tag) return null;
+  const score = minScore !== undefined && ITEM_COPY.showScore && scoreParam(minScore) !== null ? (minScore === 0 ? "AI スコア：すべて" : `AI スコア ${minScore} 以上`) : null;
+  if (!label && !tag && !score) return null;
   const chip = "neu-inset inline-flex min-h-11 max-w-full items-center gap-1 rounded-full pl-3.5 pr-2.5 text-[13px] font-medium text-accent transition-opacity active:opacity-60";
   return (
     <div className="flex flex-wrap gap-2 pb-3 pt-1 lg:hidden">
@@ -136,6 +173,12 @@ export function ActiveFilters({ base, category, channel, tag }: { base: string; 
         <Link to={hrefWith(base, params, { tag: null })} aria-label={`タグを解除：${tag}`} className={chip}>
           <span className="truncate">#{tag}</span>
           <IconClose size={14} strokeWidth={2} className="shrink-0" />
+        </Link>
+      )}
+      {score && (
+        <Link to={hrefWith(base, params, { score: null })} aria-label={`既定のスコアに戻す：${score}`} className={chip}>
+          {score}
+          <IconClose size={14} strokeWidth={2} />
         </Link>
       )}
     </div>
