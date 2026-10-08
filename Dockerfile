@@ -18,6 +18,7 @@ COPY packages/contracts/package.json packages/contracts/
 COPY industry/package.json industry/
 COPY site/package.json site/
 COPY modules/china/package.json modules/china/
+COPY modules/market/package.json modules/market/
 RUN npm ci --no-audit --no-fund ${NPM_REGISTRY:+--registry=$NPM_REGISTRY}
 COPY . .
 RUN npm run build -w @hotmoto/web && npm prune --omit=dev --no-audit --no-fund
